@@ -100,7 +100,7 @@ Of course, you can also use google to try and find the solution to the problem.
 
 It can be helpful to set up a working directory so that everything we are going to import into R or export from R will be saved by default into this folder. We can use the setwd() command (which stands for set working directory).
 
-Note, you won't need to do this if you are working on the analytical platform but it's still a very useful command to know:
+Note, you won't need to do this if you are working on the analytical platform but it's still a very useful command to know (note it's commented out using the # command as the path is only for DOM1):
 
 ```{r eval=FALSE}
 # setwd("S:/HQ/102PF/Shared/CJG_OMS/OMS/Analytical Services/RACC/Statistical Project Delivery/3. Training and development/R training/Introduction")
@@ -525,7 +525,7 @@ In R, missing values are represented by the symbol NA (not available). Impossibl
 We can easily make a logical vector with value TRUE if the corresponding element is NA, and FALSE otherwise, using a funciton called "is.na":
 
 ```{r results="hide"}
-Miss <- is.na(offenders$height)
+Miss <- is.na(offenders$HEIGHT)
 ```
 
 
