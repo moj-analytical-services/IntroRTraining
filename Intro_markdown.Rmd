@@ -11,9 +11,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Introduction to R
 
-Thanks to the following whose material have been used in creating this guide: 
-*	Bruno Rodrigues, University of Strasbourg (Introduction to Programming: Econometrics with R)
-*	Rob Kabacoff ('Quick R' - http://www.statmethods.net/index.html)
+Thanks to the following whose material have been used in creating this guide:  
+  
+   -	Bruno Rodrigues, University of Strasbourg (Introduction to Programming: Econometrics with R)  
+   -	Rob Kabacoff ('Quick R' - http://www.statmethods.net/index.html)  
 
 R is a modern implementation of the S language. S was developed at Bell Labs where the UNIX operating system, the C language as well as the C++ language were developed. As such R and S are very similar, but R is much more widely used, not least due to its free license. This allows users to freely share their own modifications of the software, thus allowing the widespread use of R worldwide.
 
@@ -63,8 +64,8 @@ The console will remember your most recent commands, if you want to reuse one, j
 
 While commands can be written into the console, it is a good idea to use a "script". This is a code file that can be saved and reused in future. 
 
-To create a new file: click 'file' 
-                              'New file'
+To create a new file: click 'file', 
+                              'New file',
                                 'R Script'
                               
 In R, these files have a '.R' extension. The code file should appear in the top left of the screen. These files can be saved and used again in future. 
@@ -84,7 +85,7 @@ There is also a help menu. You can either use this or type ? into the console an
 ?mean
 ```
 
-Of course, you can also use google to try and find the solution to the problem. 
+Of course, you can also use google or the ASD slack to try and find the solution to the problem. 
 
 
 ### 1.4 Exercises
@@ -122,14 +123,13 @@ This uses the following command:
 install.packages("tidyverse")
 ```
 
-Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command:
+Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can inside your script, so they will automatically load when you run it.:
 
 ```{r results=FALSE, warning=FALSE, comment=FALSE}
 library("tidyverse")
-library("lubridate")
 ```
 
-The package tidyverse contains many useful packages such as dplyr which is a particularly useful package for manipulating and processing data. The package lubridate is very helpful when manipulating dates. Many of the functions in the rest of this training course are from these packages.
+The package tidyverse contains many useful packages such as dplyr which is a particularly useful package for manipulating and processing data. Many of the functions in the rest of this training course are from this package.
 
 To know more about a package, it is always useful to read the associated documentation:
 
@@ -146,15 +146,17 @@ You can now see by looking in the 'environment' window that an object has been c
 
 Now look at the Console tab. You should see the commands library and read_csv() appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won't need to do this again to load the data.
 
-Alternatively (you have already loaded the readr package which is anyway part of the tidyverse package - see section 2.2) you can simply use the command read_csv():
+Alternatively (you have already loaded the readr package as it is part of the tidyverse package - see section 2.2) you can simply use the command read_csv():
 
 ```{r results="hide"}
 offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 ```
 
+Note that the above assumes that the csv file is in your working directory, otherwise you will need to include the file path - see section 2.1.
+
 #### Importing data from the analytical platform amazon server
 
-To import the data for this session from the platform use this command:
+To import the data for this session from the platform amazon server use this command:
 
 ```{r eval = FALSE, results="hide"}
 
@@ -170,7 +172,11 @@ There are other commands and various packages that can be used to import dataset
 
 ### 2.4 Inspecting the dataset
 
-As noted in the previous section, you can see by looking in the 'environment' window that the 'offenders' dataset has 1413 observations and 9 variables. To view this dataset, click the icon to the right of this information, which you can see from the console is the equivalent of using the command View(offenders)
+As noted in the previous section, you can see by looking in the 'environment' window that the 'offenders' dataset has 1413 observations and 9 variables. To view this dataset, click the icon to the right of this information, which you can see from the console is the equivalent of using the command:
+
+```{r eval = FALSE}
+View(offenders)
+```
 
 To obtain a summary of the meta-data of your dataset you can click on the arrow by 'offenders' in the 'environment' window, which provides the same information as by typing the following command:
 
@@ -178,8 +184,7 @@ To obtain a summary of the meta-data of your dataset you can click on the arrow 
 str(offenders)
 ```
 
-
-Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. Also provided is some information about each variable in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character. 
+Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. Also provided is some information about each variable in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
 
 The summary command also provides some useful details:
 
@@ -199,13 +204,13 @@ If you want to view only the last 2 rows of the dataset:
 tail(offenders, 2)
 ```
 
-Square brackets can be used to subset data. For instance 'offenders[ i , j ]' would return the value in the ith row and jth column of the dataframe offenders. so, if you want the fourth and fifth variables for the 500th and 502nd observation:
+Square brackets can be used to subset data. For instance 'offenders[ i , j ]' would return the value in the ith row and jth column of the dataframe 'offenders'. so, if you want the fourth and fifth variables for the 500th and 502nd observation:
 
 ```{r}
 offenders[c(500, 502),4:5]
 ```
 
-Note the use of square brackets to specify which rows and columns you want, the rows being specified first and then the columns, the two being separated by a comma. c stands for concatenate, enabling us to retrieve the 500th and 502nd observations together.  
+Note that c stands for concatenate, enabling us to retrieve the 500th and 502nd observations together. The colon enables us to retrieve from the 4th to the 5th columns.  
 
 
 ### 2.5 Dataset variables 
@@ -222,27 +227,25 @@ The format is dataframe name, $, variable name. An alternative way would be:
 offenders[,4]
 ```
 
-We can also use the select() command from the dplyr package to choose just the variables from the 'offender' dataset that we want:
+We can also use the select() command from the dplyr package to choose just the variables from the 'offenders' dataset that we want:
 
 ```{r results="hide"}
-Names <- select(offenders, Surname = LAST, FIRST)
+select(offenders, LAST, FIRST)
 ```
 
-Note here that we have created a new dataset called 'Names' and also that we have renamed the LAST variable as Surname.
+Note (as is common with dplyr functions) we first specify the name of the dataset and then the variables that we want.  
 
-To create a new variable providing the weight in kg (instead of it pounds):
+To create a new variable providing the weight in kg (instead of in pounds):
 
 ```{r results="hide"}
 offenders$weight_kg <- offenders$WEIGHT*0.454
 ```
 
-The command mutate() which is part of the dplyr package can also be used to edit a variable or add a new variable while preserving the others.
+You can alternatively use the command mutate() which is part of the dplyr package.
  
 ```{r eval = FALSE}
 ?mutate
 ```
-
-To use dplyr functions such as mutate, we need to enter a few bits of information into brackets immediately after the name of the function. First we specify the name of the dataset. Then we give a name to the new variable that we are going to create and then specify how it is going to be calculated. 
 
 So to create weight_kg using mutate: 
 
@@ -250,7 +253,7 @@ So to create weight_kg using mutate:
 offenders <- mutate(offenders, weight_kg = WEIGHT * 0.454)
 ```
 
-As we have called our variable "weight_kg", R has overwritten the weight_kg variable we have already created. 
+As we have called our variable "weight_kg", R has overwritten the weight_kg variable we have already created.
 
 You can see the new variable by using the View command (note that after make changes to the dataset you need to use the View command again to see the latest version):
 
@@ -265,10 +268,10 @@ offenders <- rename(offenders, DoB = BIRTH_DATE)
 ```
        
 
-### 2.7 Exercises
+### 2.6 Exercises
 
 1.	What are the mean, max and min for variable AGE in the dataset offenders?
-2.	Create a new dataset creating a new variable providing the number of (full) years over 16 and drop the orginal WEIGHT variable.
+2.	Create a new dataset creating a new variable providing the number of (full) years someone is over 16 and drop the orginal WEIGHT variable.
 
 
 ## 3 Calculations
@@ -282,7 +285,6 @@ We can check what class a variable is using summary, looking at the information 
 ```{r}
 class(offenders$weight) 
 ```
-
 
 It's possible to coerce variables from one class to another. We can change the weight variable in the offenders dataset to be a numeric variable as follows:
 
@@ -302,7 +304,7 @@ We can change the GENDER variable in the offenders dataset to be a factor variab
 offenders$GENDER <- as.factor(offenders$GENDER)  
 ```
 
-Factors are for categorical variables involving different levels. So for example, in the dataset 'offenders', FEMALE is stored as 1, and MALE as 2. We can see this now when looking at the environment tab (after clicking the arrow to the left of offenders) and also from using the following command:
+Factors are for categorical variables involving different levels. So for example, in the dataset 'offenders', FEMALE is stored as 1, and MALE as 2. We can see this now when looking at the environment tab (after clicking the arrow to the left of offenders) and also the order from using the following command:
 
 ```{r}
 levels(offenders$GENDER)
@@ -364,52 +366,68 @@ regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
 summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
+In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable is called 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
 There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd 
+
+If we want also to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows:
+
+```{r results="hide"}
+regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
+summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+```
+
+The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command:
+
+```{r results="hide"}
+regional_gender_average <- ungroup(regional_gender_average)
+```
+
 
 ### 3.4 Filter
 
 We have selected a subset of columns or variables using select. Now let's select a subset of rows or observations. A good function for that is filter() from the dplyr package.
 
-Let's first take a look at the different possible values of the index_disposal variable. We can do that using the table command.
+Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the group_by/summarise combination.
 
 ```{r}
-table(offenders$SENTENCE)
+offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
 ```
 
-To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
+To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
 
 ```{r results="hide"}
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order") %>% group_by(REGION, GENDER) %>%
+crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
 summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
 ### 3.5 Other useful numeric and statistical functions include:
 
-.	abs(x): returns the absolute value of x
-.	sqrt(x): returns the square root of x
-.	round(x, digits = n): rounds a number to the nth place
-.	exp(x): returns the exponential of x
-.	log(x): returns the natural log of x
-.	sum(x): if x is a vector, returns the sum of its elements
-.	min(x): if x is a vector, returns the smallest of its elements
-.	max(x): if x is a vector, returns the biggest of its elements
-.	rnorm(n, mean = 0, sd = 1): return n random numbers from the standard normal distribution
-.	rbinom(n, no. of trials = 1, prob = 0.5): return random numbers from n coin tosses
-.	mean(x): if x is a vector of observations, return the mean of its elements
-.	sd(x): if x is a vector of observations, return its standard deviation
-.	cor(x): gives the linear correlation coefficient
-.	median(x): if x is a vector of observations, return its median
+   - abs(x): returns the absolute value of x
+   - sqrt(x): returns the square root of x
+   - round(x, digits = n): rounds a number to the nth place
+   - exp(x): returns the exponential of x
+   - log(x): returns the natural log of x
+   - sum(x): if x is a vector, returns the sum of its elements
+   - min(x): if x is a vector, returns the smallest of its elements
+   - max(x): if x is a vector, returns the biggest of its elements
+   - rnorm(n, mean = 0, sd = 1): return n random numbers from the standard normal distribution
+   - rbinom(n, no. of trials = 1, prob = 0.5): return random numbers from n coin tosses
+   - mean(x): if x is a vector of observations, return the mean of its elements
+   - sd(x): if x is a vector of observations, return its standard deviation
+   - cor(x): gives the linear correlation coefficient
+   - median(x): if x is a vector of observations, return its median
 
 ### 3.6 Exercises
 
-1.  Using group_by and summarise, calculate the average age for females in the West.
+1.  Using group_by and summarise, calculate the average and median age for females in the West.
 2.	Create a new variable called 'height_under_150' which is 1 if under 150 cm and 0 otherwise.
 3.	How many have heights of less than 4 feet, what are their (recorded) heights and gender(s)?
 4.	Produce a table showing the counts of height including missing values. 
 
  
 
-### 4.1 Dates
+## 4 Dates
+### 4.1 Manipulating dates
 
 As you may have noted, DoB in the 'offenders' dataset is presently a factor variable. To understand the variable better we will want to change it to have class date.
 
@@ -458,6 +476,7 @@ offenders$b_qtr <- quarters(offenders$DoB_formatted)
 
 And using a package called lubridate:
 ```{r eval = FALSE}
+library(lubridate)
 offenders$b_year <- year(offenders$DoB_formatted)
 offenders$b_month <- month(offenders$DoB_formatted)
 offenders$b_day <- day(offenders$DoB_formatted)
@@ -472,14 +491,14 @@ offenders$days_before_2000 <- as.Date("2000-01-01") - offenders$DoB_formatted
 ### 4.2 Exercises
 
 1.	Read in dataset 'FTSE_12_14.csv' and change the date variable to have class date.
-(s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
+(s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv"))
 2.	Calculate a weekday variable  and another variable to measure daily performance, that is, how much the share price increases or decreases on a daily basis (close price minus open price). 
 3.	See which weekday performance is best using summarise or creating a table. 
 
-## Merging and exporting data
+## 5 Merging data, missing values and exporting
 ### 5.1 Merging datasets
 
-There is a function called merge which can merge data sets, provided you have some common fields to match on. This is similar to joins in SQL.
+There are dplyr functions left_join, right_join, inner_join, full_join, semi_join and anti_join which can merge data sets, provided you have some common fields to match on. This is similar to SQL.
 
 Let's import a new dataset which contains informaiton on whether the offenders faced trial. 
 
@@ -496,14 +515,14 @@ offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro
 We merge the datasets with offenders using the combination of fields that together form a unique identifier.
 
 ```{r results="hide"}
-offenders_merge <- merge(offenders, offenders_trial, by=c("LAST", "DoB"))
+offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "DoB")) 
 ```
 
-For more information about the different sorts of joins see: http://www.dummies.com/programming/r/how-to-use-the-merge-function-with-data-sets-in-r/ 
+For more information about the different sorts of joins and other data transformation functions see the 'Data Transformation Cheat Sheet' at: https://www.rstudio.com/resources/cheatsheets/  
 
-We can also join two datasets vertically or horizontally, using the rbind or cbind functions respectively. 
+We can also join two datasets vertically or horizontally, using the bind_rows() or bind_cols() functions respectively. 
 
-If we have two datasets with the same variables, we can use "rbind" to join them vertically, R simply sticks them on top of each other. They actually only need to have the same number of variables but clearly, you need to be careful if you are joining data together which refers to different variables.
+If we have two datasets with the same variables, we can use bind_rows to join them vertically. 
 
 For instance:
 ```{r results="hide"}
@@ -514,7 +533,7 @@ rejoined <- rbind(men, women)
 
 Note that 'rejoined' has the same number of observations and variables as 'offenders'. 
 
-"cbind" does something similar but appends data horizontally, in this case you would need the same number of observations in each data frame. 
+The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
 
 
 
@@ -522,16 +541,16 @@ Note that 'rejoined' has the same number of observations and variables as 'offen
 
 In R, missing values are represented by the symbol NA (not available). Impossible values (e.g. dividing by zero) are represented by the symbol NaN (not a number).
 
-We can easily make a logical vector with value TRUE if the corresponding element is NA, and FALSE otherwise, using a funciton called "is.na":
+We can look at the HEIGHT variable as previously:
 
 ```{r results="hide"}
-Miss <- is.na(offenders$HEIGHT)
+height_table <- offenders %>% group_by(HEIGHT) %>% summarise(Count=n())
 ```
 
 
-Then we can use this to ascertain the number of missing values the height variable contains:
-```{r}
-table(Miss)
+Then we can view the height_table we've made which will include the number of missing values the height variable contains:
+```{r eval=FALSE}
+View(height_table)
 ```
 
 
@@ -563,10 +582,10 @@ This assumes by default that you want to export the row headers and that the col
 ### 5.4 Exercises
 
 
-1.	Merge offenders_trial with the age column of offenders, creating a new dataset called offenders_trial_age.
+1.	Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 2.	Export the dataset offenders_trial_age to a csv file.
-3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height. 
-4.	Produce a table showing the counts of HEIGHT including missing values. 
+3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: use the is.na() function). 
+
 
 
 

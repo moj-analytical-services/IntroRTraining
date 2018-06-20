@@ -17,10 +17,8 @@ x
 y <- 17
 # Q3 Now multiply y by 78. What answer do you get?
 y * 78
-
 # Q4 What does the command head do?
 ?head
-
 # Q5 What command might you use to subset a dataset?
 ?subset
 
@@ -29,7 +27,7 @@ y * 78
 
 # 2.1 Setting up a working directory
 
-# set working directory (path only works on DOM1)
+# set working directory (the following path only works on DOM1)
 # setwd("S:/HQ/102PF/Shared/CJG_OMS/OMS/Analytical Services/RACC/Statistical Project Delivery/3. Training and development/R training/Introduction")
 
 # get working directory
@@ -39,18 +37,19 @@ getwd()
 
 # install.packages("tidyverse")
 
+# Load a package
 library("tidyverse")
-library("lubridate")
+
 
 help(package=dplyr)
 
 
 # 2.3 Importing data
 
-# DOM1
+# If the csv file is in your working directory
 offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 
-# From Analytical Platform amazon server
+# From the Analytical Platform amazon server
 offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
 
 
@@ -74,12 +73,9 @@ offenders$GENDER
 
 offenders[,4]
 
-Names <- select(offenders, Surname = LAST, FIRST)
+select(offenders, LAST, FIRST)
 
 offenders$weight_kg <- offenders$WEIGHT*0.454
-
-
-# 2.6 Manipulating data with tidyverse
 
 ?mutate
 
@@ -87,7 +83,7 @@ offenders <- mutate(offenders, weight_kg = WEIGHT * 0.454)
 
 View(offenders)
 
-offenders <- rename(offenders, DoB = BIRTH_DATE) 
+offenders <- rename(offenders, DoB = BIRTH_DATE)
 
 
 
@@ -132,7 +128,6 @@ offenders$tall <- offenders$HEIGHT > 175
 
 class(offenders$tall)
 
-
 # 3.2 Ifelse
 
 offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
@@ -145,29 +140,32 @@ offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
 regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
   summarise(Ave = mean(PREV_CONVICTIONS))
 
+regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+
+regional_gender_average <- ungroup(regional_gender_average)
+
 # 3.4 Filter
 
-table(offenders$SENTENCE)
+offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
 
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order") %>% group_by(REGION, GENDER) %>%
+crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
   summarise(Ave = mean(PREV_CONVICTIONS))
 
-
 # 3.6 Exercises -----------------------------------------------------------
-# Q1 Using group_by and summarise, calculate the average age for females in the West.
-data <- offenders %>% group_by(GENDER, REGION) %>%
-summarise(mean(AGE))
+# Q1 Using group_by and summarise, calculate the average and median age for females in the West.
+offenders %>% group_by(GENDER, REGION) %>%
+summarise(mean(AGE), median(AGE))
 
 # Q2 Create a new variable called ‘height_under_150’ which is 1 if under 150 cm and 0 otherwise.
 offenders$height_under_150 <- ifelse(offenders$HEIGHT < 150, 1, 0)
 
 # Q3 How many have heights of less than 4 feet, what are their (recorded) heights and gender(s)?
-short_offenders <- filter(offenders, HEIGHT < 400)
-
-nrow(short_offenders) # only 1!
+filter(offenders, HEIGHT < 400)
 
 # Q4 Produce a table showing the counts of height including missing values.
-table(offenders$HEIGHT, useNA = "ifany")
+counts_of_height <- offenders %>% group_by(HEIGHT) %>%
+  summarise(Count=n())
 
 
 # Dates -------------------------------------------------------------------
@@ -182,6 +180,8 @@ offenders$b_wkday <- weekdays(offenders$DoB_formatted)
 
 offenders$b_qtr <- quarters(offenders$DoB_formatted)
 
+library(lubridate)
+
 offenders$b_year <- year(offenders$DoB_formatted)
 
 offenders$b_month <- month(offenders$DoB_formatted)
@@ -193,11 +193,11 @@ offenders$days_before_2000 <- as.Date("2000-01-01") - offenders$DoB_formatted
 # 4.2 Exercises
 # Q1 Read in dataset ‘FTSE_12_14.csv’ and change the date variable to have class date.
 
-# analytical platform:
+# analytical platform amazon server:
 ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
 
-# dom1:
-ftse <- read_csv("alpha-everyone/R_training_intro/FTSE_12_14.csv")
+# dom1 (if dataset is in working directory):
+ftse <- read_csv("FTSE_12_14.csv")
 
 # Q2 Calculate a weekday variable and another variable to measure daily performance, 
 #    that is, how much the share price increases or decreases on a daily basis (close price minus open price).
@@ -219,31 +219,26 @@ ftse <- mutate(ftse, daily_performance = Close - Open)
 
 # Q3 See which weekday performance is best using summarise or creating a table.
 
-# method 1: summarise
-ftse_grp <- ftse %>% group_by(weekday) %>%
-summarise(mean(daily_performance))
+ftse %>% group_by(weekday) %>%
+summarise(Mean_performance = mean(daily_performance)) %>% arrange(desc(Mean_performance))
 
-ftse_grp <- ungroup(ftse_grp)
-
-# method 2: table
-# ???
 
 # 5 Merging and exporting data --------------------------------------------
 # 5.1 Merging datasets
 
-# read in data on DOM1:
-offenders_trial <- read.csv("Offenders_Chicago_Police_Dept_Trial.csv")
+# read in data on DOM1 (assuming file in your working directory):
+offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
-# read in data on analytical platform:
+# read in data on analytical platform amazon server:
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
 
-offenders_merge <- merge(offenders, offenders_trial, by=c("LAST", "DoB"))
+offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "DoB")) 
 
-men <- filter(offenders, GENDER == "MALE")
+men <- filter(offenders, GENDER == "MALE") 
 
 women <- filter(offenders, GENDER == "FEMALE")
 
-rejoined <- rbind(men, women)
+rejoined <- bind_rows(men, women)
 
 nrow(rejoined) # 1413 rows
 
@@ -251,9 +246,9 @@ nrow(offenders) # 1413 rows
 
 # 5.2 Handling missing values
 
-Miss <- is.na(offenders$HEIGHT)
+height_table <- offenders %>% group_by(HEIGHT) %>% summarise(Count=n())
 
-table(Miss)
+View(height_table)
 
 complete.cases(offenders)
 
@@ -263,13 +258,16 @@ complete_offenders <- filter(offenders, complete.cases(offenders))
 write.csv(complete_offenders, file = "Complete_offenders.csv")
 
 # 5.4 Exercises 
-# Q1 Merge offenders_trial with the age column of offenders, creating a new dataset called offenders_trial_age.
+# Q1 Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 
 # create offenders age dataset with just age column and columns we're joining on
 offenders_age <- select(offenders, LAST, DoB, AGE)
 
 # merge the two datasets
-offenders_trial_age <- merge(offenders_age, offenders_trial, by=c("LAST", "DoB"))
+offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "DoB"))
+
+# Or in one part
+offenders_trial_age <- offenders %>% select(LAST, DoB, AGE) %>% inner_join(offenders_trial, by=c("LAST", "DoB"))
 
 # Q2 Export the dataset offenders_trial_age to a csv file.
 write.csv(offenders_trial_age, "offenders_trial_age.csv")
@@ -279,7 +277,6 @@ mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
 
 offenders$height_new <- ifelse(is.na(offenders$HEIGHT), mean_height, offenders$HEIGHT)
 
-# Q4 Produce a table showing the counts of HEIGHT including missing values.
-table(offenders$height, useNA = "ifany")
+
 
 
