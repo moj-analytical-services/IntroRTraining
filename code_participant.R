@@ -150,5 +150,6 @@ complete_offenders <- filter(offenders, complete.cases(offenders))
 
 write.csv(complete_offenders, file = "Complete_offenders.csv")
 
-
-
+# 5 - exercises
+# read in ftse data
+ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
