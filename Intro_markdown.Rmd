@@ -11,14 +11,46 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Introduction to R
 
-Thanks to the following whose material have been used in creating this guide:  
-  
-   -	Bruno Rodrigues, University of Strasbourg (Introduction to Programming: Econometrics with R)  
-   -	Rob Kabacoff ('Quick R' - http://www.statmethods.net/index.html)  
+### Session aims
 
-R is a modern implementation of the S language. S was developed at Bell Labs where the UNIX operating system, the C language as well as the C++ language were developed. As such R and S are very similar, but R is much more widely used, not least due to its free license. This allows users to freely share their own modifications of the software, thus allowing the widespread use of R worldwide.
+* Overview of R
+* Understand how it's used in MoJ
+* Demonstrate its basic functions
 
-A lot of pre-programmed routines are included in R, and you can add more through packages. One characteristic that's important to recognise is that just as there are many ways of getting from Victoria Station to 102 Petty France, there are many ways of doing the same thing in R. Some ways are (computationally) faster, some are simpler to program, and some may be more conducive to your taste.   
+### What is R?
+
+R is an open-source programming language and software environment, designed primarily for statistical computing. It has grown rapidly in popularity in the last few years due to increased interest in data science.
+
+Some of the advantages:
+
+* It is **popular** - there is a large, active and rapidly growing community of R programmers, which has resulted in a plethora of resources and extensions.
+* It is **powerful** - the history as a statistical language means it is well suited for data analysis and manipulation.
+* It is **extensible** - there are a vast array of **packages** that can be added to extend the functionality of R, produced by statisticians and programmers around the world. These can range from obscure statistical techniques to tools for making interactive charts
+* It's **free and open source** - a large part of its popularity can be owed to its low cost, particularly relative to proprietary software such as SAS.
+
+### How is it used?
+
+There a number of areas in the MoJ where R is making an impact:
+
+1. The Reproducible Analytical Pipeline (RAP) is a set of tools and standards for producing our statistical publications in a more automated and reproducible way. The Offender Management Statistics Quarterly publication already runs on RAP https://github.com/moj-analytical-services/OMSQ_RAP
+2. A number of webapps using Shiny have been produced, allowing customers to explore data in an interactive way. The PQ tool is a strong example: https://pq-tool.apps.alpha.mojanalytics.xyz/
+
+### Contents
+
+1. Basic set up - in this section you will be introduced to the RStudio Environment and some of the basic R commands
+2. Processing data - this section involves importing data into R and inspecting it
+3. Calculations - this section introduces some basic functions for data manipulation
+4. Dates - this section explores working with dates
+5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data.
+
+### Basic setup
+
+Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html.
+
+This guide is hosted on Github: https://github.com/moj-analytical-services/intrortraining
+
+In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for github, but for now, you will just want to import the project from github by following the steps outlined in section 4.1.3 of the platform guidance: https://moj-analytical-services.github.io/platform_user_guidance/using-github-with-r-studio.html
+
 
 ### 1.1 Command console
 
