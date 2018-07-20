@@ -89,6 +89,14 @@ Note - to assign a name to an object in R you need to use an arrow and a hyphen:
 
 Furthermore, R is case sensitive so if you were to type X, an error would be displayed as you have not yet created and object called X.
 
+Let's make another object which is a vector with the values 3, 2 and 4.
+
+```{r}
+x <- c(3, 2, 4)
+```
+
+c represents concatenate. You can now see the new object x in the 'workplace'. Note that the old object x has been overwritten and that the new object is of class numeric. 
+
 The console will remember your most recent commands, if you want to reuse one, just use the up and down arrows to scroll through them. When you have found the one that you want, press return, R will repeat that line of code and display the results. 
 
 
@@ -146,6 +154,8 @@ getwd()
 ```
 
 ### 2.2 Packages
+
+A lot of pre-programmed routines are included in R, and you can add a lot more through packages. One characteristic that's important to recognise is that just as there are many ways of getting from Victoria Station to 102 Petty France, there are many ways of doing the same thing in R. Some ways are (computationally) faster, some are simpler to program, and some may be more conducive to your taste.  
 
 Packages extend R's functionality enormously and are a key factor in making R so popular. For instance, to install the tidyverse package in R, use the Install button from the Packages tab in Rstudio. 
 
@@ -216,7 +226,7 @@ To obtain a summary of the meta-data of your dataset you can click on the arrow 
 str(offenders)
 ```
 
-Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. Also provided is some information about each variable in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
+Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. The variables are columns and vectors. Also provided is some information about each variable (or vector) in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
 
 The summary command also provides some useful details:
 
@@ -224,48 +234,36 @@ The summary command also provides some useful details:
 summary(offenders)
 ```
 
-If you want to view only the top 10 rows of the dataset:
-
-```{r results="hide"}
-head(offenders,10)
-```
-
-If you want to view only the last 2 rows of the dataset:
-
-```{r results="hide"}
-tail(offenders, 2)
-```
-
-Square brackets can be used to subset data. For instance 'offenders[ i , j ]' would return the value in the ith row and jth column of the dataframe 'offenders'. so, if you want the fourth and fifth variables for the 500th and 502nd observation:
+Square brackets can be used to subset data. For instance 'offenders[ i , j ]' would return the value in the ith row and jth column of the dataframe 'offenders'. So, if you want the fourth variable for the 500th observation:
 
 ```{r}
-offenders[c(500, 502),4:5]
+offenders[500,4]
 ```
 
-Note that c stands for concatenate, enabling us to retrieve the 500th and 502nd observations together. The colon enables us to retrieve from the 4th to the 5th columns.  
+If you want the fourth variable for the 500th and 502nd observations you can use the concatenate (c) command:
+
+```{r}
+offenders[c(500, 502),4]
+```
+
+If you want the fourth and fifth variables for the 500th observation:
+
+```{r}
+offenders[500,4:5]
+```
+
+The colon enables us to retrieve from the 4th to the 5th columns.  
 
 
 ### 2.5 Dataset variables 
 
-To view a specific variable, for instance gender, you use a dollar sign as follows:
+Dataframes/tibbles in R are a collection of vectors where where each vector is a column and represents a variable. To view a specific variable, for instance gender, you use a dollar sign as follows:
 
 ```{r results="hide"}
 offenders$GENDER
 ```
 
-The format is dataframe name, $, variable name. An alternative way would be:
-
-```{r}
-offenders[,4]
-```
-
-We can also use the select() command from the dplyr package to choose just the variables from the 'offenders' dataset that we want:
-
-```{r results="hide"}
-select(offenders, LAST, FIRST)
-```
-
-Note (as is common with dplyr functions) we first specify the name of the dataset and then the variables that we want.  
+The format is dataframe name, $, variable name. Note that a vector is returned. 
 
 To create a new variable providing the weight in kg (instead of in pounds):
 
@@ -273,42 +271,14 @@ To create a new variable providing the weight in kg (instead of in pounds):
 offenders$weight_kg <- offenders$WEIGHT*0.454
 ```
 
-You can alternatively use the command mutate() which is part of the dplyr package.
- 
-```{r eval = FALSE}
-?mutate
-```
-
-So to create weight_kg using mutate: 
-
-```{r results="hide", warning=FALSE, comment=FALSE}
-offenders <- mutate(offenders, weight_kg = WEIGHT * 0.454)
-```
-
-As we have called our variable "weight_kg", R has overwritten the weight_kg variable we have already created.
-
 You can see the new variable by using the View command (note that after make changes to the dataset you need to use the View command again to see the latest version):
 
 ```{r eval = FALSE}
 View(offenders)
 ```
 
-We can rename variables using the dplyr function rename(). Let's change the name of BIRTH_DATE in our 'offenders' dataset.
 
-```{r results="hide"}
-offenders <- rename(offenders, DoB = BIRTH_DATE) 
-```
-       
-
-### 2.6 Exercises
-
-1.	What are the mean, max and min for variable AGE in the dataset offenders?
-2.	Create a new dataset creating a new variable providing the number of (full) years someone is over 16 and drop the orginal WEIGHT variable.
-
-
-## 3 Calculations
-
-### 3.1 Data classes
+### 2.6 Data classes
 
 All variables have an associated class. The class will determine what calculations are possible with them and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date. 
 
@@ -360,7 +330,7 @@ A logical variable has two values TRUE or FALSE. If you type the following:
 offenders$tall <- offenders$HEIGHT > 175
 ```
 
-Take care of the sytnax here, the first arrow and hyphen are used to assign the new variable. The second arrow is to compare height with 174. In this case we are asking if the offenders height is greater than 175cm.
+Take care of the syntax here, the first arrow and hyphen are used to assign the new variable. The second arrow is to compare height with 174. In this case we are asking if the offenders height is greater than 175cm.
 
 We can see offenders$tall is of class logical:
 
@@ -368,7 +338,7 @@ We can see offenders$tall is of class logical:
 class(offenders$tall)
 ```
 
-### 3.2 Ifelse
+### 2.7 Ifelse
 
 The logical class is important to perform ifelse commands. These are the equivalent of If statements in Excel. We can use this, for example, to identify those with weight under 90kg in the dataset 'offenders':
 
@@ -376,63 +346,8 @@ The logical class is important to perform ifelse commands. These are the equival
 offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
 ```
 
-### 3.3 Grouping and summarising data
 
-We can produce breakdowns of statistics using the group_by and summarise commands from the dplyr package.
-
-```{r results="hide"}
-?dplyr::summarise
-?group_by
-```
-
-group_by() identifies which variables we want to produce breakdowns by. 
-
-summarise() is used to indicate which values we want to calculate. 
-
-Using these functions together we can replicate the apply family of functions in base R and produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using a %>% operator.
-
-So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
-
-```{r results="hide"}
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS))
-```
-
-In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable is called 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
-There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd 
-
-If we want also to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows:
-
-```{r results="hide"}
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
-```
-
-The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command:
-
-```{r results="hide"}
-regional_gender_average <- ungroup(regional_gender_average)
-```
-
-
-### 3.4 Filter
-
-We have selected a subset of columns or variables using select. Now let's select a subset of rows or observations. A good function for that is filter() from the dplyr package.
-
-Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the group_by/summarise combination.
-
-```{r}
-offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
-```
-
-To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
-
-```{r results="hide"}
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS))
-```
-
-### 3.5 Other useful numeric and statistical functions include:
+### 2.8 Some useful numeric and statistical functions include:
 
    - abs(x): returns the absolute value of x
    - sqrt(x): returns the square root of x
@@ -449,14 +364,136 @@ summarise(Ave = mean(PREV_CONVICTIONS))
    - cor(x): gives the linear correlation coefficient
    - median(x): if x is a vector of observations, return its median
 
+
+### 2.9 Exercises
+
+1.	What are the mean, max and min for variable AGE in the dataset offenders?
+2.	Create a new variable providing the number of (full) years someone is over 16.
+3.	Create a new variable called 'height_under_150' which is 1 if under 150 cm and 0 otherwise.
+
+
+## 3 dplyr data wrangling
+### 3.1 Grouping and summarising data
+
+We can produce breakdowns of statistics using the group_by and summarise commands from the dplyr package.
+
+```{r results="hide"}
+?dplyr::summarise
+?group_by
+```
+
+group_by() identifies which variables we want to produce breakdowns by. 
+
+summarise() is used to indicate which values we want to calculate. 
+
+Using these functions together we can replicate the apply family of functions in base R and produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable
+and means you don't have to create a new object each time you run a command.
+
+So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
+
+```{r results="hide"}
+regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
+summarise(Ave = mean(PREV_CONVICTIONS))
+```
+
+In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
+There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd 
+
+If we want also to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows:
+
+```{r results="hide"}
+regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
+summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+```
+
+The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command:
+
+```{r results="hide"}
+regional_gender_average <- ungroup(regional_gender_average)
+```
+
+
+### 3.2 Filter
+
+If you would like to produce statistics for a subset of rows or observations, a good function to use is filter() from the dplyr package.
+
+Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the group_by/summarise combination.
+
+```{r}
+offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
+```
+
+To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
+
+```{r results="hide"}
+crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
+summarise(Ave = mean(PREV_CONVICTIONS))
+```
+
+
+### 3.3 Select
+
+We can also use the select() command from the dplyr package to choose just the variables from the 'offenders' dataset that we want. So if we want to create a new dataset without the names and addresses:
+
+```{r results="hide"}
+offenders_anonymous <- select(offenders, -LAST, -FIRST, -BLOCK)
+```
+
+Note (as is common with dplyr functions) we first specify the name of the dataset and then the variables that in this case we want to remove.
+
+Let's say that now we want to restrict this dataset to just include BIRTH_DATE, WEIGHT and number of previous convictions. 
+
+```{r results="hide"}
+offenders_anonymous <- select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
+```
+
+
+### 3.4 Rename
+
+We can rename variables using the dplyr function rename(). Let's amend our above coding in creating the 'offenders_anonymous' dataset so that BIRTH_DATE is instead called 'DoB'.
+
+```{r results="hide"}
+offenders_anonymous <- offenders %>%
+  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  rename(DoB = BIRTH_DATE) 
+```
+       
+If you also wanted to rename PREV_CONVICTIONS to Num_prev_convictions to make it easier to understand then:
+
+```{r results="hide"}
+offenders_anonymous <- offenders %>%
+  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
+```
+
+
+### 3.5 Mutate
+
+You can create new variables and perform calculations on variables using the dplyr command mutate().
+ 
+```{r eval = FALSE}
+?mutate
+```
+
+So if we wanted to amend our coding to include a new derived variable weight_kg in the 'offenders_anonymous' dataset: 
+
+```{r results="hide", warning=FALSE, comment=FALSE}
+offenders_anonymous <- offenders %>%
+  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
+  mutate(weight_kg = WEIGHT * 0.454)
+```
+
+You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/
+
+
 ### 3.6 Exercises
 
 1.  Using group_by and summarise, calculate the average and median age for females in the West.
-2.	Create a new variable called 'height_under_150' which is 1 if under 150 cm and 0 otherwise.
-3.	How many have heights of less than 4 feet, what are their (recorded) heights and gender(s)?
-4.	Produce a table showing the counts of height including missing values. 
+2.	How many have heights of less than 4 feet, what are their (recorded) heights and gender(s)?
+3.	Produce a table showing the counts of height (including missing values). 
+4.  Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename SENTENCE as sentence_type, and create a new variable num_convictions that is PREV_CONVICTIONS + 1 (to take account of the latest conviction).
 
- 
 
 ## 4 Dates
 ### 4.1 Manipulating dates
@@ -487,7 +524,7 @@ If we look at DoB (the first observation is 05/26/1988) we can see that the curr
 We can therefore make a new date variable (called DoB_formatted) with class date as follows:
 
 ```{r results="hide"}
-offenders$DoB_formatted <-  as.Date(offenders$DoB, "%m/%d/%Y")
+offenders$DoB_formatted <-  as.Date(offenders$BIRTH_DATE, "%m/%d/%Y")
 ```
 
 
@@ -544,10 +581,16 @@ Or using the platform:
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
-We merge the datasets with offenders using the combination of fields that together form a unique identifier.
+We merge the datasets with offenders using the combination of fields that together form a unique identifier. But first we need to rename DoB to BIRTH_DATE in the offenders_trial dataset:
 
 ```{r results="hide"}
-offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "DoB")) 
+offenders_trial <- dplyr::rename(offenders_trial, BIRTH_DATE=DoB) 
+```
+
+Now the variables that together form a unique identifier have the same names, we can do the merge:
+
+```{r results="hide"}
+offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
 ```
 
 For more information about the different sorts of joins and other data transformation functions see the 'Data Transformation Cheat Sheet' at: https://www.rstudio.com/resources/cheatsheets/  
