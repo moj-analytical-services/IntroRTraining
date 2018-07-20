@@ -9,6 +9,22 @@ output: word_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Basic setup
+
+This document provides accompanying trainging material used in the Introduction to R Training session, conducted by the ASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html.
+
+This guide is hosted on Github: https://github.com/moj-analytical-services/intrortraining
+
+In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for github, but for now, you will just want to import the project from github by following the steps outlined in section 4.1.3 of the platform guidance: https://moj-analytical-services.github.io/platform_user_guidance/using-github-with-r-studio.html
+
+## Contents
+
+1. Introduction - in this section you will be introduced to R, the RStudio Environment and some of the basic R commands
+2. Processing data - this section involves importing data into R and inspecting it
+3. Calculations - this section introduces some basic functions for data manipulation
+4. Dates - this section explores working with dates
+5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data.
+
 ## 1. Introduction to R
 
 ### Session aims
@@ -37,22 +53,6 @@ There a number of areas in the MoJ where R is making an impact:
 1. The Reproducible Analytical Pipeline (RAP) is a set of tools and standards for producing our statistical publications in a more automated and reproducible way. The Offender Management Statistics Quarterly publication already runs on RAP https://github.com/moj-analytical-services/OMSQ_RAP
 2. A number of webapps using Shiny have been produced, allowing customers to explore data in an interactive way. The PQ tool is a strong example: https://pq-tool.apps.alpha.mojanalytics.xyz/
 3. It has enabled more technical analysis to be done with the help of packages written by academics and statisticians, which would have to be coded from scratch using SAS. For example, the PQ tool makes use of packages to facilitate Natural Language Processing and Text Mining.
-
-### Contents
-
-1. Basic set up - in this section you will be introduced to the RStudio Environment and some of the basic R commands
-2. Processing data - this section involves importing data into R and inspecting it
-3. Calculations - this section introduces some basic functions for data manipulation
-4. Dates - this section explores working with dates
-5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data.
-
-### Basic setup
-
-Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html.
-
-This guide is hosted on Github: https://github.com/moj-analytical-services/intrortraining
-
-In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for github, but for now, you will just want to import the project from github by following the steps outlined in section 4.1.3 of the platform guidance: https://moj-analytical-services.github.io/platform_user_guidance/using-github-with-r-studio.html
 
 
 ### 1.1 Command console
