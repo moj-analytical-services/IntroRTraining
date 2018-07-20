@@ -30,8 +30,8 @@ In that repository, there is the file code_participant.R, which contains code re
 ### Session aims
 
 * Overview of R
-* Understand how it's used in MoJ
-* Demonstrate its basic functions
+* Get new R users up and running with confidence
+* Introduce key functions needed in ASD work
 
 ### What is R?
 
