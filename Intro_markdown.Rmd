@@ -19,7 +19,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### What is R?
 
-R is an open-source programming language and software environment, designed primarily for statistical computing. It has grown rapidly in popularity in the last few years due to increased interest in data science.
+R is an open-source programming language and software environment, designed primarily for statistical computing. It has a long history - it is based on the S language, which was developed in 1976 in Bell Labs, where the UNIX operating system and the C and C++ languages were developed. The R language itself was developed in the 1990s, with the first stable version release in 2000.
+
+R has grown rapidly in popularity particularly in the last five years, due to the increased interest in the data science field. It is now a key tool in the MoJ's Analytical Platform.
 
 Some of the advantages:
 
@@ -34,6 +36,7 @@ There a number of areas in the MoJ where R is making an impact:
 
 1. The Reproducible Analytical Pipeline (RAP) is a set of tools and standards for producing our statistical publications in a more automated and reproducible way. The Offender Management Statistics Quarterly publication already runs on RAP https://github.com/moj-analytical-services/OMSQ_RAP
 2. A number of webapps using Shiny have been produced, allowing customers to explore data in an interactive way. The PQ tool is a strong example: https://pq-tool.apps.alpha.mojanalytics.xyz/
+3. It has enabled more technical analysis to be done with the help of packages written by academics and statisticians, which would have to be coded from scratch using SAS. For example, the PQ tool makes use of packages to facilitate Natural Language Processing and Text Mining.
 
 ### Contents
 
@@ -180,7 +183,7 @@ Now look at the Console tab. You should see the commands library and read_csv() 
 
 Alternatively (you have already loaded the readr package as it is part of the tidyverse package - see section 2.2) you can simply use the command read_csv():
 
-```{r results="hide"}
+```{r eval = FALSE, results="hide"}
 offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 ```
 
@@ -190,7 +193,7 @@ Note that the above assumes that the csv file is in your working directory, othe
 
 To import the data for this session from the platform amazon server use this command:
 
-```{r eval = FALSE, results="hide"}
+```{r, results="hide"}
 
 offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
 
@@ -534,13 +537,13 @@ There are dplyr functions left_join, right_join, inner_join, full_join, semi_joi
 
 Let's import a new dataset which contains informaiton on whether the offenders faced trial. 
 
-```{r results="hide"}
+```{r eval=FALSE, results="hide"}
 offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
 Or using the platform:
 
-```{r eval = FALSE, results="hide"}
+```{r results="hide"}
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
