@@ -120,6 +120,12 @@ offenders$b_day <- day(offenders$DoB_formatted)
 
 offenders$days_before_2000 <- as.Date("2000-01-01") - offenders$DoB_formatted
 
+# 4.2 Exercises
+
+# read in ftse data
+ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
+
+
 # 5.1
 
 # read in data on DOM1 (assuming file in your working directory):
@@ -150,6 +156,3 @@ complete_offenders <- filter(offenders, complete.cases(offenders))
 
 write.csv(complete_offenders, file = "Complete_offenders.csv")
 
-# 5 - exercises
-# read in ftse data
-ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
