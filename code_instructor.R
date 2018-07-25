@@ -170,6 +170,8 @@ counts_of_height <- offenders %>% group_by(HEIGHT) %>%
 
 # Dates -------------------------------------------------------------------
 # 4.1 
+library(lubridate)
+
 
 Sys.Date()
 
@@ -180,7 +182,7 @@ offenders$b_wkday <- weekdays(offenders$DoB_formatted)
 
 offenders$b_qtr <- quarters(offenders$DoB_formatted)
 
-library(lubridate)
+
 
 offenders$b_year <- year(offenders$DoB_formatted)
 
@@ -191,36 +193,42 @@ offenders$b_day <- day(offenders$DoB_formatted)
 offenders$days_before_2000 <- as.Date("2000-01-01") - offenders$DoB_formatted
 
 # 4.2 Exercises
-# Q1 Read in dataset ‘FTSE_12_14.csv’ and change the date variable to have class date.
+# Q1 Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
 
 # analytical platform amazon server:
 ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
 
-# dom1 (if dataset is in working directory):
-ftse <- read_csv("FTSE_12_14.csv")
-
-# Q2 Calculate a weekday variable and another variable to measure daily performance, 
-#    that is, how much the share price increases or decreases on a daily basis (close price minus open price).
+## dom1 (if dataset is in working directory):
+# ftse <- read_csv("FTSE_12_14.csv")
 
 # first have a look at what format the date is in
 str(ftse)
 
 # covert into date format
-ftse$converted_date <-  as.Date(ftse$Date, "%d %B %Y")
+ftse <- ftse %>%
+  mutate(formatted_date = dmy(Date))
 
 # check it worked
-str(ftse)
+class(ftse$formatted_date)
+
+# Q2 Add a variable called day with the day of the week, and another variable called 
+# daily_performance for how much the share price has increased or decreased that day
+# (close price - open price). 
 
 # create weekday variable
-ftse <- mutate(ftse, weekday = weekdays(converted_date))
+ftse <- mutate(ftse, day = day(converted_date))
 
 # add daily performance column
 ftse <- mutate(ftse, daily_performance = Close - Open)
 
-# Q3 See which weekday performance is best using summarise or creating a table.
+# Q3 Work out which day of the week has the highest mean performance using summarise(). 
 
-ftse %>% group_by(weekday) %>%
-summarise(Mean_performance = mean(daily_performance)) %>% arrange(desc(Mean_performance))
+weekday_performance <- ftse %>%
+  group_by(weekday) %>%
+  summarise(Mean_performance = mean(daily_performance)) %>%
+  arrange(desc(Mean_performance))
+
+View(weekday_performance)
 
 
 # 5 Merging and exporting data --------------------------------------------

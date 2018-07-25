@@ -429,71 +429,56 @@ summarise(Ave = mean(PREV_CONVICTIONS))
 ## 4 Dates
 ### 4.1 Manipulating dates
 
-As you may have noted, DoB in the 'offenders' dataset is presently a factor variable. To understand the variable better we will want to change it to have class date.
+As you might have noticed, DoB in the 'offenders' dataset currently has a class of character (or factor depending how you read the data in). To be able to manipulate this data as a date in R, we first need to convert it to class date.
+
+In all of this section, we are going to use a package from Tidyverse designed called lubridate, there are also ways to do the same thing using base R. First, we need to load the package:
+```{r}
+library(lubridate)
+```
 
 Class date involves dates being represented in R as the number of days since 1970-01-01, with negative values for earlier dates. The format is year (4 digits) - month (2 digits) - day (2 digits). You can see this if we ask R for today's date:
 ```{r}
-Sys.Date()
+today()
 ```
 
-To change DoB to have class date we need to use the 'as.Date' function which allows us to tell R how to interpret the date format we have using the following symbols: 
+If you have a read of the help file `r ?lubridate`, you'll see Lubridate has a number of functions such as dmy(), myd() etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the string to be parsed.
 
-Symbol	     |      Meaning	         |   Example
--------------|-----------------------|------------
-%d           | day as a number       | 31
-%a           | abbreviated weekday   | Mon
-%A           | unabbreviated weekday | Monday 
-%m           | month(00 - 12)        | 04
-%b           | abbreviated month     | Jan
-%B           | unabbreviated month   | January
-%y           | 2 digit year          | 18
-%Y           | 4 digit year          | 2018
+We can therefore make a new date variable (called DoB_formatted) with class date as follows, and then check the class of the new column:
 
-Source: 'Quick R' - http://www.statmethods.net/input/dates.html 
-If we look at DoB (the first observation is 05/26/1988) we can see that the current format is two digit month represented by %m, followed by a /, followed by the two digit day represented by %d, followed by / and ending with the four digit year represented by %Y. 
+```{r}
+offenders<- mutate(offenders, DoB_formatted = mdy(DoB))
 
-We can therefore make a new date variable (called DoB_formatted) with class date as follows:
-
-```{r results="hide"}
-offenders$DoB_formatted <-  as.Date(offenders$DoB, "%m/%d/%Y")
+class(offenders$DoB_formatted)
 ```
 
 
-The expression %m/%d/%Y tells R what the data currently looks like so it knows where to find the day, month and year needed to create a date. 
+The function mdy() specifies the format that the date in column DoB is currently in so R knows where to find the day, month and year needed to create a date. 
 
 Remember, to refer to a specific variable, we use a dollar sign. We have used a variable name that doesn't currently exist in 'offenders' so R has created a new variable and appended it.
 
 Now we have a variable with class date we can create new variables containing just part of the date e.g.
 
 ```{r results="hide"}
-offenders$b_wkday <- weekdays(offenders$DoB_formatted)
+offenders <- mutate(offenders, day = day(DoB_formatted))
+
+offenders <- mutate(offenders, quarter = quarter(DoB_formatted))
+
+offenders <- mutate(offenders, year = year(DoB_formatted))
+
+offenders <- mutate(offenders, month = month(DoB_formatted))
 ```
-
-
-```{r results="hide"}
-offenders$b_qtr <- quarters(offenders$DoB_formatted)
-```
-
-And using a package called lubridate:
-```{r eval = FALSE}
-library(lubridate)
-offenders$b_year <- year(offenders$DoB_formatted)
-offenders$b_month <- month(offenders$DoB_formatted)
-offenders$b_day <- day(offenders$DoB_formatted)
-```
-
 
 You can also calculate the number of days since a date. For instance let's say we want to know the no. of days between the date of birth and 1 Jan 2000:
 ```{r results="hide"}
-offenders$days_before_2000 <- as.Date("2000-01-01") - offenders$DoB_formatted
+offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_formatted)
 ```
 
 ### 4.2 Exercises
 
-1.	Read in dataset 'FTSE_12_14.csv' and change the date variable to have class date.
-(s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv"))
-2.	Calculate a weekday variable  and another variable to measure daily performance, that is, how much the share price increases or decreases on a daily basis (close price minus open price). 
-3.	See which weekday performance is best using summarise or creating a table. 
+1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
+(to read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv"))
+2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
+3.	Work out which day of the week has the highest mean performance using summarise(). 
 
 ## 5 Merging data, missing values and exporting
 ### 5.1 Merging datasets
