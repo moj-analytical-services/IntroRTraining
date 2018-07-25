@@ -46,8 +46,8 @@ help(package=dplyr)
 
 # 2.3 Importing data
 
-# If the csv file is in your working directory
-offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
+# # If the csv file is in your working directory
+# offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 
 # From the Analytical Platform amazon server
 offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
@@ -215,8 +215,8 @@ class(ftse$formatted_date)
 # daily_performance for how much the share price has increased or decreased that day
 # (close price - open price). 
 
-# create weekday variable
-ftse <- mutate(ftse, day = day(converted_date))
+# create a variable for dya of the week
+ftse <- mutate(ftse, day = day(formatted_date))
 
 # add daily performance column
 ftse <- mutate(ftse, daily_performance = Close - Open)
@@ -224,9 +224,9 @@ ftse <- mutate(ftse, daily_performance = Close - Open)
 # Q3 Work out which day of the week has the highest mean performance using summarise(). 
 
 weekday_performance <- ftse %>%
-  group_by(weekday) %>%
-  summarise(Mean_performance = mean(daily_performance)) %>%
-  arrange(desc(Mean_performance))
+  group_by(day) %>%
+  summarise(mean_performance = mean(daily_performance)) %>%
+  arrange(desc(mean_performance))
 
 View(weekday_performance)
 
@@ -234,8 +234,8 @@ View(weekday_performance)
 # 5 Merging and exporting data --------------------------------------------
 # 5.1 Merging datasets
 
-# read in data on DOM1 (assuming file in your working directory):
-offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
+# # read in data on DOM1 (assuming file in your working directory):
+# offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
 # read in data on analytical platform amazon server:
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
@@ -278,7 +278,7 @@ offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "
 offenders_trial_age <- offenders %>% select(LAST, DoB, AGE) %>% inner_join(offenders_trial, by=c("LAST", "DoB"))
 
 # Q2 Export the dataset offenders_trial_age to a csv file.
-write.csv(offenders_trial_age, "offenders_trial_age.csv")
+write_csv(offenders_trial_age, "offenders_trial_age.csv")
 
 # Q3 Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height.
 mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
