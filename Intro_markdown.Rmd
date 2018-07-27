@@ -11,29 +11,30 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Basic setup
 
-This document provides accompanying trainging material used in the Introduction to R Training session, conducted by the ASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html.
+This document provides accompanying training material used in the Introduction to R Training session, conducted by the ASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html.
 
-This guide is hosted on Github: https://github.com/moj-analytical-services/intrortraining
+This guide is hosted on Github: https://github.com/moj-analytical-services/IntroRTraining
 
-In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for github, but for now, you will just want to import the project from github by following the steps outlined in section 4.1.3 of the platform guidance: https://moj-analytical-services.github.io/platform_user_guidance/using-github-with-r-studio.html
+In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for github, but for now, please import the project from github by following the steps outlined in section 4.1.3 of the platform guidance: https://moj-analytical-services.github.io/platform_user_guidance/using-github-with-r-studio.html
 
 ## Contents
 
 1. Introduction - in this section you will be introduced to R, the RStudio Environment and some of the basic R commands
-2. Processing data - this section involves importing data into R and inspecting it
-3. Calculations - this section introduces some basic functions for data manipulation
+2. Processing data - this section introduces R packages, importing data into R,  inspecting data and data classes and the ifelse function
+3. Data wrangling and 'group by' calculations - this section covers the most useful data manipulation functions using the dplyr package
 4. Dates - this section explores working with dates
-5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data.
+5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data
+6. Extra resources
 
-## 1. Introduction to R
+## 1. Introduction
 
-### Session aims
+### 1.1 Session aims
 
 * Overview of R
 * Get new R users up and running with confidence
 * Introduce key functions needed in ASD work
 
-### What is R?
+### 1.2 What is R?
 
 R is an open-source programming language and software environment, designed primarily for statistical computing. It has a long history - it is based on the S language, which was developed in 1976 in Bell Labs, where the UNIX operating system and the C and C++ languages were developed. The R language itself was developed in the 1990s, with the first stable version release in 2000.
 
@@ -46,7 +47,7 @@ Some of the advantages:
 * It is **extensible** - there are a vast array of **packages** that can be added to extend the functionality of R, produced by statisticians and programmers around the world. These can range from obscure statistical techniques to tools for making interactive charts
 * It's **free and open source** - a large part of its popularity can be owed to its low cost, particularly relative to proprietary software such as SAS.
 
-### How is it used?
+### 1.3 How is it used?
 
 There a number of areas in the MoJ where R is making an impact:
 
@@ -55,7 +56,7 @@ There a number of areas in the MoJ where R is making an impact:
 3. It has enabled more technical analysis to be done with the help of packages written by academics and statisticians, which would have to be coded from scratch using SAS. For example, the PQ tool makes use of packages to facilitate Natural Language Processing and Text Mining.
 
 
-### 1.1 Command console
+### 1.4 Command console
 
 The window in which commands are entered is called the "console" window. It is used to input and execute code. Results, errors and warnings are shown directly in the same window. 
 
@@ -92,18 +93,18 @@ Note - to assign a name to an object in R you need to use an arrow and a hyphen:
 
 Furthermore, R is case sensitive so if you were to type X, an error would be displayed as you have not yet created and object called X.
 
-Let's make another object which is a vector with the values 3, 2 and 4.
+As well as storing single values, you can also create vectors. The below statement creates a vector object with the values 3, 2 and 4:
 
 ```{r}
 x <- c(3, 2, 4)
 ```
 
-c represents concatenate. You can now see the new object x in the 'workplace'. Note that the old object x has been overwritten and that the new object is of class numeric. 
+This uses the "c" function - the c is short for "concatenate". You can now see the new object x in the 'workplace'. Note that the old object x has been overwritten and that the new object is of class numeric. 
 
 The console will remember your most recent commands, if you want to reuse one, just use the up and down arrows to scroll through them. When you have found the one that you want, press return, R will repeat that line of code and display the results. 
 
 
-### 1.2 Script file
+### 1.5 Script file
 
 While commands can be written into the console, it is a good idea to use a "script". This is a code file that can be saved and reused in future. 
 
@@ -116,7 +117,7 @@ In R, these files have a '.R' extension. The code file should appear in the top 
 To execute the code, click run at the top of the screen. R will run the line of code that the cursor is currently on, if you want to run several lines of code, highlight them and then press run.
 
 
-### 1.3 Other windows and getting help
+### 1.6 Other windows and getting help
 
 The top right panel shows all "objects" that are in your working environment. This will become clearer throughout the session but typically, this will be any data that you have created or imported, additional variables and values that you have created. For instance, if you have run the code above, 'x' should be shown here. Other objects such as regression models that you have created would also appear here. From here you can also use a drop down menu to import more data. 
 
@@ -131,7 +132,7 @@ There is also a help menu. You can either use this or type ? into the console an
 Of course, you can also use google or the ASD slack to try and find the solution to the problem. 
 
 
-### 1.4 Exercises
+### 1.7 Exercises
 
 1.	Create a new source code file in which you can store all commands you make during this exercise. Save it as 'Intro_R_Exercises.R'.
 2.  Create a new value called y which is equal to 17.
@@ -142,18 +143,17 @@ Of course, you can also use google or the ASD slack to try and find the solution
 ##   2. Processing data
 ### 2.1 Setting up a working directory
 
-It can be helpful to set up a working directory so that everything we are going to import into R or export from R will be saved by default into this folder. We can use the setwd() command (which stands for set working directory).
+It can be helpful to set up a working directory so that everything we are going to import into R or export from R will be saved by default into this folder. You can check what the working directory currently is by using the getwd() command (which stands for get working directory):
 
-Note, you won't need to do this if you are working on the analytical platform but it's still a very useful command to know (note it's commented out using the # command as the path is only for DOM1):
-
-```{r eval=FALSE}
-setwd("S:/HQ/102PF/Shared/CJG_OMS/OMS/Analytical Services/RACC/Statistical Project Delivery/3. Training and development/R training/Introduction")
-
-```
-
-You can check what the working directory currently is by using the getwd() command:
 ```{r results="hide"}
 getwd()
+```
+
+If you want to change the working directory you can use the setwd() command:
+
+```{r}
+setwd("/home")
+
 ```
 
 ### 2.2 Packages
@@ -168,7 +168,7 @@ This uses the following command:
 install.packages("tidyverse")
 ```
 
-Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can inside your script, so they will automatically load when you run it.:
+Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can inside your script, so they will automatically load when you run it:
 
 ```{r results=FALSE, warning=FALSE, comment=FALSE}
 library("tidyverse")
@@ -184,6 +184,10 @@ help(package=dplyr)
 
 
 ### 2.3 Importing data
+
+It is important to be able to import data both from the analytical platform amazon server and other servers we work with.
+
+#### Importing data not on the analytical platform amazon server
 
 You can import data in .csv files using Rstudio by clicking on the Environment tab and then the Import Dataset button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
 
@@ -229,7 +233,7 @@ To obtain a summary of the meta-data of your dataset you can click on the arrow 
 str(offenders)
 ```
 
-Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. The variables are columns and vectors. Also provided is some information about each variable (or vector) in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
+Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. Variables in a data frame are like columns in a table, and are stored as vectors. Also provided is some information about each variable (or vector) in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
 
 The summary command also provides some useful details:
 
@@ -249,13 +253,13 @@ If you want the fourth variable for the 500th and 502nd observations you can use
 offenders[c(500, 502),4]
 ```
 
-If you want the fourth and fifth variables for the 500th observation:
+If you want the first five variables for the 500th observation:
 
 ```{r}
-offenders[500,4:5]
+offenders[500,1:5]
 ```
 
-The colon enables us to retrieve from the 4th to the 5th columns.  
+The colon operator allows you to create sequences - in this case from 1 to 5, so here you will retrieve from the 1st to the 5th columns.  
 
 
 ### 2.5 Dataset variables 
@@ -375,7 +379,7 @@ offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
 3.	Create a new variable called 'height_under_150' which is 1 if under 150 cm and 0 otherwise.
 
 
-## 3 dplyr data wrangling
+## 3 Data wrangling and 'group by' calculations
 ### 3.1 Grouping and summarising data
 
 We can produce breakdowns of statistics using the group_by and summarise commands from the dplyr package.
@@ -389,8 +393,7 @@ group_by() identifies which variables we want to produce breakdowns by.
 
 summarise() is used to indicate which values we want to calculate. 
 
-Using these functions together we can replicate the apply family of functions in base R and produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable
-and means you don't have to create a new object each time you run a command.
+Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable and means you don't have to create a new object each time you run a command.
 
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
@@ -501,9 +504,9 @@ You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) a
 ## 4 Dates
 ### 4.1 Manipulating dates
 
-As you might have noticed, DoB in the 'offenders' dataset currently has a class of character (or factor depending how you read the data in). To be able to manipulate this data as a date in R, we first need to convert it to class date.
+As you might have noticed, BIRTH_DATE in the 'offenders' dataset currently has a class of character (or factor depending how you read the data in). To be able to manipulate this data as a date in R, we first need to convert it to class date.
 
-In all of this section, we are going to use a package from Tidyverse designed called lubridate, there are also ways to do the same thing using base R. First, we need to load the package:
+In all of this section, we are going to use a package from tidyverse designed called lubridate, there are also ways to do the same thing using base R. First, we need to load the package:
 ```{r}
 library(lubridate)
 ```
@@ -513,19 +516,19 @@ Class date involves dates being represented in R as the number of days since 197
 today()
 ```
 
-If you have a read of the help file `r ?lubridate`, you'll see Lubridate has a number of functions such as dmy(), myd() etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the string to be parsed.
+If you have a read of the help file, you'll see lubridate has a number of functions such as dmy(), myd() etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the string to be parsed.
 
 We can therefore make a new date variable (called DoB_formatted) with class date as follows, and then check the class of the new column:
 
 ```{r results="hide"}
-offenders<- mutate(offenders, DoB_formatted = mdy(DoB))
+offenders<- mutate(offenders, DoB_formatted = mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
 
 ```
 
 
-The function mdy() specifies the format that the date in column DoB is currently in so R knows where to find the day, month and year needed to create a date. 
+The function mdy() specifies the format that the date in column BIRTH_DATE is currently in so R knows where to find the day, month and year needed to create a date. 
 
 Remember, to refer to a specific variable, we use a dollar sign. We have used a variable name that doesn't currently exist in 'offenders' so R has created a new variable and appended it.
 
@@ -551,14 +554,14 @@ offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_format
 1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
 (to read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv"))
 2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
-3.	Work out which day of the week has the highest mean performance using summarise(). 
+3.	Work out which day of the week has the highest mean performance using summarise() and the base R command weekdays(). 
 
 ## 5 Merging data, missing values and exporting
 ### 5.1 Merging datasets
 
 There are dplyr functions left_join, right_join, inner_join, full_join, semi_join and anti_join which can merge data sets, provided you have some common fields to match on. This is similar to SQL.
 
-Let's import a new dataset which contains informaiton on whether the offenders faced trial. 
+Let's import a new dataset which contains information on whether the offenders faced trial. 
 
 ```{r eval=FALSE, results="hide"}
 offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
@@ -657,9 +660,11 @@ This assumes by default that you want to export the row headers and that the col
 
 There are lots of resources that can help you develop your R knowledge, but below are a few that are particularly helpful:
 
-+ Datacamp is an website which hosts multiple online courses that teach coding. Their 'Introduction to R' course is free to complete and also provide a good overivew in the basic concepts for coding in R. A link to the course can be found here: [https://www.datacamp.com/courses/free-introduction-to-r](https://www.datacamp.com/courses/free-introduction-to-r)
++ DataCamp is a website which hosts multiple online courses that teach coding. Their 'Introduction to R' course is free to complete and provides a broader overview in the basic concepts for coding in R. A link to the course can be found here: https://www.datacamp.com/courses/free-introduction-to-r
 + Another good resourse is the 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, who is a data scientist at RStudio, who developed the tidyverse package that we introduced earlier. It gives a really good overview of R and how his package works with it.
-+ RStudio has also developed a list of 'cheatsheets' which give quick overviews of the functions contained in different packages, which can be quickly referred to: [https://www.rstudio.com/resources/cheatsheets/](https://www.rstudio.com/resources/cheatsheets/)
++ RStudio has also developed a list of 'cheatsheets' which give quick overviews of the functions contained in different packages, which can be quickly referred to: https://www.rstudio.com/resources/cheatsheets/ Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'
+
+For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training
 
 
 
