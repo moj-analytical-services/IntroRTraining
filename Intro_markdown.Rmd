@@ -542,6 +542,8 @@ offenders <- mutate(offenders, quarter = quarter(DoB_formatted))
 offenders <- mutate(offenders, year = year(DoB_formatted))
 
 offenders <- mutate(offenders, month = month(DoB_formatted))
+
+offenders <- mutate(offenders, weekday = weekdays(DoB_formatted))
 ```
 
 You can also calculate the number of days since a date. For instance let's say we want to know the no. of days between the date of birth and 1 Jan 2000:
@@ -554,7 +556,7 @@ offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_format
 1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
 (to read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv"))
 2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
-3.	Work out which day of the week has the highest mean performance using summarise() and the base R command weekdays(). 
+3.	Work out which day of the week has the highest mean performance. 
 
 ## 5 Merging data, missing values and exporting
 ### 5.1 Merging datasets
@@ -595,7 +597,7 @@ For instance:
 ```{r results="hide"}
 men <- filter(offenders, GENDER == "MALE")
 women <- filter(offenders, GENDER == "FEMALE")
-rejoined <- rbind(men, women)
+rejoined <- bind_rows(men, women)
 ```
 
 Note that 'rejoined' has the same number of observations and variables as 'offenders'. 
