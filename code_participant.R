@@ -100,25 +100,34 @@ offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
 crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
   summarise(Ave = mean(PREV_CONVICTIONS))
 
-# 4.1 
-
-Sys.Date()
-
-offenders$DoB_formatted <-  as.Date(offenders$DoB, "%m/%d/%Y")
-
-offenders$b_wkday <- weekdays(offenders$DoB_formatted)
-
-offenders$b_qtr <- quarters(offenders$DoB_formatted)
+# Dates -------------------------------------------------------------------
+# 4.1 Manipulating dates
 
 library(lubridate)
 
-offenders$b_year <- year(offenders$DoB_formatted)
+today()
 
-offenders$b_month <- month(offenders$DoB_formatted)
 
-offenders$b_day <- day(offenders$DoB_formatted)
+offenders<- mutate(offenders, DoB_formatted = mdy(DoB))
 
-offenders$days_before_2000 <- as.Date("2000-01-01") - offenders$DoB_formatted
+class(offenders$DoB_formatted)
+
+
+offenders <- mutate(offenders, day = day(DoB_formatted))
+      
+offenders <- mutate(offenders, quarter = quarter(DoB_formatted))
+      
+offenders <- mutate(offenders, year = year(DoB_formatted))
+      
+offenders <- mutate(offenders, month = month(DoB_formatted))
+
+offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_formatted)
+
+# 4.2 Exercises
+
+# read in ftse data
+ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
+
 
 # 5.1
 
@@ -150,6 +159,3 @@ complete_offenders <- filter(offenders, complete.cases(offenders))
 
 write.csv(complete_offenders, file = "Complete_offenders.csv")
 
-# 5 - exercises
-# read in ftse data
-ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
