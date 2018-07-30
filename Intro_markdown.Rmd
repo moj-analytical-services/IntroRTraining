@@ -223,7 +223,7 @@ offenders$GENDER
 
 The format is dataframe name, $, variable name. An alternative way would be:
 
-```{r}
+```{r results="hide"}
 offenders[,4]
 ```
 
@@ -558,7 +558,7 @@ complete_offenders <- filter(offenders, complete.cases(offenders))
 A command to export data into csv format is write.csv. For instance, to export our data which contains the complete cases:
 
 ```{r results="hide"}
-write.csv(complete_offenders, file = "Complete_offenders.csv")
+write_csv(complete_offenders, file = "Complete_offenders.csv")
 ```
 
 This assumes by default that you want to export the row headers and that the columns are separated by a comma symbol (sep = ","). The data will be saved as a CSV in your working directory.  
