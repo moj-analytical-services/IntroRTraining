@@ -148,7 +148,7 @@ Now look at the Console tab. You should see the commands library and read_csv() 
 
 Alternatively (you have already loaded the readr package as it is part of the tidyverse package - see section 2.2) you can simply use the command read_csv():
 
-```{r results="hide"}
+```{r eval=FALSE}
 offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 ```
 
@@ -158,7 +158,7 @@ Note that the above assumes that the csv file is in your working directory, othe
 
 To import the data for this session from the platform amazon server use this command:
 
-```{r eval = FALSE, results="hide"}
+```{r results="hide"}
 
 offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
 
@@ -487,13 +487,13 @@ There are dplyr functions left_join, right_join, inner_join, full_join, semi_joi
 
 Let's import a new dataset which contains informaiton on whether the offenders faced trial. 
 
-```{r results="hide"}
+```{r eval = FALSE }
 offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
 Or using the platform:
 
-```{r eval = FALSE, results="hide"}
+```{r results="hide"}
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
