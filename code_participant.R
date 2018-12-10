@@ -1,3 +1,17 @@
+# 1 Introduction to R -----------------------------------------------------
+
+# 1.5 Command Console
+
+x <- 3
+
+x
+
+x <- c(3, 2, 4)
+
+# 1.6 Other windows and getting help
+
+?mean
+
 # 2. Processing Data ------------------------------------------------------
 
 # 2.1 Setting up a working directory
