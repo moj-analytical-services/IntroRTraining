@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Basic setup
 
-This document provides accompanying training material used in the Introduction to R Training session, conducted by the ASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html.
+This document provides accompanying training material used in the Introduction to R Training session, conducted by the ASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html. Also make sure step 2.3.1 has been completed otherwise you will have difficulty importing files at later stages of this course.  
 
 This guide is hosted on Github: https://github.com/moj-analytical-services/IntroRTraining
 
@@ -137,7 +137,7 @@ Of course, you can also use google or the ASD slack to try and find the solution
 1.	Create a new source code file in which you can store all commands you make during this exercise. Save it as 'Intro_R_Exercises.R'.
 2.  Create a new value called y which is equal to 17.
 3.  Now multiply y by 78. What answer do you get?
-4.	What does the command head do?
+4.	What does the command "head" do?
 5.	What command might you use to subset a dataset?
 
 ##   2. Processing data
@@ -167,6 +167,8 @@ This uses the following command:
 ```{r eval = FALSE}
 install.packages("tidyverse")
 ```
+
+Note that if you are using R on the Analytical Platform the tidyverse package is already installed, hence the above step can be skipped. 
 
 Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can inside your script, so they will automatically load when you run it:
 
@@ -272,19 +274,6 @@ offenders$GENDER
 
 The format is dataframe name, $, variable name. Note that a vector is returned. 
 
-To create a new variable providing the weight in kg (instead of in pounds):
-
-```{r results="hide"}
-offenders$weight_kg <- offenders$WEIGHT*0.454
-```
-
-You can see the new variable by using the View command (note that after make changes to the dataset you need to use the View command again to see the latest version):
-
-```{r eval = FALSE}
-View(offenders)
-```
-
-
 ### 2.6 Data classes
 
 All variables have an associated class. The class will determine what calculations are possible with them and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date. 
@@ -345,14 +334,6 @@ We can see offenders$tall is of class logical:
 class(offenders$tall)
 ```
 
-### 2.7 Ifelse
-
-The logical class is important to perform ifelse commands. These are the equivalent of If statements in Excel. We can use this, for example, to identify those with weight under 90kg in the dataset 'offenders':
-
-```{r results="hide"}
-offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
-```
-
 
 ### 2.8 Some useful numeric and statistical functions include:
 
@@ -401,6 +382,15 @@ So if we want the mean number of previous convictions with breakdown by REGION a
 regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
 summarise(Ave = mean(PREV_CONVICTIONS))
 ```
+
+The pipe operator simply passes through the object on the left hand side as the first argument of the following fuction. For example the above calculation without using the pipe operator would look like this:
+
+```{r results="hide"}
+regional_gender_average <-summarise(group_by(offenders,REGION, GENDER),Ave=mean(PREV_CONVICTIONS))
+
+```
+
+Using nested functions this looks more complicated and is harder to follow than if we use the pipe operator, this becomes more clear as extra calculations are added. 
 
 In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
 There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd 
@@ -496,7 +486,7 @@ You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) a
 ### 3.6 Exercises
 
 1.  Using group_by and summarise, calculate the average and median age for females in the West.
-2.	How many have heights of less than 4 feet, what are their (recorded) heights and gender(s)?
+2.	How many have heights of less than 2 metres, what are their (recorded) heights and gender(s)?
 3.	Produce a table showing the counts of height (including missing values). 
 4.  Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename SENTENCE as sentence_type, and create a new variable num_convictions that is PREV_CONVICTIONS + 1 (to take account of the latest conviction).
 
@@ -653,6 +643,8 @@ This assumes by default that you want to export the row headers and that the col
 
 1.	Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 2.	Export the dataset offenders_trial_age to a csv file.
+
+Extension: 
 3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: use the is.na() function). 
 
 
