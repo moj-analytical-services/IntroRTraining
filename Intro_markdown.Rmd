@@ -320,22 +320,7 @@ We can now change the GENDER variable in the offenders dataset back to be a char
 offenders$GENDER <- as.character(offenders$GENDER)  
 ```
 
-A logical variable has two values TRUE or FALSE. If you type the following:
-
-```{r results="hide"}
-offenders$tall <- offenders$HEIGHT > 175
-```
-
-Take care of the syntax here, the first arrow and hyphen are used to assign the new variable. The second arrow is to compare height with 174. In this case we are asking if the offenders height is greater than 175cm.
-
-We can see offenders$tall is of class logical:
-
-```{r}
-class(offenders$tall)
-```
-
-
-### 2.8 Some useful numeric and statistical functions include:
+### 2.7 Some useful numeric and statistical functions include:
 
    - abs(x): returns the absolute value of x
    - sqrt(x): returns the square root of x
@@ -353,11 +338,9 @@ class(offenders$tall)
    - median(x): if x is a vector of observations, return its median
 
 
-### 2.9 Exercises
+### 2.8 Exercises
 
 1.	What are the mean, max and min for variable AGE in the dataset offenders?
-2.	Create a new variable providing the number of (full) years someone is over 16.
-3.	Create a new variable called 'height_under_150' which is 1 if under 150 cm and 0 otherwise.
 
 
 ## 3 Data wrangling and 'group by' calculations
