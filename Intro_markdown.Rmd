@@ -263,10 +263,7 @@ offenders[500,1:5]
 
 The colon operator allows you to create sequences - in this case from 1 to 5, so here you will retrieve from the 1st to the 5th columns.  
 
-
-### 2.5 Dataset variables 
-
-Dataframes/tibbles in R are a collection of vectors where where each vector is a column and represents a variable. To view a specific variable, for instance gender, you use a dollar sign as follows:
+Dataframes/tibbles in R are a collection of vectors where where each vector is a column and represents a variable. To view a specific variable, for instance gender, you can use a dollar sign as follows:
 
 ```{r results="hide"}
 offenders$GENDER
@@ -274,7 +271,7 @@ offenders$GENDER
 
 The format is dataframe name, $, variable name. Note that a vector is returned. 
 
-### 2.6 Data classes
+### 2.5 Data classes
 
 All variables have an associated class. The class will determine what calculations are possible with them and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date. 
 
@@ -320,7 +317,7 @@ We can now change the GENDER variable in the offenders dataset back to be a char
 offenders$GENDER <- as.character(offenders$GENDER)  
 ```
 
-### 2.7 Some useful numeric and statistical functions include:
+### 2.6 Some useful numeric and statistical functions include:
 
    - abs(x): returns the absolute value of x
    - sqrt(x): returns the square root of x
@@ -338,7 +335,7 @@ offenders$GENDER <- as.character(offenders$GENDER)
    - median(x): if x is a vector of observations, return its median
 
 
-### 2.8 Exercises
+### 2.7 Exercises
 
 1.	What are the mean, max and min for variable AGE in the dataset offenders?
 

@@ -24,7 +24,7 @@ setwd("/home")
 
 # 2.2 Packages
 
-# Install packages
+# Install packages (unnecessary if on Analytical Platform)
 install.packages("tidyverse")
 
 # Load packages
@@ -54,14 +54,6 @@ offenders[c(500, 502),4]
 
 offenders[500,1:5]
 
-# 2.5 Dataset variables
-
-offenders$GENDER
-
-offenders$weight_kg <- offenders$WEIGHT*0.454
-
-View(offenders)
-
 # 2.6 Data classes
 
 class(offenders$WEIGHT)
@@ -78,14 +70,6 @@ offenders$GENDER <- relevel(offenders$GENDER, "MALE")
 
 offenders$GENDER <- as.character(offenders$GENDER) 
 
-offenders$tall <- offenders$HEIGHT > 175
-
-class(offenders$tall)
-
-# 2.7 Ifelse
-
-offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
-
 # 3.	Data wrangling and ‘group by’ calculations --------------------------------------
 
 # 3.1 Grouping and summarising data
@@ -95,6 +79,8 @@ offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
 
 regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
   summarise(Ave = mean(PREV_CONVICTIONS))
+
+regional_gender_average <-summarise(group_by(offenders,REGION, GENDER),Ave=mean(PREV_CONVICTIONS))
 
 regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
   summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
