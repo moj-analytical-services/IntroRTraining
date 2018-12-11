@@ -54,7 +54,7 @@ offenders[c(500, 502),4]
 
 offenders[500,1:5]
 
-# 2.6 Data classes
+# 2.5 Data classes
 
 class(offenders$WEIGHT)
 

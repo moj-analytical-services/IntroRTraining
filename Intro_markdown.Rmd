@@ -20,7 +20,7 @@ In that repository, there is the file code_participant.R, which contains code re
 ## Contents
 
 1. Introduction - in this section you will be introduced to R, the RStudio Environment and some of the basic R commands
-2. Processing data - this section introduces R packages, importing data into R,  inspecting data and data classes and the ifelse function
+2. Processing data - this section introduces R packages, importing data into R,  inspecting data and data classes
 3. Data wrangling and 'group by' calculations - this section covers the most useful data manipulation functions using the dplyr package
 4. Dates - this section explores working with dates
 5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data
@@ -278,7 +278,7 @@ All variables have an associated class. The class will determine what calculatio
 We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class"
 
 ```{r}
-class(offenders$weight) 
+class(offenders$WEIGHT) 
 ```
 
 It's possible to coerce variables from one class to another. We can change the weight variable in the offenders dataset to be a numeric variable as follows:
@@ -335,7 +335,7 @@ offenders$GENDER <- as.character(offenders$GENDER)
    - median(x): if x is a vector of observations, return its median
 
 
-### 2.7 Exercises
+### 2.7 Exercise
 
 1.	What are the mean, max and min for variable AGE in the dataset offenders?
 
