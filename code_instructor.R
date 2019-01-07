@@ -24,14 +24,18 @@ summary(offenders$AGE)
 
 # 3.6 Exercises -----------------------------------------------------------
 # Q1 Using group_by and summarise, calculate the average and median age for females in the West.
-offenders %>% group_by(GENDER, REGION) %>%
-summarise(mean(AGE), median(AGE))
+offenders %>% 
+  group_by(GENDER, REGION) %>%
+  summarise(mean(AGE), median(AGE))
 
-# Q2 How many have heights of less than 4 feet, what are their (recorded) heights and gender(s)?
-filter(offenders, HEIGHT < 200)
+# Q2 How many have heights of less than 2 metres, what are their (recorded) heights and gender(s)?
+offenders %>% 
+  select(HEIGHT, GENDER) %>%
+  filter(HEIGHT<200)
 
 # Q3 Produce a table showing the counts of height (including missing values).
-counts_of_height <- offenders %>% group_by(HEIGHT) %>%
+counts_of_height <- offenders %>% 
+  group_by(HEIGHT) %>%
   summarise(Count=n())
 
 # Q4	Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename 
@@ -92,7 +96,9 @@ offenders_age <- select(offenders, LAST, DoB, AGE)
 offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "DoB"))
 
 # Or in one part
-offenders_trial_age <- offenders %>% select(LAST, DoB, AGE) %>% inner_join(offenders_trial, by=c("LAST", "DoB"))
+offenders_trial_age <- offenders %>% 
+  select(LAST, DoB, AGE) %>% 
+  inner_join(offenders_trial, by=c("LAST", "DoB"))
 
 # Q2 Export the dataset offenders_trial_age to a csv file.
 write.csv(offenders_trial_age, "offenders_trial_age.csv")
@@ -100,7 +106,8 @@ write.csv(offenders_trial_age, "offenders_trial_age.csv")
 # Q3(Extension) Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height.
 mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
 
-offenders <- offenders %>% mutate(height_new=ifelse(is.na(HEIGHT),mean_height, HEIGHT))
+offenders <- offenders %>% 
+  mutate(height_new=ifelse(is.na(HEIGHT),mean_height, HEIGHT))
 
 
 
