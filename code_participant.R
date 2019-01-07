@@ -20,7 +20,10 @@ x <- c(3, 2, 4)
 getwd()
 
 # set working directory 
-setwd("/home")
+setwd("~")
+
+# set working directory if "IntroRTraining" repo has been cloned
+setwd("~/IntroRTraining")
 
 # 2.2 Packages
 

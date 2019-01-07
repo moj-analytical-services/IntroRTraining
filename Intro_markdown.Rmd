@@ -1,7 +1,9 @@
 
 ---
 title: "Intro R training"
-output: word_document
+output:
+  word_document: default
+  pdf_document: default
 ---
 
 
@@ -143,7 +145,9 @@ Of course, you can also use google or the ASD slack to try and find the solution
 ##   2. Processing data
 ### 2.1 Setting up a working directory
 
-It can be helpful to set up a working directory so that everything we are going to import into R or export from R will be saved by default into this folder. You can check what the working directory currently is by using the getwd() command (which stands for get working directory):
+The default behaviour of RStudio for the handling of files e.g. datasets, code scripts etc. is to use a working directory which is a folder where RStudio reads and saves files. Therefore, before we start writing any code we should set up a working directory so that everything we are going to import into RStudio or export from RStudio will be saved by default into this folder. 
+
+You can check what the working directory currently is by using the getwd() command (which stands for get working directory):
 
 ```{r results="hide"}
 getwd()
@@ -152,9 +156,22 @@ getwd()
 If you want to change the working directory you can use the setwd() command:
 
 ```{r}
-setwd("/home")
+setwd("~")
 
 ```
+
+If you want to change the working directory to a specific repository/folder you have cloned, for example, the "IntroRTraining" repository, you can use the setwd() command as follows:
+
+```{r}
+setwd("~/IntroRTraining")
+
+```
+
+Additionally, you can set your working directory manually following the steps below:
+
+1. Create a folder with an appropriate name containing any files you need for your RStudio session.
+2. From RStudio, use the menu to change your working directory under Session > Set Working Directory > Choose Directory. 
+3. Choose the directory (folder) you’ve just created in step 1.
 
 ### 2.2 Packages
 
