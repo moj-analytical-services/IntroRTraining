@@ -46,7 +46,7 @@ Some of the advantages:
 
 * It is **popular** - there is a large, active and rapidly growing community of R programmers, which has resulted in a plethora of resources and extensions.
 * It is **powerful** - the history as a statistical language means it is well suited for data analysis and manipulation.
-* It is **extensible** - there are a vast array of **packages** that can be added to extend the functionality of R, produced by statisticians and programmers around the world. These can range from obscure statistical techniques to tools for making interactive charts
+* It is **extensible** - there are a vast array of **packages** that can be added to extend the functionality of R, produced by statisticians and programmers around the world. These can range from obscure statistical techniques to tools for making interactive charts.
 * It's **free and open source** - a large part of its popularity can be owed to its low cost, particularly relative to proprietary software such as SAS.
 
 ### 1.3 How is it used?
@@ -112,7 +112,7 @@ While commands can be written into the console, it is a good idea to use a "scri
 
 To create a new file: click 'file', 
                               'New file',
-                                'R Script'
+                                'R Script'.
                               
 In R, these files have a '.R' extension. The code file should appear in the top left of the screen. These files can be saved and used again in future. 
 
@@ -172,6 +172,15 @@ Additionally, you can set your working directory manually following the steps be
 1. Create a folder with an appropriate name containing any files you need for your RStudio session.
 2. From RStudio, use the menu to change your working directory under Session > Set Working Directory > Choose Directory. 
 3. Choose the directory (folder) you’ve just created in step 1.
+
+If you have not synced your RStudio to Github or are unable to clone a repository from Github you can create a new project using RStudio and upload files from a folder in your laptop into this new project. You can then set your working directory to this new project that you have created. Steps to create a new project are detailed below:  
+
+1. Click on the File Menu and select New Project.
+2. Select New Directory
+3. Select New Project
+4. Write an appropriate name for your project in the Directory Name text box and select Create Project.
+5. Upload files to your new project by clicking Upload in the Files window menu (bottom right window) and select Browse to upload any files saved in a folder e.g. data csv files saved in a folder in your OneDrive.
+6. Set your working directory to your new project using the RStudio commands above (or using the manual steps).
 
 ### 2.2 Packages
 
@@ -280,7 +289,7 @@ offenders[500,1:5]
 
 The colon operator allows you to create sequences - in this case from 1 to 5, so here you will retrieve from the 1st to the 5th columns.  
 
-Dataframes/tibbles in R are a collection of vectors where where each vector is a column and represents a variable. To view a specific variable, for instance gender, you can use a dollar sign as follows:
+Dataframes/tibbles in R are a collection of vectors where each vector is a column and represents a variable. To view a specific variable, for instance gender, you can use a dollar sign as follows:
 
 ```{r results="hide"}
 offenders$GENDER
@@ -292,13 +301,13 @@ The format is dataframe name, $, variable name. Note that a vector is returned.
 
 All variables have an associated class. The class will determine what calculations are possible with them and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date. 
 
-We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class"
+We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class" (see example checking the class of the WEIGHT variable below):
 
 ```{r}
 class(offenders$WEIGHT) 
 ```
 
-It's possible to coerce variables from one class to another. We can change the weight variable in the offenders dataset to be a numeric variable as follows:
+It's possible to coerce variables from one class to another. We can change the WEIGHT variable in the offenders dataset to be a numeric variable as follows:
 
 ```{r results="hide"}
 offenders$WEIGHT <- as.numeric(offenders$WEIGHT)
@@ -371,7 +380,7 @@ group_by() identifies which variables we want to produce breakdowns by.
 
 summarise() is used to indicate which values we want to calculate. 
 
-Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable and means you don't have to create a new object each time you run a command.
+Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable and means you don't have to create a new object each time you run a command. Using the pipe operator reduces the amount of nested functions (functions that are within other functions).
 
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
@@ -380,19 +389,20 @@ regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
 summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
-The pipe operator simply passes through the object on the left hand side as the first argument of the following fuction. For example the above calculation without using the pipe operator would look like this:
+The pipe operator simply passes through the object on the left hand side as the first argument of the following function. If we did not use the pipe operator to obtain the mean number of previous convictions with breakdown by REGION and GENDER the R code would look like this:
 
 ```{r results="hide"}
 regional_gender_average <-summarise(group_by(offenders,REGION, GENDER),Ave=mean(PREV_CONVICTIONS))
 
 ```
 
-Using nested functions this looks more complicated and is harder to follow than if we use the pipe operator, this becomes more clear as extra calculations are added. 
+Using nested functions like this looks more complicated and is harder to follow than if we use the pipe operator, this becomes more clear as extra calculations are added. 
 
-In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
-There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd 
+The R code which uses the pipe operator is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputs the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
 
-If we want also to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows:
+There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd. 
+
+If we want to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows using the pipe operator:
 
 ```{r results="hide"}
 regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
@@ -541,7 +551,7 @@ offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_format
 ### 4.2 Exercises
 
 1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
-(to read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv"))
+(to read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")).
 2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
 3.	Work out which day of the week has the highest mean performance. 
 
@@ -651,9 +661,9 @@ Extension:
 
 There are lots of resources that can help you develop your R knowledge, but below are a few that are particularly helpful:
 
-+ DataCamp is a website which hosts multiple online courses that teach coding. Their 'Introduction to R' course is free to complete and provides a broader overview in the basic concepts for coding in R. A link to the course can be found here: https://www.datacamp.com/courses/free-introduction-to-r
++ DataCamp is a website which hosts multiple online courses that teach coding. Their 'Introduction to R' course is free to complete and provides a broader overview in the basic concepts for coding in R. A link to the course can be found here: https://www.datacamp.com/courses/free-introduction-to-r.
 + Another good resourse is the 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, who is a data scientist at RStudio, who developed the tidyverse package that we introduced earlier. It gives a really good overview of R and how his package works with it.
-+ RStudio has also developed a list of 'cheatsheets' which give quick overviews of the functions contained in different packages, which can be quickly referred to: https://www.rstudio.com/resources/cheatsheets/ Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'
++ RStudio has also developed a list of 'cheatsheets' which give quick overviews of the functions contained in different packages, which can be quickly referred to: https://www.rstudio.com/resources/cheatsheets/ Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'.
 
 For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training
 
