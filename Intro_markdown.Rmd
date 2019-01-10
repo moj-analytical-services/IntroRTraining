@@ -249,7 +249,7 @@ There are other commands and various packages that can be used to import dataset
 
 ### 2.4 Inspecting the dataset
 
-As noted in the previous section, you can see by looking in the 'environment' window that the 'offenders' dataset has 1413 observations and 9 variables. To view this dataset, click the icon to the right of this information, which you can see from the console is the equivalent of using the command:
+As noted in the previous section, you can see by looking in the 'environment' window that the 'offenders' dataset has 1413 observations and 11 variables. To view this dataset, click the icon to the right of this information (or anywhere on that row), which you can see from the console is the equivalent of using the command:
 
 ```{r eval = FALSE}
 View(offenders)
@@ -363,7 +363,8 @@ offenders$GENDER <- as.character(offenders$GENDER)
 
 ### 2.7 Exercise
 
-1.	What are the mean, max and min for variable AGE in the dataset offenders?
+1. Find the mean, median, max and min for variables AGE and WEIGHT in the dataset offenders.
+2. By changing the SENTENCE class to factor output the levels of this variable. 
 
 
 ## 3 Data wrangling and 'group by' calculations
