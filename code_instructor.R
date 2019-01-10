@@ -12,14 +12,28 @@ y * 78
 
 
 # 2.7 Exercises -----------------------------------------------------------
-# Q1 What are the mean, max and min for variable AGE in the dataset offenders?
-# can find these values individually:
+
+# Q1 Find the mean, median, max and min for variables AGE and WEIGHT in the dataset offenders.
+#Use the below to find the values individually
 mean(offenders$AGE)
+median(offenders$AGE)
 max(offenders$AGE)
 min(offenders$AGE)
 
+mean(offenders$WEIGHT)
+median(offenders$WEIGHT)
+max(offenders$WEIGHT)
+min(offenders$WEIGHT)
+
 # or use summary:
 summary(offenders$AGE)
+
+# Q2 By changing the SENTENCE class to factor output the levels of this variable. 
+
+class(offenders$SENTENCE)
+offenders$SENTENCE<-as.factor(offenders$SENTENCE)
+levels(offenders$SENTENCE)
+#[1] "Court_order" "Prison_<12m" "Prison_12m+"
 
 
 # 3.6 Exercises -----------------------------------------------------------
