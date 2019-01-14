@@ -43,6 +43,9 @@ offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 # From the Analytical Platform amazon server
 offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
 
+# Alternative way to upload the data from the Analytical Platform amazon server if the option above doesn't work
+offenders<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")    
+
 # 2.4 Inspecting the dataset
 
 View(offenders) # note the capital V!
@@ -96,8 +99,7 @@ regional_gender_average <- ungroup(regional_gender_average)
 
 offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
 
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
-  summarise(Ave = mean(PREV_CONVICTIONS))
+crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>% summarise(Ave = mean(PREV_CONVICTIONS))
 
 # 3.3 Select
 
@@ -150,20 +152,25 @@ offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_format
 
 # 4.2 Exercises
 
-# read in ftse data
+# Read in ftse data
 ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
 
+# Alternative way to upload the ftse data from the Analytical Platform amazon server if the option above doesn't work
+ftse<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/FTSE_12_14.csv")    
 
 # 5.1
 
 # 5 Merging and exporting data --------------------------------------------
 # 5.1 Merging datasets
 
-# read in data on DOM1 (assuming file in your working directory):
+# Read in data on DOM1 (assuming file in your working directory):
 offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
-# read in data on analytical platform amazon server:
+# Read in data on analytical platform amazon server:
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
+
+# Alternative way to upload the offenders trial data from the Analytical Platform amazon server if the option above doesn't work
+offenders_trial <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")    
 
 offenders_trial <- dplyr::rename(offenders_trial, BIRTH_DATE=DoB) 
 

@@ -233,11 +233,13 @@ Note that the above assumes that the csv file is in your working directory, othe
 
 #### Importing data from the analytical platform amazon server
 
-To import the data for this session from the platform amazon server use this command:
+To import the data for this session from the platform amazon server use either one of these commands:
 
 ```{r, results="hide"}
 
 offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
+
+offenders<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")    
 
 ```
 
@@ -361,7 +363,7 @@ offenders$GENDER <- as.character(offenders$GENDER)
    - median(x): if x is a vector of observations, return its median
 
 
-### 2.7 Exercise
+### 2.7 Exercises
 
 1. Find the mean, median, max and min for variables AGE and WEIGHT in the dataset offenders.
 2. By changing the SENTENCE class to factor output the levels of this variable. 
@@ -381,7 +383,11 @@ group_by() identifies which variables we want to produce breakdowns by.
 
 summarise() is used to indicate which values we want to calculate. 
 
-Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable and means you don't have to create a new object each time you run a command. Using the pipe operator reduces the amount of nested functions (functions that are within other functions).
+Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable and means you don't have to create a new object each time you run a command. Using the pipe operator reduces the amount of nested functions (functions that are within other functions) and allows us to chain together dplyr data wrangling functions. The pipe operator can be read as “then" and allows us to go from one step to another easily in dplyr so we can, for example:
+
++ filter our data frame to only focus on a few rows then
++ group_by another variable to create groups then
++ summarize this grouped data to calculate the mean for each level of the group.
 
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
@@ -430,8 +436,7 @@ offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
 To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
 
 ```{r results="hide"}
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS))
+crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>% summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
 
@@ -552,7 +557,7 @@ offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_format
 ### 4.2 Exercises
 
 1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
-(to read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")).
+(To read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv") or s3tools::read_using(FUN=read.csv, s3_path="alpha-everyone/R_training_intro/FTSE_12_14.csv")).
 2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
 3.	Work out which day of the week has the highest mean performance. 
 
@@ -567,10 +572,13 @@ Let's import a new dataset which contains information on whether the offenders f
 offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
-Or using the platform:
+Or using one of the analytical platform options:
 
 ```{r results="hide"}
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
+
+offenders_trial <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")    
+
 ```
 
 We merge the datasets with offenders using the combination of fields that together form a unique identifier. But first we need to rename DoB to BIRTH_DATE in the offenders_trial dataset:
