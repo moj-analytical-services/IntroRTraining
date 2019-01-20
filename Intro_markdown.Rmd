@@ -165,7 +165,7 @@ Packages extend R's functionality enormously and are a key factor in making R so
 This uses the following command:
 
 ```{r eval = FALSE}
-install.packages("tidyverse")
+# install.packages("tidyverse")
 ```
 
 Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can inside your script, so they will automatically load when you run it:
@@ -198,7 +198,7 @@ Now look at the Console tab. You should see the commands library and read_csv() 
 Alternatively (you have already loaded the readr package as it is part of the tidyverse package - see section 2.2) you can simply use the command read_csv():
 
 ```{r eval = FALSE, results="hide"}
-offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
+# offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 ```
 
 Note that the above assumes that the csv file is in your working directory, otherwise you will need to include the file path - see section 2.1.
@@ -385,7 +385,7 @@ offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
 We can produce breakdowns of statistics using the group_by and summarise commands from the dplyr package.
 
 ```{r results="hide"}
-?dplyr::summarise
+?summarise
 ?group_by
 ```
 
@@ -398,8 +398,9 @@ Using these functions together we can produce summary statistics in a similar wa
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
 ```{r results="hide"}
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS))
+regional_gender_average <- offenders %>% 
+  dplyr::group_by(REGION, GENDER) %>%
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
 In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
@@ -408,14 +409,15 @@ There are other functions that could be used here instead of mean e.g. n, n_dist
 If we want also to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows:
 
 ```{r results="hide"}
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+regional_gender_average <- offenders %>% 
+  dplyr::group_by(REGION, GENDER) %>%
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
 ```
 
 The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command:
 
 ```{r results="hide"}
-regional_gender_average <- ungroup(regional_gender_average)
+regional_gender_average <- dplyr::ungroup(regional_gender_average)
 ```
 
 
@@ -426,14 +428,18 @@ If you would like to produce statistics for a subset of rows or observations, a 
 Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the group_by/summarise combination.
 
 ```{r}
-offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
+offenders %>% 
+  dplyr::group_by(SENTENCE) %>% 
+  dplyr::summarise(Count = n())
 ```
 
 To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
 
 ```{r results="hide"}
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS))
+crt_order_average <- offenders %>% 
+  dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
+  dplyr::group_by(REGION, GENDER) %>%
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
 
@@ -442,7 +448,7 @@ summarise(Ave = mean(PREV_CONVICTIONS))
 We can also use the select() command from the dplyr package to choose just the variables from the 'offenders' dataset that we want. So if we want to create a new dataset without the names and addresses:
 
 ```{r results="hide"}
-offenders_anonymous <- select(offenders, -LAST, -FIRST, -BLOCK)
+offenders_anonymous <- dplyr::select(offenders, -LAST, -FIRST, -BLOCK)
 ```
 
 Note (as is common with dplyr functions) we first specify the name of the dataset and then the variables that in this case we want to remove.
@@ -450,7 +456,7 @@ Note (as is common with dplyr functions) we first specify the name of the datase
 Let's say that now we want to restrict this dataset to just include BIRTH_DATE, WEIGHT and number of previous convictions. 
 
 ```{r results="hide"}
-offenders_anonymous <- select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
+offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 ```
 
 
@@ -460,16 +466,16 @@ We can rename variables using the dplyr function rename(). Let's amend our above
 
 ```{r results="hide"}
 offenders_anonymous <- offenders %>%
-  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  rename(DoB = BIRTH_DATE) 
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  dplyr::rename(DoB = BIRTH_DATE) 
 ```
        
 If you also wanted to rename PREV_CONVICTIONS to Num_prev_convictions to make it easier to understand then:
 
 ```{r results="hide"}
 offenders_anonymous <- offenders %>%
-  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
 ```
 
 
@@ -485,9 +491,9 @@ So if we wanted to amend our coding to include a new derived variable weight_kg 
 
 ```{r results="hide", warning=FALSE, comment=FALSE}
 offenders_anonymous <- offenders %>%
-  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
-  mutate(weight_kg = WEIGHT * 0.454)
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
+  dplyr::mutate(weight_kg = WEIGHT * 0.454)
 ```
 
 You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/
@@ -521,7 +527,7 @@ If you have a read of the help file, you'll see lubridate has a number of functi
 We can therefore make a new date variable (called DoB_formatted) with class date as follows, and then check the class of the new column:
 
 ```{r results="hide"}
-offenders<- mutate(offenders, DoB_formatted = mdy(BIRTH_DATE))
+offenders<- dplyr::mutate(offenders, DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
 
@@ -535,20 +541,20 @@ Remember, to refer to a specific variable, we use a dollar sign. We have used a 
 Now we have a variable with class date we can create new variables containing just part of the date e.g.
 
 ```{r results="hide"}
-offenders <- mutate(offenders, day = day(DoB_formatted))
+offenders <- dplyr::mutate(offenders, day = lubridate::day(DoB_formatted))
 
-offenders <- mutate(offenders, quarter = quarter(DoB_formatted))
+offenders <- dplyr::mutate(offenders, quarter = lubridate::quarter(DoB_formatted))
 
-offenders <- mutate(offenders, year = year(DoB_formatted))
+offenders <- dplyr::mutate(offenders, year = lubridate::year(DoB_formatted))
 
-offenders <- mutate(offenders, month = month(DoB_formatted))
+offenders <- dplyr::mutate(offenders, month = lubridate::month(DoB_formatted))
 
-offenders <- mutate(offenders, weekday = weekdays(DoB_formatted))
+offenders <- dplyr::mutate(offenders, weekday = base::weekdays(DoB_formatted))
 ```
 
 You can also calculate the number of days since a date. For instance let's say we want to know the no. of days between the date of birth and 1 Jan 2000:
 ```{r results="hide"}
-offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_formatted)
+offenders <- dplyr::mutate(offenders, days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
 ```
 
 ### 4.2 Exercises
@@ -566,7 +572,7 @@ There are dplyr functions left_join, right_join, inner_join, full_join, semi_joi
 Let's import a new dataset which contains information on whether the offenders faced trial. 
 
 ```{r eval=FALSE, results="hide"}
-offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
+# offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
 Or using the platform:
@@ -595,9 +601,9 @@ If we have two datasets with the same variables, we can use bind_rows to join th
 
 For instance:
 ```{r results="hide"}
-men <- filter(offenders, GENDER == "MALE")
-women <- filter(offenders, GENDER == "FEMALE")
-rejoined <- bind_rows(men, women)
+men <- dplyr::filter(offenders, GENDER == "MALE")
+women <- dplyr::filter(offenders, GENDER == "FEMALE")
+rejoined <- dplyr::bind_rows(men, women)
 ```
 
 Note that 'rejoined' has the same number of observations and variables as 'offenders'. 
@@ -613,7 +619,9 @@ In R, missing values are represented by the symbol NA (not available). Impossibl
 We can look at the HEIGHT variable as previously:
 
 ```{r results="hide"}
-height_table <- offenders %>% group_by(HEIGHT) %>% summarise(Count=n())
+height_table <- offenders %>% 
+  dplyr::group_by(HEIGHT) %>% 
+  dplyr::summarise(Count=n())
 ```
 
 
@@ -633,7 +641,7 @@ complete.cases(offenders)
 Using filter we can create a new data frame just with those that are complete:
 
 ```{r results="hide"}
-complete_offenders <- filter(offenders, complete.cases(offenders))
+complete_offenders <- dplyr::filter(offenders, complete.cases(offenders))
 ```
 
 
