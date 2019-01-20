@@ -104,6 +104,8 @@ As well as storing single values, you can also create vectors. The below stateme
 
 ```{r}
 x <- c(3, 2, 4)
+
+x
 ```
 
 This uses the "c" function - the c is short for "concatenate". You can now see the new object x in the 'workplace'. Note that the old object x has been overwritten and that the new object is of class numeric. 
@@ -410,6 +412,8 @@ So if we want the mean number of previous convictions with breakdown by REGION a
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
+
+regional_gender_average
 ```
 
 In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
@@ -421,12 +425,16 @@ If we want also to add a new variable called 'Count' that provides the counts by
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+
+regional_gender_average
 ```
 
 The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command:
 
 ```{r results="hide"}
 regional_gender_average <- dplyr::ungroup(regional_gender_average)
+
+regional_gender_average
 ```
 
 
@@ -449,6 +457,8 @@ crt_order_average <- offenders %>%
   dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
   dplyr::group_by(REGION, GENDER) %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
+
+crt_order_average
 ```
 
 
@@ -458,6 +468,8 @@ We can also use the select() command from the dplyr package to choose just the v
 
 ```{r results="hide"}
 offenders_anonymous <- dplyr::select(offenders, -LAST, -FIRST, -BLOCK)
+
+head(offenders_anonymous,10)
 ```
 
 Note (as is common with dplyr functions) we first specify the name of the dataset and then the variables that in this case we want to remove.
@@ -466,6 +478,8 @@ Let's say that now we want to restrict this dataset to just include BIRTH_DATE, 
 
 ```{r results="hide"}
 offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
+
+head(offenders_anonymous,10)
 ```
 
 
@@ -476,7 +490,9 @@ We can rename variables using the dplyr function rename(). Let's amend our above
 ```{r results="hide"}
 offenders_anonymous <- offenders %>%
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  dplyr::rename(DoB = BIRTH_DATE) 
+  dplyr::rename(DoB = BIRTH_DATE)
+
+head(offenders_anonymous,10)
 ```
        
 If you also wanted to rename PREV_CONVICTIONS to Num_prev_convictions to make it easier to understand then:
@@ -485,6 +501,8 @@ If you also wanted to rename PREV_CONVICTIONS to Num_prev_convictions to make it
 offenders_anonymous <- offenders %>%
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
   dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
+
+head(offenders_anonymous,10)
 ```
 
 
@@ -503,6 +521,8 @@ offenders_anonymous <- offenders %>%
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
   dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
   dplyr::mutate(weight_kg = WEIGHT * 0.454)
+
+head(offenders_anonymous,10)
 ```
 
 You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/
@@ -633,6 +653,8 @@ We can look at the HEIGHT variable as previously:
 height_table <- offenders %>% 
   dplyr::group_by(HEIGHT) %>% 
   dplyr::summarise(Count=n())
+
+height_table
 ```
 
 
