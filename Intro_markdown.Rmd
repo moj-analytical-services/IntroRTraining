@@ -291,7 +291,6 @@ offenders[500,1:5]
 
 The colon operator allows you to create sequences - in this case from 1 to 5, so here you will retrieve from the 1st to the 5th columns.  
 
-
 ## Dataset variables 
 
 Dataframes/tibbles in R are a collection of vectors where where each vector is a column and represents a variable. To view a specific variable, for instance gender, you use a dollar sign as follows:
@@ -545,7 +544,9 @@ offenders_anonymous <- offenders %>%
 head(offenders_anonymous,10)
 ```
 
-You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/
+You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/ And you can access these cheat sheets from the Help menu of RStudio under "Cheatsheets"
+
+And this is a very well explained tutorial to all the dplyr functions we have covered here and more to advanced level: https://suzanbaert.netlify.com/2018/01/dplyr-tutorial-1/
 
 
 ## Exercises
