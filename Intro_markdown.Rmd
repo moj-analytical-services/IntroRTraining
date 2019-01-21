@@ -226,7 +226,7 @@ Now look at the Console tab. You should see the commands library and read_csv() 
 Alternatively (you have already loaded the readr package as it is part of the tidyverse package - see section 2.2) you can simply use the command read_csv():
 
 ```{r eval = FALSE, results="hide"}
-# offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
+# offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 ```
 
 Note that the above assumes that the csv file is in your working directory, otherwise you will need to include the file path - see section 2.1.
@@ -255,13 +255,15 @@ As noted in the previous section, you can see by looking in the 'environment' wi
 View(offenders)
 ```
 
-To obtain a summary of the meta-data of your dataset you can click on the arrow by 'offenders' in the 'environment' window, which provides the same information as by typing the following command:
+To obtain a summary of the characteristics of your dataset you can click on the arrow by 'offenders' in the 'environment' window, which provides the same information as by typing the following command:
 
 ```{r}
 str(offenders)
 ```
 
-Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. Variables in a data frame are like columns in a table, and are stored as vectors. Also provided is some information about each variable (or vector) in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
+Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. Variables in a data frame are like columns in a table, and are stored as vectors.
+
+Also provided is some information about each variable (or vector) in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
 
 The summary command also provides some useful details:
 
@@ -269,7 +271,7 @@ The summary command also provides some useful details:
 summary(offenders)
 ```
 
-Square brackets can be used to subset data. For instance 'offenders[ i , j ]' would return the value in the ith row and jth column of the dataframe 'offenders'. So, if you want the fourth variable for the 500th observation:
+Because R data is stored as vectors we can isolate or subset elements of it using square brackets. This is much like we can isolate elements of an Excel sheet using cell references like A1:A12. For example, 'offenders[ i , j ]' would return the value in the ith row and jth column of the dataframe 'offenders'. So, if you want the fourth variable for the 500th observation:
 
 ```{r}
 offenders[500,4]
