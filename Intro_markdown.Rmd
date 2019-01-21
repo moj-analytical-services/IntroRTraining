@@ -125,9 +125,16 @@ In R, these files have a '.R' extension. The code file should appear in the top 
 
 To execute the code, click run at the top of the screen. R will run the line of code that the cursor is currently on, if you want to run several lines of code, highlight them and then press run.
 
-## Running a code in this RMarkdown training file
+## Running code in this RMarkdown training file
 
-When you want to run code in this training RMarkdown file you have more options to run the code. Put your cursor in a line of code then click the Run button top right. You'll see this menu appear and different ways to run the code you can experiment with.
+When you want to run code in this training RMarkdown file you have more options to run the code. One is to put your cursor in a line of code you want to run then click the Run button top right. You'll see this menu appear and different ways to run the code you can experiment with.
+
+Two other ways to run your code only using the keyboard are:
+
+1. Put your cursor anywhere on a line of code you want to run then hold down the Ctrl key and hit Enter.
+
+2. Block on to one or more lines of code you want to run then hold down the Ctrl key and hit Enter.
+
 
 ```{r, echo=FALSE, out.width="400px"}
 knitr::include_graphics("images/run.png")
