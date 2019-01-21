@@ -113,7 +113,7 @@ This uses the "c" function - the c is short for "concatenate". You can now see t
 The console will remember your most recent commands, if you want to reuse one, just use the up and down arrows to scroll through them. When you have found the one that you want, press return, R will repeat that line of code and display the results. 
 
 
-## Script file
+## Running code in a Script file
 
 While commands can be written into the console, it is a good idea to use a "script". This is a code file that can be saved and reused in future. 
 
@@ -125,6 +125,13 @@ In R, these files have a '.R' extension. The code file should appear in the top 
 
 To execute the code, click run at the top of the screen. R will run the line of code that the cursor is currently on, if you want to run several lines of code, highlight them and then press run.
 
+## Running a code in this RMarkdown training file
+
+When you want to run code in this training RMarkdown file you have more options to run the code. Put your cursor in a line of code then click the Run button top right. You'll see this menu appear and different ways to run the code you can experiment with.
+
+```{r, echo=FALSE, out.width="400px"}
+knitr::include_graphics("images/run.png")
+```
 
 ## Other windows and getting help
 
