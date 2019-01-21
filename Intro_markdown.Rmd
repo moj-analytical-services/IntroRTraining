@@ -152,7 +152,9 @@ There is also a help menu. You can either use this or type ? into the console an
 ?mean
 ```
 
-Of course, you can also use google or the ASD slack to try and find the solution to the problem. 
+You can also block on to a function name in the code and hit the F1 key. This also launches the right help page.
+
+Of course, you can also look for the solution to your problem using Google, the ASD Slack Workspace that has an #r channel: https://asdslack.slack.com/ Or the Government Data Science #r channel: https://govdatascience.slack.com/ Don't be afraid to ask a question you think is too basic on these Slack channels. Everyone is supportive for questions at any level.
 
 
 ## Exercises
