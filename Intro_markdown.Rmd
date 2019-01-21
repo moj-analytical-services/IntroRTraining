@@ -435,7 +435,7 @@ regional_gender_average <- offenders %>%
 regional_gender_average
 ```
 
-In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
+In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the data is "piped" like water into the dplyr::group_by command using the pipe symbol '%>%' instead of specifying the 'offenders' dataset as the first argument within the dplyr::group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
 There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd 
 
 If we want also to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows:
