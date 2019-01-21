@@ -186,15 +186,17 @@ setwd("/home")
 
 A lot of pre-programmed routines are included in R, and you can add a lot more through packages. One characteristic that's important to recognise is that just as there are many ways of getting from Victoria Station to 102 Petty France, there are many ways of doing the same thing in R. Some ways are (computationally) faster, some are simpler to program, and some may be more conducive to your taste.  
 
-Packages extend R's functionality enormously and are a key factor in making R so popular. For instance, to install the tidyverse package in R, use the Install button from the Packages tab in Rstudio. 
+Packages extend R's functionality enormously and are a key factor in making R so popular. For instance, to install the tidyverse package in R you can do it one of three ways:
 
-This uses the following command:
+1. From the Packages tab in the bottom right pane of Rstudio click the "Install"" button.
+2. From the Tools menu select the "Install Packages..." option.
+3. Install the package using code as shown below:
 
 ```{r eval = FALSE}
 # install.packages("tidyverse")
 ```
 
-Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can inside your script, so they will automatically load when you run it:
+Once a package is installed, you should be able to see it in the packages tab in the bottom right pane of RStudio. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can inside your script, so they will automatically load when you run it:
 
 ```{r results=FALSE, warning=FALSE, comment=FALSE}
 library("tidyverse")
