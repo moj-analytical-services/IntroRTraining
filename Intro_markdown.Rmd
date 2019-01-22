@@ -440,7 +440,7 @@ There are other functions that could be used here instead of mean e.g. n, n_dist
 
 If we want also to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows:
 
-```{r results="hide"}
+```{r}
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
@@ -448,12 +448,21 @@ regional_gender_average <- offenders %>%
 regional_gender_average
 ```
 
-The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command:
+The regional_gender_average dataset is grouped by REGION and GENDER. So if we run it through dplyr::sumuraise agin the result will be by the first grouping variable set which is Region. For example, the code below counts the rows per group by category.
 
-```{r results="hide"}
-regional_gender_average <- dplyr::ungroup(regional_gender_average)
+```{r}
+row_count <- regional_gender_average %>% 
+  dplyr::summarise(n = n())
 
-regional_gender_average
+row_count
+```
+
+But if we wanted to remove this grouping and count all the rows in the dataset with group ing remvoed we would add dplyr::ungroup() as below:
+
+```{r}
+regional_gender_average %>% 
+  dplyr::ungroup() %>% 
+  dplyr::summarise(n = n())
 ```
 
 
