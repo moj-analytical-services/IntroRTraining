@@ -392,8 +392,9 @@ Using these functions together we can produce summary statistics in a similar wa
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
 ```{r results="hide"}
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS))
+regional_gender_average <- offenders %>% 
+  group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
 The pipe operator simply passes through the object on the left hand side as the first argument of the following function. If we did not use the pipe operator to obtain the mean number of previous convictions with breakdown by REGION and GENDER the R code would look like this:
@@ -412,14 +413,17 @@ There are other functions that could be used here instead of mean e.g. n, n_dist
 If we want to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows using the pipe operator:
 
 ```{r results="hide"}
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+regional_gender_average <- offenders %>% 
+  group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
 ```
 
-The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command:
+The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command which in this example, returns the mean number of previous convictions and counts of the ungrouped data:
 
 ```{r results="hide"}
-regional_gender_average <- ungroup(regional_gender_average)
+regional_gender_average <- offenders %>% 
+  ungroup() %>%             
+  summarise(Ave=mean(PREV_CONVICTIONS),Count = n())
 ```
 
 
@@ -430,13 +434,18 @@ If you would like to produce statistics for a subset of rows or observations, a 
 Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the group_by/summarise combination.
 
 ```{r}
-offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
+offenders %>% 
+  group_by(SENTENCE) %>% 
+  summarise(Count = n())
 ```
 
 To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
 
 ```{r results="hide"}
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>% summarise(Ave = mean(PREV_CONVICTIONS))
+crt_order_average <- offenders %>% 
+  filter(SENTENCE == "Court_order" & AGE > 50) %>% 
+  group_by(REGION, GENDER) %>% 
+  summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
 
@@ -619,7 +628,9 @@ In R, missing values are represented by the symbol NA (not available). Impossibl
 We can look at the HEIGHT variable as previously:
 
 ```{r results="hide"}
-height_table <- offenders %>% group_by(HEIGHT) %>% summarise(Count=n())
+height_table <- offenders %>% 
+  group_by(HEIGHT) %>% 
+  summarise(Count=n())
 ```
 
 

@@ -85,21 +85,30 @@ offenders$GENDER <- as.character(offenders$GENDER)
 ?dplyr::summarise
 ?group_by
 
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-  summarise(Ave = mean(PREV_CONVICTIONS))
+regional_gender_average <- offenders %>% 
+  group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS)) 
 
-regional_gender_average <-summarise(group_by(offenders,REGION, GENDER),Ave=mean(PREV_CONVICTIONS))
+regional_gender_average <-summarise(group_by(offenders,REGION, GENDER),Ave=mean(PREV_CONVICTIONS)) 
 
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-  summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+regional_gender_average <- offenders %>% 
+  group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS), Count=n()) 
 
-regional_gender_average <- ungroup(regional_gender_average)
+regional_gender_average <- offenders %>% 
+  ungroup() %>%             
+  summarise(Ave=mean(PREV_CONVICTIONS),Count = n())
 
 # 3.2 Filter
 
-offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
+offenders %>% 
+  group_by(SENTENCE) %>% 
+  summarise(Count = n())
 
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>% summarise(Ave = mean(PREV_CONVICTIONS))
+crt_order_average <- offenders %>% 
+  filter(SENTENCE == "Court_order" & AGE > 50) %>% 
+  group_by(REGION, GENDER) %>% 
+  summarise(Ave = mean(PREV_CONVICTIONS))
 
 # 3.3 Select
 
@@ -186,7 +195,9 @@ nrow(offenders) # 1413 rows
 
 # 5.2 Handling missing values
 
-height_table <- offenders %>% group_by(HEIGHT) %>% summarise(Count=n())
+height_table <- offenders %>% 
+  group_by(HEIGHT) %>% 
+  summarise(Count=n())
 
 View(height_table)
 
