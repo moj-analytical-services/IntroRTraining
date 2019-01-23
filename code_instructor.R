@@ -27,11 +27,12 @@ min(offenders$WEIGHT)
 
 # or use summary:
 summary(offenders$AGE)
+summary(offenders$WEIGHT)
 
 # Q2 By changing the SENTENCE class to factor output the levels of this variable. 
 
 class(offenders$SENTENCE)
-offenders$SENTENCE<-as.factor(offenders$SENTENCE)
+offenders$SENTENCE<-as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
 levels(offenders$SENTENCE)
 #[1] "Court_order" "Prison_<12m" "Prison_12m+"
 
@@ -39,6 +40,7 @@ levels(offenders$SENTENCE)
 # 3.6 Exercises -----------------------------------------------------------
 # Q1 Using group_by and summarise, calculate the average and median age for females in the West.
 offenders %>% 
+  filter(GENDER=="FEMALE") %>%
   group_by(GENDER, REGION) %>%
   summarise(mean(AGE), median(AGE))
 
@@ -52,6 +54,8 @@ counts_of_height <- offenders %>%
   group_by(HEIGHT) %>%
   summarise(Count=n())
 
+View(counts_of_height)
+
 # Q4	Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename 
 # SENTENCE as sentence_type, and create a new variable num_convictions that is 
 # PREV_CONVICTIONS + 1 (to take account of the latest conviction).
@@ -60,6 +64,8 @@ offenders_new <- offenders %>%
   rename(sentence_type = SENTENCE) %>%
   mutate(num_convictions = PREV_CONVICTIONS + 1)
 
+View(offenders_new)
+
 
 # 4.2 Exercises -----------------------------------------------------------
 # Q1 Read in dataset ‘FTSE_12_14.csv’ and convert the variable date to class date. 
@@ -67,13 +73,16 @@ offenders_new <- offenders %>%
 # analytical platform amazon server:
 ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
 
+#Or we can use the below to load the data
+ftse<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/FTSE_12_14.csv") 
+
 ## dom1 (if dataset is in working directory):
 # ftse <- read_csv("FTSE_12_14.csv")
 
 # first have a look at what format the date is in
 str(ftse)
 
-# covert into date format
+# convert into date format
 ftse <- ftse %>%
   mutate(formatted_date = dmy(Date))
 
@@ -87,8 +96,12 @@ class(ftse$formatted_date)
 # create weekday variable
 ftse <- mutate(ftse, weekday = weekdays(formatted_date))
 
+View(ftse)
+
 # add daily performance column
 ftse <- mutate(ftse, daily_performance = Close - Open)
+
+View(ftse)
 
 # Q3 Work out which day of the week has the highest mean performance. 
 
@@ -104,13 +117,14 @@ View(weekday_performance)
 # Q1 Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 
 # create offenders age dataset with just age column and columns we're joining on
-offenders_age <- select(offenders, LAST, DoB, AGE)
+offenders_age <- select(offenders, LAST, DoB=BIRTH_DATE, AGE)
 
 # merge the two datasets
 offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "DoB"))
 
 # Or in one part
 offenders_trial_age <- offenders %>% 
+  rename("DoB"="BIRTH_DATE") %>%
   select(LAST, DoB, AGE) %>% 
   inner_join(offenders_trial, by=c("LAST", "DoB"))
 
@@ -118,6 +132,11 @@ offenders_trial_age <- offenders %>%
 write.csv(offenders_trial_age, "offenders_trial_age.csv")
 
 # Q3(Extension) Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height.
+#(hint: you will need to use the ifelse and is.na() functions)
+
+?ifelse
+?is.na
+
 mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
 
 offenders <- offenders %>% 

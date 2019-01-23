@@ -672,7 +672,7 @@ This assumes by default that you want to export the row headers and that the col
 2.	Export the dataset offenders_trial_age to a csv file.
 
 Extension: 
-3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: use the is.na() function). 
+3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: you will need to use the ifelse and is.na() functions). 
 
 
 
