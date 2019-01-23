@@ -589,7 +589,7 @@ And here is a very well explained <a href="https://suzanbaert.netlify.com/2018/0
 
 As you might have noticed, BIRTH_DATE in the 'offenders' dataset currently has a class of character (or factor depending how you read the data in). To be able to manipulate this data as a date in R, we first need to convert it to class date.
 
-In all of this section, we are going to use a package from tidyverse designed called lubridate, there are also ways to do the same thing using base R. First, we need to load the package:
+In all of this section, we are going to use a package from tidyverse designed called <a href="https://resources.rstudio.com/the-essentials-of-data-science/lubridate-cheat-sheet" target="_blank">Lubridate</a>, there are also ways to do the same thing using base R. First, we need to load the package:
 ```{r}
 library(lubridate)
 ```
@@ -750,8 +750,10 @@ This assumes by default that you want to export the row headers and that the col
 
 There are lots of resources that can help you develop your R knowledge, but below are a few that are particularly helpful:
 
-+ DataCamp is a website which hosts multiple online courses that teach coding. Their 'Introduction to R' course is free to complete and provides a broader overview in the basic concepts for coding in R. A link to the course can be found here: https://www.datacamp.com/courses/free-introduction-to-r
++ DataCamp is a website which hosts multiple online courses that teach coding. Their <a href="https://www.datacamp.com/courses/free-introduction-to-r" target="_blank">Introduction to R course</a> is free to complete and provides a broader overview in the basic concepts for coding in R.
+
 + Another good resourse is the 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, who is a data scientist at RStudio, who developed the tidyverse package that we introduced earlier. It gives a really good overview of R and how his package works with it.
-+ RStudio has also developed a list of 'cheatsheets' which give quick overviews of the functions contained in different packages, which can be quickly referred to: https://www.rstudio.com/resources/cheatsheets/ Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'
+
++ RStudio has also developed a list of <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank">Cheat Sheets</a> which give quick overviews of the functions contained in different packages, which can be quickly referred to. Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'
 
 For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training
