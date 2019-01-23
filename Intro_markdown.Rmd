@@ -379,7 +379,7 @@ class(offenders$tall)
 The logical class is important to perform ifelse commands. These are the equivalent of If statements in Excel. We can use this, for example, to identify those with weight under 90kg in the dataset 'offenders':
 
 ```{r results="hide"}
-offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
+offenders$wt_under_90  <- base::ifelse(offenders$weight_kg<90, 1, 0)
 ```
 
 
@@ -551,10 +551,29 @@ offenders_anonymous <- offenders %>%
 head(offenders_anonymous,10)
 ```
 
-You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/ And you can access these cheat sheets from the Help menu of RStudio under "Cheatsheets"
+## dplyr::case_when()
 
-And this is a very well explained tutorial to all the dplyr functions we have covered here and more to advanced level: https://suzanbaert.netlify.com/2018/01/dplyr-tutorial-1/
+In the section [Ifelse] we created a new column using the base::ifelse() fuction from Base R. Functions in Base R are always available and don't require you to install a package and then call the library for that package. Here is a good <a href="https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf" target="_blank">Base R cheatsheet</a> of the base functions you'll probably use a lot.
 
+A clear way to code if-then-else logic within dplyr::mutate() is dplyr's <a href="https://dplyr.tidyverse.org/reference/case_when.html" target="_blank">case_when()</a>. It lets you code complex logic that is easy to read. For example, below we add a new more complex categorised column for weight called weight_category.
+
+```{r results="hide", warning=FALSE, comment=FALSE}
+offenders_anonymous <- offenders %>%
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
+  dplyr::mutate(weight_kg = WEIGHT * 0.454,
+                weight_category = 
+                  dplyr::case_when(weight_kg >= 0.0 & weight_kg < 70.0    ~ 'low weight',
+                                   weight_kg >= 70.0 & weight_kg <= 90.0  ~ 'medium weight',
+                                   TRUE                                   ~ 'heavy weight'))
+
+head(offenders_anonymous,10)
+```
+Note how uesful it is that the case_when() is able to use the weight_kg column that was created earlier in the same dplyr::mutate(). The "TRUE" statement at the end of the case_when() means the the same thing as "else" in a convenatoinal if-then-else code.
+
+For more help on dplyr, download the <a href="https://www.rstudio.com/resources/cheatsheets/#dplyr" target="_blank">Data Transformation Cheat Sheet</a>  for dplyr mfor more guidance. RStudio creates several more useful <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank">Cheat Sheets</a> on several fundamental topics in R. You can also access all their cheat sheets from the Help menu in RStudio under "Cheatsheets"
+
+And here is a very well explained <a href="https://suzanbaert.netlify.com/2018/01/dplyr-tutorial-1/" target="_blank">dplyr tutorial</a> covering all the dplyr topics here (and many more) to an advanced level.
 
 ## Exercises
 
