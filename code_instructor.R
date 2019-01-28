@@ -34,7 +34,6 @@ summary(offenders$WEIGHT)
 class(offenders$SENTENCE)
 offenders$SENTENCE<-as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
 levels(offenders$SENTENCE)
-#[1] "Court_order" "Prison_<12m" "Prison_12m+"
 
 
 # 3.6 Exercises -----------------------------------------------------------

@@ -613,12 +613,18 @@ For instance:
 men <- filter(offenders, GENDER == "MALE")
 women <- filter(offenders, GENDER == "FEMALE")
 rejoined <- bind_rows(men, women)
+
 ```
 
 Note that 'rejoined' has the same number of observations and variables as 'offenders'. 
 
-The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
+```{r results="hide"}
+nrow(rejoined) 
 
+nrow(offenders) 
+```
+
+The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
 
 
 ### 5.2 Handling missing values
