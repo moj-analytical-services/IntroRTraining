@@ -26,12 +26,17 @@ In that repository, there is the file code_participant.R, which contains code re
 
 # Contents
 
-1. Introduction - in this section you will be introduced to R, the RStudio Environment and some of the basic R commands
-2. Processing data - this section introduces R packages, importing data into R,  inspecting data and data classes and the ifelse function
-3. Data wrangling and 'group by' calculations - this section covers the most useful data manipulation functions using the dplyr package
-4. Dates - this section explores working with dates
-5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data
-6. Extra resources
+[Introduction] - in this section you will be introduced to R, the RStudio Environment and some of the basic R commands
+
+[Processing data] - this section introduces R packages, importing data into R,  inspecting data and data classes and the ifelse function
+
+[Data wrangling and 'group by' calculations] - this section covers the most useful data manipulation functions using the dplyr package
+
+[Dates] - this section explores working with dates
+
+[Merging data, missing values and exporting] - This section explores some more advanced data wrangling techniques, as well as exporting data
+
+[Extra Resources]
 
 # Introduction
 
@@ -223,7 +228,7 @@ You can now see by looking in the 'environment' window that an object has been c
 
 Now look at the Console tab. You should see the commands library and read_csv() appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won't need to do this again to load the data.
 
-Alternatively (you have already loaded the readr package as it is part of the tidyverse package - see section 2.2) you can simply use the command read_csv():
+Alternatively (you have already loaded the readr package as it is part of the tidyverse package - see the [Packages] section) you can simply use the command read_csv():
 
 ```{r eval = FALSE, results="hide"}
 # offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
@@ -688,7 +693,48 @@ Note that 'rejoined' has the same number of observations and variables as 'offen
 
 The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
 
+## Reshaping datasets
 
+Another common data manipulation task is to reshape data from wide to long or from long to wide. A common reasons for reshaping are to make your data easier to visualise in a chart or table, or to let you perform calculations on the data with less code.
+
+Let's use the exampe of aggegrating then reshaping the data to make a table that is easier to read.
+
+```{r}
+offenders_pretty_table <- offenders %>%
+  dplyr::group_by(GENDER,REGION) %>%
+  dplyr::summarise(n = n())
+
+offenders_pretty_table
+```
+This could be easier for people to read and compare values between categories if they could see each REGION value as seperate columns like this:
+
+```{r}
+offenders_pretty_table %>%
+  tidyr::spread(key = REGION, value = n)
+```
+
+Or perhaps the values in GENDER as seperate columns.
+
+```{r}
+offenders_pretty_table %>%
+  tidyr::spread(key = GENDER, value = n)
+```
+
+So this is reshaping data from long to wide using tidyr::spread. We can also reshape from wide to long using tidyr::gather. Below we create the wide table first, then we reshape it from wide to long.
+
+```{r}
+offenders_wide <- offenders_pretty_table %>%
+  tidyr::spread(key = GENDER, value = n)
+
+offenders_wide %>%
+  tidyr::gather(key = REGION, value = "GENDER")
+```
+
+The explanation of how to reshape with tidyr on page2 of this <a href="https://resources.rstudio.com/tidyverse/data-import-cheat-sheet" target="_blank">cheat sheet extract</a> shown below are excellent.
+
+```{r, echo=FALSE, out.width="800px"}
+knitr::include_graphics("images/reshape.png")
+```
 
 ## Handling missing values
 
@@ -742,8 +788,6 @@ This assumes by default that you want to export the row headers and that the col
 1.	Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 2.	Export the dataset offenders_trial_age to a csv file.
 3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: use the is.na() function). 
-
-
 
 
 # Extra Resources
