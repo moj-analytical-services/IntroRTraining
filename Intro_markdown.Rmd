@@ -1,7 +1,9 @@
 
 ---
 title: "Intro R training"
-output: word_document
+output:
+  word_document: default
+  pdf_document: default
 ---
 
 
@@ -11,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Basic setup
 
-This document provides accompanying training material used in the Introduction to R Training session, conducted by the ASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html.
+This document provides accompanying training material used in the Introduction to R Training session, conducted by the ASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html. Also make sure step 2.3.1 has been completed otherwise you will have difficulty importing files at later stages of this course.  
 
 This guide is hosted on Github: https://github.com/moj-analytical-services/IntroRTraining
 
@@ -20,7 +22,7 @@ In that repository, there is the file code_participant.R, which contains code re
 ## Contents
 
 1. Introduction - in this section you will be introduced to R, the RStudio Environment and some of the basic R commands
-2. Processing data - this section introduces R packages, importing data into R,  inspecting data and data classes and the ifelse function
+2. Processing data - this section introduces R packages, importing data into R,  inspecting data and data classes
 3. Data wrangling and 'group by' calculations - this section covers the most useful data manipulation functions using the dplyr package
 4. Dates - this section explores working with dates
 5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data
@@ -44,7 +46,7 @@ Some of the advantages:
 
 * It is **popular** - there is a large, active and rapidly growing community of R programmers, which has resulted in a plethora of resources and extensions.
 * It is **powerful** - the history as a statistical language means it is well suited for data analysis and manipulation.
-* It is **extensible** - there are a vast array of **packages** that can be added to extend the functionality of R, produced by statisticians and programmers around the world. These can range from obscure statistical techniques to tools for making interactive charts
+* It is **extensible** - there are a vast array of **packages** that can be added to extend the functionality of R, produced by statisticians and programmers around the world. These can range from obscure statistical techniques to tools for making interactive charts.
 * It's **free and open source** - a large part of its popularity can be owed to its low cost, particularly relative to proprietary software such as SAS.
 
 ### 1.3 How is it used?
@@ -110,7 +112,7 @@ While commands can be written into the console, it is a good idea to use a "scri
 
 To create a new file: click 'file', 
                               'New file',
-                                'R Script'
+                                'R Script'.
                               
 In R, these files have a '.R' extension. The code file should appear in the top left of the screen. These files can be saved and used again in future. 
 
@@ -137,13 +139,15 @@ Of course, you can also use google or the ASD slack to try and find the solution
 1.	Create a new source code file in which you can store all commands you make during this exercise. Save it as 'Intro_R_Exercises.R'.
 2.  Create a new value called y which is equal to 17.
 3.  Now multiply y by 78. What answer do you get?
-4.	What does the command head do?
+4.	What does the command "head" do?
 5.	What command might you use to subset a dataset?
 
 ##   2. Processing data
 ### 2.1 Setting up a working directory
 
-It can be helpful to set up a working directory so that everything we are going to import into R or export from R will be saved by default into this folder. You can check what the working directory currently is by using the getwd() command (which stands for get working directory):
+The default behaviour of RStudio for the handling of files e.g. datasets, code scripts etc. is to use a working directory which is a folder where RStudio reads and saves files. Therefore, before we start writing any code we should set up a working directory so that everything we are going to import into RStudio or export from RStudio will be saved by default into this folder. 
+
+You can check what the working directory currently is by using the getwd() command (which stands for get working directory):
 
 ```{r results="hide"}
 getwd()
@@ -152,9 +156,31 @@ getwd()
 If you want to change the working directory you can use the setwd() command:
 
 ```{r}
-setwd("/home")
+setwd("~")
 
 ```
+
+If you want to change the working directory to a specific repository/folder you have cloned, for example, the "IntroRTraining" repository, you can use the setwd() command as follows:
+
+```{r}
+setwd("~/IntroRTraining")
+
+```
+
+Additionally, you can set your working directory manually following the steps below:
+
+1. Create a folder with an appropriate name containing any files you need for your RStudio session.
+2. From RStudio, use the menu to change your working directory under Session > Set Working Directory > Choose Directory. 
+3. Choose the directory (folder) you’ve just created in step 1.
+
+If you have not synced your RStudio to Github or are unable to clone a repository from Github you can create a new project using RStudio and upload files from a folder in your laptop into this new project. You can then set your working directory to this new project that you have created. Steps to create a new project are detailed below:  
+
+1. Click on the File Menu and select New Project.
+2. Select New Directory
+3. Select New Project
+4. Write an appropriate name for your project in the Directory Name text box and select Create Project.
+5. Upload files to your new project by clicking Upload in the Files window menu (bottom right window) and select Browse to upload any files saved in a folder e.g. data csv files saved in a folder in your OneDrive.
+6. Set your working directory to your new project using the RStudio commands above (or using the manual steps).
 
 ### 2.2 Packages
 
@@ -167,6 +193,8 @@ This uses the following command:
 ```{r eval = FALSE}
 install.packages("tidyverse")
 ```
+
+Note that if you are using R on the Analytical Platform the tidyverse package is already installed, hence the above step can be skipped. 
 
 Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can inside your script, so they will automatically load when you run it:
 
@@ -205,11 +233,13 @@ Note that the above assumes that the csv file is in your working directory, othe
 
 #### Importing data from the analytical platform amazon server
 
-To import the data for this session from the platform amazon server use this command:
+To import the data for this session from the platform amazon server use either one of these commands:
 
 ```{r, results="hide"}
 
 offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
+
+offenders<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")    
 
 ```
 
@@ -221,7 +251,7 @@ There are other commands and various packages that can be used to import dataset
 
 ### 2.4 Inspecting the dataset
 
-As noted in the previous section, you can see by looking in the 'environment' window that the 'offenders' dataset has 1413 observations and 9 variables. To view this dataset, click the icon to the right of this information, which you can see from the console is the equivalent of using the command:
+As noted in the previous section, you can see by looking in the 'environment' window that the 'offenders' dataset has 1413 observations and 11 variables. To view this dataset, click the icon to the right of this information (or anywhere on that row), which you can see from the console is the equivalent of using the command:
 
 ```{r eval = FALSE}
 View(offenders)
@@ -261,10 +291,7 @@ offenders[500,1:5]
 
 The colon operator allows you to create sequences - in this case from 1 to 5, so here you will retrieve from the 1st to the 5th columns.  
 
-
-### 2.5 Dataset variables 
-
-Dataframes/tibbles in R are a collection of vectors where where each vector is a column and represents a variable. To view a specific variable, for instance gender, you use a dollar sign as follows:
+Dataframes/tibbles in R are a collection of vectors where each vector is a column and represents a variable. To view a specific variable, for instance gender, you can use a dollar sign as follows:
 
 ```{r results="hide"}
 offenders$GENDER
@@ -272,30 +299,17 @@ offenders$GENDER
 
 The format is dataframe name, $, variable name. Note that a vector is returned. 
 
-To create a new variable providing the weight in kg (instead of in pounds):
-
-```{r results="hide"}
-offenders$weight_kg <- offenders$WEIGHT*0.454
-```
-
-You can see the new variable by using the View command (note that after make changes to the dataset you need to use the View command again to see the latest version):
-
-```{r eval = FALSE}
-View(offenders)
-```
-
-
-### 2.6 Data classes
+### 2.5 Data classes
 
 All variables have an associated class. The class will determine what calculations are possible with them and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date. 
 
-We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class"
+We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class" (see example checking the class of the WEIGHT variable below):
 
 ```{r}
-class(offenders$weight) 
+class(offenders$WEIGHT) 
 ```
 
-It's possible to coerce variables from one class to another. We can change the weight variable in the offenders dataset to be a numeric variable as follows:
+It's possible to coerce variables from one class to another. We can change the WEIGHT variable in the offenders dataset to be a numeric variable as follows:
 
 ```{r results="hide"}
 offenders$WEIGHT <- as.numeric(offenders$WEIGHT)
@@ -331,30 +345,16 @@ We can now change the GENDER variable in the offenders dataset back to be a char
 offenders$GENDER <- as.character(offenders$GENDER)  
 ```
 
-A logical variable has two values TRUE or FALSE. If you type the following:
-
-```{r results="hide"}
-offenders$tall <- offenders$HEIGHT > 175
-```
-
-Take care of the syntax here, the first arrow and hyphen are used to assign the new variable. The second arrow is to compare height with 174. In this case we are asking if the offenders height is greater than 175cm.
-
-We can see offenders$tall is of class logical:
-
-```{r}
-class(offenders$tall)
-```
-
-### 2.7 Ifelse
+### 2.6 Ifelse
 
 The logical class is important to perform ifelse commands. These are the equivalent of If statements in Excel. We can use this, for example, to identify those with weight under 90kg in the dataset 'offenders':
 
 ```{r results="hide"}
-offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
+offenders$wt_under_170  <- ifelse(offenders$WEIGHT<170, 1, 0)
 ```
 
 
-### 2.8 Some useful numeric and statistical functions include:
+### 2.7 Some useful numeric and statistical functions include:
 
    - abs(x): returns the absolute value of x
    - sqrt(x): returns the square root of x
@@ -372,11 +372,11 @@ offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
    - median(x): if x is a vector of observations, return its median
 
 
-### 2.9 Exercises
+### 2.8 Exercises
 
-1.	What are the mean, max and min for variable AGE in the dataset offenders?
-2.	Create a new variable providing the number of (full) years someone is over 16.
-3.	Create a new variable called 'height_under_150' which is 1 if under 150 cm and 0 otherwise.
+1. Find the mean, median, max and min for variables AGE and WEIGHT in the dataset offenders.
+2. By changing the SENTENCE class to factor output the levels of this variable. 
+3. Create a new variable called ‘height_under_150’ which is 1 if under 150 cm and 0 otherwise.
 
 
 ## 3 Data wrangling and 'group by' calculations
@@ -393,29 +393,47 @@ group_by() identifies which variables we want to produce breakdowns by.
 
 summarise() is used to indicate which values we want to calculate. 
 
-Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable and means you don't have to create a new object each time you run a command.
+Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use these functions together using the pipe (%>%) operator which makes code more readable and means you don't have to create a new object each time you run a command. Using the pipe operator reduces the amount of nested functions (functions that are within other functions) and allows us to chain together dplyr data wrangling functions. The pipe operator can be read as “then" and allows us to go from one step to another easily in dplyr so we can, for example:
+
++ filter our data frame to only focus on a few rows then
++ group_by another variable to create groups then
++ summarize this grouped data to calculate the mean for each level of the group.
 
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
 ```{r results="hide"}
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS))
+regional_gender_average <- offenders %>% 
+  group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
-In the above code R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
-There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd 
-
-If we want also to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows:
+The pipe operator simply passes through the object on the left hand side as the first argument of the following function. If we did not use the pipe operator to obtain the mean number of previous convictions with breakdown by REGION and GENDER the R code would look like this:
 
 ```{r results="hide"}
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+regional_gender_average <-summarise(group_by(offenders,REGION, GENDER),Ave=mean(PREV_CONVICTIONS))
+
 ```
 
-The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command:
+Using nested functions like this looks more complicated and is harder to follow than if we use the pipe operator, this becomes more clear as extra calculations are added. 
+
+The R code which uses the pipe operator is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the dataset being passed into the group_by command using '%>%' is instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputs the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'.  
+
+There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd. 
+
+If we want to add a new variable called 'Count' that provides the counts by REGION and GENDER we can rerun as follows using the pipe operator:
 
 ```{r results="hide"}
-regional_gender_average <- ungroup(regional_gender_average)
+regional_gender_average <- offenders %>% 
+  group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+```
+
+The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command which in this example, returns the counts of observations in the ungrouped data:
+
+```{r results="hide"}
+regional_gender_average_ungroup <- regional_gender_average %>% 
+  ungroup() %>%             
+  summarise(Count = n())
 ```
 
 
@@ -426,14 +444,18 @@ If you would like to produce statistics for a subset of rows or observations, a 
 Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the group_by/summarise combination.
 
 ```{r}
-offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
+offenders %>% 
+  group_by(SENTENCE) %>% 
+  summarise(Count = n())
 ```
 
 To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
 
 ```{r results="hide"}
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
-summarise(Ave = mean(PREV_CONVICTIONS))
+crt_order_average <- offenders %>% 
+  filter(SENTENCE == "Court_order" & AGE > 50) %>% 
+  group_by(REGION, GENDER) %>% 
+  summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
 
@@ -496,7 +518,7 @@ You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) a
 ### 3.6 Exercises
 
 1.  Using group_by and summarise, calculate the average and median age for females in the West.
-2.	How many have heights of less than 4 feet, what are their (recorded) heights and gender(s)?
+2.	How many have heights of less than 2 metres, what are their (recorded) heights and gender(s)?
 3.	Produce a table showing the counts of height (including missing values). 
 4.  Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename SENTENCE as sentence_type, and create a new variable num_convictions that is PREV_CONVICTIONS + 1 (to take account of the latest conviction).
 
@@ -554,7 +576,7 @@ offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_format
 ### 4.2 Exercises
 
 1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
-(to read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv"))
+(To read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv") or s3tools::read_using(FUN=read.csv, s3_path="alpha-everyone/R_training_intro/FTSE_12_14.csv")).
 2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
 3.	Work out which day of the week has the highest mean performance. 
 
@@ -569,10 +591,13 @@ Let's import a new dataset which contains information on whether the offenders f
 offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
-Or using the platform:
+Or using one of the analytical platform options:
 
 ```{r results="hide"}
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
+
+offenders_trial <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")    
+
 ```
 
 We merge the datasets with offenders using the combination of fields that together form a unique identifier. But first we need to rename DoB to BIRTH_DATE in the offenders_trial dataset:
@@ -598,12 +623,18 @@ For instance:
 men <- filter(offenders, GENDER == "MALE")
 women <- filter(offenders, GENDER == "FEMALE")
 rejoined <- bind_rows(men, women)
+
 ```
 
 Note that 'rejoined' has the same number of observations and variables as 'offenders'. 
 
-The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
+```{r results="hide"}
+nrow(rejoined) 
 
+nrow(offenders) 
+```
+
+The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
 
 
 ### 5.2 Handling missing values
@@ -613,7 +644,9 @@ In R, missing values are represented by the symbol NA (not available). Impossibl
 We can look at the HEIGHT variable as previously:
 
 ```{r results="hide"}
-height_table <- offenders %>% group_by(HEIGHT) %>% summarise(Count=n())
+height_table <- offenders %>% 
+  group_by(HEIGHT) %>% 
+  summarise(Count=n())
 ```
 
 
@@ -653,7 +686,9 @@ This assumes by default that you want to export the row headers and that the col
 
 1.	Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 2.	Export the dataset offenders_trial_age to a csv file.
-3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: use the is.na() function). 
+
+Extension: 
+3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: you will need to use the ifelse and is.na() functions). 
 
 
 
@@ -662,9 +697,9 @@ This assumes by default that you want to export the row headers and that the col
 
 There are lots of resources that can help you develop your R knowledge, but below are a few that are particularly helpful:
 
-+ DataCamp is a website which hosts multiple online courses that teach coding. Their 'Introduction to R' course is free to complete and provides a broader overview in the basic concepts for coding in R. A link to the course can be found here: https://www.datacamp.com/courses/free-introduction-to-r
++ DataCamp is a website which hosts multiple online courses that teach coding. Their 'Introduction to R' course is free to complete and provides a broader overview in the basic concepts for coding in R. A link to the course can be found here: https://www.datacamp.com/courses/free-introduction-to-r.
 + Another good resourse is the 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, who is a data scientist at RStudio, who developed the tidyverse package that we introduced earlier. It gives a really good overview of R and how his package works with it.
-+ RStudio has also developed a list of 'cheatsheets' which give quick overviews of the functions contained in different packages, which can be quickly referred to: https://www.rstudio.com/resources/cheatsheets/ Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'
++ RStudio has also developed a list of 'cheatsheets' which give quick overviews of the functions contained in different packages, which can be quickly referred to: https://www.rstudio.com/resources/cheatsheets/ Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'.
 
 For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training
 

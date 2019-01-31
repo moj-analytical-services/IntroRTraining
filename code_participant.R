@@ -1,3 +1,17 @@
+# 1 Introduction to R -----------------------------------------------------
+
+# 1.5 Command Console
+
+x <- 3
+
+x
+
+x <- c(3, 2, 4)
+
+# 1.6 Other windows and getting help
+
+?mean
+
 # 2. Processing Data ------------------------------------------------------
 
 # 2.1 Setting up a working directory
@@ -6,11 +20,14 @@
 getwd()
 
 # set working directory 
-setwd("/home")
+setwd("~")
+
+# set working directory if "IntroRTraining" repo has been cloned
+setwd("~/IntroRTraining")
 
 # 2.2 Packages
 
-# Install packages
+# Install packages (unnecessary if on Analytical Platform)
 install.packages("tidyverse")
 
 # Load packages
@@ -26,6 +43,9 @@ offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 # From the Analytical Platform amazon server
 offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
 
+# Alternative way to upload the data from the Analytical Platform amazon server if the option above doesn't work
+offenders<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")    
+
 # 2.4 Inspecting the dataset
 
 View(offenders) # note the capital V!
@@ -40,15 +60,9 @@ offenders[c(500, 502),4]
 
 offenders[500,1:5]
 
-# 2.5 Dataset variables
-
 offenders$GENDER
 
-offenders$weight_kg <- offenders$WEIGHT*0.454
-
-View(offenders)
-
-# 2.6 Data classes
+# 2.5 Data classes
 
 class(offenders$WEIGHT)
 
@@ -64,13 +78,9 @@ offenders$GENDER <- relevel(offenders$GENDER, "MALE")
 
 offenders$GENDER <- as.character(offenders$GENDER) 
 
-offenders$tall <- offenders$HEIGHT > 175
+# 2.6 If Else
 
-class(offenders$tall)
-
-# 2.7 Ifelse
-
-offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
+offenders$wt_under_170  <- ifelse(offenders$WEIGHT<170, 1, 0)
 
 # 3.	Data wrangling and ‘group by’ calculations --------------------------------------
 
@@ -79,19 +89,29 @@ offenders$wt_under_90  <- ifelse(offenders$weight_kg<90, 1, 0)
 ?dplyr::summarise
 ?group_by
 
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-  summarise(Ave = mean(PREV_CONVICTIONS))
+regional_gender_average <- offenders %>% 
+  group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS)) 
 
-regional_gender_average <- offenders %>% group_by(REGION, GENDER) %>%
-  summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+regional_gender_average <-summarise(group_by(offenders,REGION, GENDER),Ave=mean(PREV_CONVICTIONS)) 
 
-regional_gender_average <- ungroup(regional_gender_average)
+regional_gender_average <- offenders %>% 
+  group_by(REGION, GENDER) %>%
+  summarise(Ave = mean(PREV_CONVICTIONS), Count=n()) 
+
+regional_gender_average_ungroup <- regional_gender_average %>% 
+  ungroup() %>%             
+  summarise(Count = n())
 
 # 3.2 Filter
 
-offenders %>% group_by(SENTENCE) %>% summarise(Count = n())
+offenders %>% 
+  group_by(SENTENCE) %>% 
+  summarise(Count = n())
 
-crt_order_average <- offenders %>% filter(SENTENCE == "Court_order" & AGE > 50) %>% group_by(REGION, GENDER) %>%
+crt_order_average <- offenders %>% 
+  filter(SENTENCE == "Court_order" & AGE > 50) %>% 
+  group_by(REGION, GENDER) %>% 
   summarise(Ave = mean(PREV_CONVICTIONS))
 
 # 3.3 Select
@@ -145,20 +165,25 @@ offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_format
 
 # 4.2 Exercises
 
-# read in ftse data
+# Read in ftse data
 ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
 
+# Alternative way to upload the ftse data from the Analytical Platform amazon server if the option above doesn't work
+ftse<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/FTSE_12_14.csv")    
 
 # 5.1
 
 # 5 Merging and exporting data --------------------------------------------
 # 5.1 Merging datasets
 
-# read in data on DOM1 (assuming file in your working directory):
+# Read in data on DOM1 (assuming file in your working directory):
 offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
-# read in data on analytical platform amazon server:
+# Read in data on analytical platform amazon server:
 offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
+
+# Alternative way to upload the offenders trial data from the Analytical Platform amazon server if the option above doesn't work
+offenders_trial <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")    
 
 offenders_trial <- dplyr::rename(offenders_trial, BIRTH_DATE=DoB) 
 
@@ -174,7 +199,9 @@ nrow(offenders) # 1413 rows
 
 # 5.2 Handling missing values
 
-height_table <- offenders %>% group_by(HEIGHT) %>% summarise(Count=n())
+height_table <- offenders %>% 
+  group_by(HEIGHT) %>% 
+  summarise(Count=n())
 
 View(height_table)
 
