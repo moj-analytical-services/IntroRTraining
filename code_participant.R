@@ -78,6 +78,10 @@ offenders$GENDER <- relevel(offenders$GENDER, "MALE")
 
 offenders$GENDER <- as.character(offenders$GENDER) 
 
+# 2.6 If Else
+
+offenders$wt_under_170  <- ifelse(offenders$WEIGHT<170, 1, 0)
+
 # 3.	Data wrangling and ‘group by’ calculations --------------------------------------
 
 # 3.1 Grouping and summarising data
@@ -95,9 +99,9 @@ regional_gender_average <- offenders %>%
   group_by(REGION, GENDER) %>%
   summarise(Ave = mean(PREV_CONVICTIONS), Count=n()) 
 
-regional_gender_average <- offenders %>% 
+regional_gender_average_ungroup <- regional_gender_average %>% 
   ungroup() %>%             
-  summarise(Ave=mean(PREV_CONVICTIONS),Count = n())
+  summarise(Count = n())
 
 # 3.2 Filter
 

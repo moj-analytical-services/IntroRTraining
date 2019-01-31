@@ -345,7 +345,16 @@ We can now change the GENDER variable in the offenders dataset back to be a char
 offenders$GENDER <- as.character(offenders$GENDER)  
 ```
 
-### 2.6 Some useful numeric and statistical functions include:
+### 2.6 Ifelse
+
+The logical class is important to perform ifelse commands. These are the equivalent of If statements in Excel. We can use this, for example, to identify those with weight under 90kg in the dataset 'offenders':
+
+```{r results="hide"}
+offenders$wt_under_170  <- ifelse(offenders$WEIGHT<170, 1, 0)
+```
+
+
+### 2.7 Some useful numeric and statistical functions include:
 
    - abs(x): returns the absolute value of x
    - sqrt(x): returns the square root of x
@@ -363,10 +372,11 @@ offenders$GENDER <- as.character(offenders$GENDER)
    - median(x): if x is a vector of observations, return its median
 
 
-### 2.7 Exercises
+### 2.8 Exercises
 
 1. Find the mean, median, max and min for variables AGE and WEIGHT in the dataset offenders.
 2. By changing the SENTENCE class to factor output the levels of this variable. 
+3. Create a new variable called ‘height_under_150’ which is 1 if under 150 cm and 0 otherwise.
 
 
 ## 3 Data wrangling and 'group by' calculations
@@ -418,12 +428,12 @@ regional_gender_average <- offenders %>%
   summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
 ```
 
-The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command which in this example, returns the mean number of previous convictions and counts of the ungrouped data:
+The regional_gender_average dataset is grouped by REGION and GENDER. If we want to remove this grouping we can use the ungroup command which in this example, returns the counts of observations in the ungrouped data:
 
 ```{r results="hide"}
-regional_gender_average <- offenders %>% 
+regional_gender_average_ungroup <- regional_gender_average %>% 
   ungroup() %>%             
-  summarise(Ave=mean(PREV_CONVICTIONS),Count = n())
+  summarise(Count = n())
 ```
 
 

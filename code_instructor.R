@@ -35,6 +35,9 @@ class(offenders$SENTENCE)
 offenders$SENTENCE<-as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
 levels(offenders$SENTENCE)
 
+# Q3 Create a new variable called ‘height_under_150’ which is 1 if under 150 cm and 0 otherwise.
+offenders$height_under_150 <- ifelse(offenders$HEIGHT < 150, 1, 0)
+
 
 # 3.6 Exercises -----------------------------------------------------------
 # Q1 Using group_by and summarise, calculate the average and median age for females in the West.
