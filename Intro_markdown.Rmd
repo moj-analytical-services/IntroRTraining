@@ -262,7 +262,7 @@ View(offenders)
 
 To obtain a summary of the characteristics of your dataset you can click on the arrow by 'offenders' in the 'environment' window, which provides the same information as by typing the following command:
 
-```{r}
+```{r, results="hide"}
 str(offenders)
 ```
 
@@ -483,7 +483,7 @@ offenders %>%
 
 To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
 
-```{r results="hide"}
+```{r}
 crt_order_average <- offenders %>% 
   dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
   dplyr::group_by(REGION, GENDER) %>%
@@ -498,7 +498,8 @@ crt_order_average
 We can also use the select() command from the dplyr package to choose just the variables from the 'offenders' dataset that we want. So if we want to create a new dataset without the names and addresses:
 
 ```{r results="hide"}
-offenders_anonymous <- dplyr::select(offenders, -LAST, -FIRST, -BLOCK)
+offenders_anonymous <- offenders %>%
+  dplyr::select(-LAST, -FIRST, -BLOCK, -BIRTH_DATE)
 
 head(offenders_anonymous,10)
 ```
@@ -508,7 +509,8 @@ Note (as is common with dplyr functions) we first specify the name of the datase
 Let's say that now we want to restrict this dataset to just include BIRTH_DATE, WEIGHT and number of previous convictions. 
 
 ```{r results="hide"}
-offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
+offenders_anonymous <- offenders %>%
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 
 head(offenders_anonymous,10)
 ```
@@ -608,7 +610,7 @@ If you have a read of the help file, you'll see lubridate has a number of functi
 
 We can therefore make a new date variable (called DoB_formatted) with class date as follows, and then check the class of the new column:
 
-```{r results="hide"}
+```{r}
 offenders<- dplyr::mutate(offenders, DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
@@ -726,8 +728,14 @@ So this is reshaping data from long to wide using tidyr::spread. We can also res
 offenders_wide <- offenders_pretty_table %>%
   tidyr::spread(key = GENDER, value = n)
 
-offenders_wide %>%
+offenders_wide
+```
+
+```{r}
+offenders_long <- offenders_wide %>%
   tidyr::gather(key = REGION, value = "GENDER")
+
+offenders_long
 ```
 
 The explanation of how to reshape with tidyr on page2 of this <a href="https://resources.rstudio.com/tidyverse/data-import-cheat-sheet" target="_blank">cheat sheet extract</a> shown below are excellent.
@@ -742,7 +750,7 @@ In R, missing values are represented by the symbol NA (not available). Impossibl
 
 We can look at the HEIGHT variable as previously:
 
-```{r results="hide"}
+```{r}
 height_table <- offenders %>% 
   dplyr::group_by(HEIGHT) %>% 
   dplyr::summarise(Count=n())
@@ -767,7 +775,8 @@ complete.cases(offenders)
 Using filter we can create a new data frame just with those that are complete:
 
 ```{r results="hide"}
-complete_offenders <- dplyr::filter(offenders, complete.cases(offenders))
+complete_offenders <- offenders %>%
+  dplyr::filter(complete.cases(offenders))
 ```
 
 
@@ -796,8 +805,8 @@ There are lots of resources that can help you develop your R knowledge, but belo
 
 + DataCamp is a website which hosts multiple online courses that teach coding. Their <a href="https://www.datacamp.com/courses/free-introduction-to-r" target="_blank">Introduction to R course</a> is free to complete and provides a broader overview in the basic concepts for coding in R.
 
-+ Another good resourse is the 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, who is a data scientist at RStudio, who developed the tidyverse package that we introduced earlier. It gives a really good overview of R and how his package works with it.
++ Another good resourse is the <a href="https://r4ds.had.co.nz/" target="_blank">R for Data Science</a> online book written by Hadley Wickham, who is a data scientist at RStudio. He developed the tidyverse package that we introduced earlier. It gives a really good overview of R and how his package works with it.
 
 + RStudio has also developed a list of <a href="https://www.rstudio.com/resources/cheatsheets/" target="_blank">Cheat Sheets</a> which give quick overviews of the functions contained in different packages, which can be quickly referred to. Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'
 
-For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training
+For further lists of useful resources please see this <a href="https://trello.com/b/D5pSkqnT/online-analytical-training" target="_blank">Trello Board of Online Training</a>
