@@ -176,6 +176,10 @@ ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.
 # Alternative way to upload the ftse data from the Analytical Platform amazon server if the option above doesn't work
 ftse<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/FTSE_12_14.csv")    
 
+# To read the file in directly from the wd (for those on borrowed macs you will need to do this) use;
+ftse <- read.cvs("FTSE_12_14.csv")
+
+
 # 5.1
 
 # 5 Merging and exporting data --------------------------------------------

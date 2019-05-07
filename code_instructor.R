@@ -1,5 +1,5 @@
 # 1.7 Exercises -----------------------------------------------------------
-# Q1 Create a new source code file in which you can store all commands you make during this exercise. Save it as ‘Intro_R_Exercises.R’.
+# Q1 1.	Create a new R script file in which you can store all commands you make during this exercise. Save it as ‘Intro_R_Exercises.R’.
 
 # Q2 Create a new value called y which is equal to 17.
 y <- 17
@@ -46,7 +46,7 @@ offenders %>%
   group_by(GENDER, REGION) %>%
   summarise(mean(AGE), median(AGE))
 
-# Q2 How many have heights of less than 2 metres, what are their (recorded) heights and gender(s)?
+# Q2 Using select and filter produce a table of offender’s genders who are over 2m tall. 
 offenders %>% 
   select(HEIGHT, GENDER) %>%
   filter(HEIGHT<200)
@@ -119,7 +119,8 @@ View(weekday_performance)
 # Q1 Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 
 # create offenders age dataset with just age column and columns we're joining on
-offenders_age <- select(offenders, LAST, DoB=BIRTH_DATE, AGE)
+offenders_age <- offenders %>%
+  select(LAST, DoB=BIRTH_DATE, AGE)
 
 # merge the two datasets
 offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "DoB"))

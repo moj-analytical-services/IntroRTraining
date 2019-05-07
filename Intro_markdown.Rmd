@@ -136,7 +136,7 @@ Of course, you can also use google or the ASD slack to try and find the solution
 
 ### 1.7 Exercises
 
-1.	Create a new source code file in which you can store all commands you make during this exercise. Save it as 'Intro_R_Exercises.R'.
+1.	Create a new R script file in which you can store all commands you make during this exercise. Save it as 'Intro_R_Exercises.R'.
 2.  Create a new value called y which is equal to 17.
 3.  Now multiply y by 78. What answer do you get?
 4.	What does the command "head" do?
@@ -528,7 +528,7 @@ You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) a
 ### 3.6 Exercises
 
 1.  Using group_by and summarise, calculate the average and median age for females in the West.
-2.	How many have heights of less than 2 metres, what are their (recorded) heights and gender(s)?
+2.  Using select and filter produce a table of offender’s genders who are over 2m tall. 
 3.	Produce a table showing the counts of height (including missing values). 
 4.  Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename SENTENCE as sentence_type, and create a new variable num_convictions that is PREV_CONVICTIONS + 1 (to take account of the latest conviction).
 
@@ -586,7 +586,7 @@ offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_format
 ### 4.2 Exercises
 
 1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
-(To read in the data using s3, use s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv") or s3tools::read_using(FUN=read.csv, s3_path="alpha-everyone/R_training_intro/FTSE_12_14.csv")).
+(To read in the data, use the code given in the participant code script) 
 2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
 3.	Work out which day of the week has the highest mean performance. 
 
