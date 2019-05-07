@@ -99,9 +99,12 @@ regional_gender_average <- offenders %>%
   group_by(REGION, GENDER) %>%
   summarise(Ave = mean(PREV_CONVICTIONS), Count=n()) 
 
-regional_gender_average_ungroup <- regional_gender_average %>% 
-  ungroup() %>%             
-  summarise(Count = n())
+regional_gender_average %>% 
+  summarise(Count=n())
+
+regional_gender_average %>% 
+  ungroup() %>% 
+  summarise(Count=n())
 
 # 3.2 Filter
 
@@ -116,9 +119,11 @@ crt_order_average <- offenders %>%
 
 # 3.3 Select
 
-offenders_anonymous <- select(offenders, -LAST, -FIRST, -BLOCK)
+offenders_anonymous <- offenders %>% 
+  select(-LAST, -FIRST, -BLOCK)
 
-offenders_anonymous <- select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
+offenders_anonymous <- offenders %>% 
+  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 
 # 3.4 Rename
 
@@ -185,12 +190,13 @@ offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro
 # Alternative way to upload the offenders trial data from the Analytical Platform amazon server if the option above doesn't work
 offenders_trial <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")    
 
-offenders_trial <- dplyr::rename(offenders_trial, BIRTH_DATE=DoB) 
+offenders_trial <- offenders_trial %>% 
+  rename(BIRTH_DATE=DoB) 
 
-offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
+offenders_merge <- inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
 
-men <- filter(offenders, GENDER == "MALE") 
-women <- filter(offenders, GENDER == "FEMALE")
+men <- offenders %>% filter(GENDER == "MALE") 
+women <- offenders %>% filter(GENDER == "FEMALE")
 rejoined <- bind_rows(men, women)
 
 nrow(rejoined) # 1413 rows
@@ -207,7 +213,8 @@ View(height_table)
 
 complete.cases(offenders)
 
-complete_offenders <- filter(offenders, complete.cases(offenders))
+complete_offenders <- offenders %>% 
+  filter(complete.cases(offenders))
 
 # 5.3 Exporting data
 write.csv(complete_offenders, file = "Complete_offenders.csv")
