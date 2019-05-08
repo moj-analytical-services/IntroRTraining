@@ -530,6 +530,8 @@ You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) a
 1.  Using group_by and summarise, calculate the average and median age for females in the West.
 2.  Using select and filter produce a table of offender’s genders who are over 2m tall. 
 3.	Produce a table showing the counts of height (including missing values). 
+
+Extension: 
 4.  Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename SENTENCE as sentence_type, and create a new variable num_convictions that is PREV_CONVICTIONS + 1 (to take account of the latest conviction).
 
 

@@ -58,7 +58,7 @@ counts_of_height <- offenders %>%
 
 View(counts_of_height)
 
-# Q4	Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename 
+# Extension: Q4	Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename 
 # SENTENCE as sentence_type, and create a new variable num_convictions that is 
 # PREV_CONVICTIONS + 1 (to take account of the latest conviction).
 offenders_new <- offenders %>%
