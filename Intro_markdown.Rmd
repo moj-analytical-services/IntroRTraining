@@ -345,16 +345,7 @@ We can now change the GENDER variable in the offenders dataset back to be a char
 offenders$GENDER <- as.character(offenders$GENDER)  
 ```
 
-### 2.6 Ifelse
-
-The logical class is important to perform ifelse commands. These are the equivalent of If statements in Excel. We can use this, for example, to identify those with weight under 90kg in the dataset 'offenders':
-
-```{r results="hide"}
-offenders$wt_under_170  <- ifelse(offenders$WEIGHT<170, 1, 0)
-```
-
-
-### 2.7 Some useful numeric and statistical functions include:
+### 2.6 Some useful numeric and statistical functions include:
 
    - abs(x): returns the absolute value of x
    - sqrt(x): returns the square root of x
@@ -372,11 +363,12 @@ offenders$wt_under_170  <- ifelse(offenders$WEIGHT<170, 1, 0)
    - median(x): if x is a vector of observations, return its median
 
 
-### 2.8 Exercises
+### 2.7 Exercises
 
-1. Find the mean, median, max and min for variables AGE and WEIGHT in the dataset offenders.
-2. By changing the SENTENCE class to factor output the levels of this variable. 
-3. Create a new variable called ‘height_under_150’ which is 1 if under 150 cm and 0 otherwise.
+1. Find the mean and median of the AGE variable in the offenders dataset.
+2. Find the max and min for the WEIGHT variable in the offenders dataset.
+3. By changing the SENTENCE class to factor output the levels of this variable. 
+
 
 
 ## 3 Data wrangling and 'group by' calculations
@@ -409,6 +401,8 @@ regional_gender_average <- offenders %>%
   summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
+In the above code, R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the data is "piped" like water into the group_by command using the pipe symbol '%>%' instead of specifying the 'offenders' dataset as the first argument within the group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'. 
+
 The pipe operator simply passes through the object on the left hand side as the first argument of the following function. If we did not use the pipe operator to obtain the mean number of previous convictions with breakdown by REGION and GENDER the R code would look like this:
 
 ```{r results="hide"}
@@ -418,7 +412,7 @@ regional_gender_average <-summarise(group_by(offenders,REGION, GENDER),Ave=mean(
 
 Using nested functions like this looks more complicated and is harder to follow than if we use the pipe operator, this becomes more clear as extra calculations are added. 
 
-In the above code, R is taking the 'offenders' dataset, grouping it first by REGION and then by GENDER (note that the data is "piped" like water into the dplyr::group_by command using the pipe symbol '%>%' instead of specifying the 'offenders' dataset as the first argument within the dplyr::group_by command), and then outputting the mean number of previous convictions by REGION and GENDER. The new mean number of previous convictions variable we've decided to call 'Ave'. The results are saved into a new dataset called 'regional_gender_average'. 
+
 
 There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd. 
 
@@ -430,14 +424,14 @@ regional_gender_average <- offenders %>%
   summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
 ```
 
-The regional_gender_average dataset is grouped by REGION and GENDER. If we run it through dplyr::summarise again the result will be grouped by the first grouping variable set which is REGION. For example, the summarise() function applied below counts the rows in each of the first group by category.
+The regional_gender_average dataset is grouped by REGION and GENDER. If we run it through summarise again the result will be grouped by the first grouping variable set which is REGION. For example, the summarise() function applied below counts the rows in each of the first group by category.
 
 ```{r results="hide"}
 regional_gender_average %>% 
   summarise(Count = n())
 ```
 
-But if we wanted to count all the rows in the dataset with the grouping removed we add in the dplyr::ungroup() function as below:
+But if we wanted to count all the rows in the dataset with the grouping removed we add in the ungroup() function as below:
 
 ```{r results="hide"}
 regional_gender_average %>% 
@@ -524,8 +518,16 @@ offenders_anonymous <- offenders %>%
 
 You can download the 'Data Transformation Cheat Sheet' (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/
 
+### 3.6 If_else
 
-### 3.6 Exercises
+Another useful function found in the dplyr package is if_else, which works in a similar way to if statements in Excel. This uses a logical statement to determine the output. The below code uses this to identify offenders who have weight under 170lbs, the mutate function is used to add a variable in to the offenders dataset which is 1 if they are under 170lbs and 0 if they are over 170lbs.
+
+```{r results="hide"}
+offenders <- offenders %>% 
+  mutate(weight_under_170 = if_else(WEIGHT<170,1,0))
+```
+
+### 3.7 Exercises
 
 1.  Using group_by and summarise, calculate the average and median age for females in the West.
 2.  Using select and filter produce a table of offender’s genders who are over 2m tall. 

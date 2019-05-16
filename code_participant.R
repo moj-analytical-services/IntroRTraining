@@ -78,10 +78,6 @@ offenders$GENDER <- relevel(offenders$GENDER, "MALE")
 
 offenders$GENDER <- as.character(offenders$GENDER) 
 
-# 2.6 If Else
-
-offenders$wt_under_170  <- ifelse(offenders$WEIGHT<170, 1, 0)
-
 # 3.	Data wrangling and ‘group by’ calculations --------------------------------------
 
 # 3.1 Grouping and summarising data
@@ -144,6 +140,11 @@ offenders_anonymous <- offenders %>%
   rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
   mutate(weight_kg = WEIGHT * 0.454)
 
+# 3.6 If_else
+
+offenders <- offenders %>% 
+  mutate(weight_under_170 = if_else(WEIGHT<170,1,0))
+
 # Dates -------------------------------------------------------------------
 # 4.1 Manipulating dates
 
@@ -177,8 +178,8 @@ ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.
 ftse<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/FTSE_12_14.csv")    
 
 # To read the file in directly from the wd (for those on borrowed macs you will need to do this) use;
-ftse <- read.cvs("FTSE_12_14.csv")
-
+library(readr)
+ftse <- read_csv("FTSE_12_14.csv")
 
 # 5.1
 

@@ -1,5 +1,5 @@
 # 1.7 Exercises -----------------------------------------------------------
-# Q1 1.	Create a new R script file in which you can store all commands you make during this exercise. Save it as ‘Intro_R_Exercises.R’.
+# Q1 Create a new R script file in which you can store all commands you make during this exercise. Save it as ‘Intro_R_Exercises.R’.
 
 # Q2 Create a new value called y which is equal to 17.
 y <- 17
@@ -13,15 +13,12 @@ y * 78
 
 # 2.7 Exercises -----------------------------------------------------------
 
-# Q1 Find the mean, median, max and min for variables AGE and WEIGHT in the dataset offenders.
+# Q1 Find the mean and median for the AGE variable in the offenders dataset. 
 #Use the below to find the values individually
 mean(offenders$AGE)
 median(offenders$AGE)
-max(offenders$AGE)
-min(offenders$AGE)
 
-mean(offenders$WEIGHT)
-median(offenders$WEIGHT)
+# Q2 Find the max and min for the WEIGHT variable in the offenders dataset.
 max(offenders$WEIGHT)
 min(offenders$WEIGHT)
 
@@ -29,17 +26,14 @@ min(offenders$WEIGHT)
 summary(offenders$AGE)
 summary(offenders$WEIGHT)
 
-# Q2 By changing the SENTENCE class to factor output the levels of this variable. 
+# Q3 By changing the SENTENCE class to factor output the levels of this variable. 
 
 class(offenders$SENTENCE)
 offenders$SENTENCE<-as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
 levels(offenders$SENTENCE)
 
-# Q3 Create a new variable called ‘height_under_150’ which is 1 if under 150 cm and 0 otherwise.
-offenders$height_under_150 <- ifelse(offenders$HEIGHT < 150, 1, 0)
 
-
-# 3.6 Exercises -----------------------------------------------------------
+# 3.7 Exercises -----------------------------------------------------------
 # Q1 Using group_by and summarise, calculate the average and median age for females in the West.
 offenders %>% 
   filter(GENDER=="FEMALE") %>%
@@ -75,10 +69,10 @@ View(offenders_new)
 # analytical platform amazon server:
 ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
 
-#Or we can use the below to load the data
+#Or we can use the below to load the data:
 ftse<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/FTSE_12_14.csv") 
 
-## dom1 (if dataset is in working directory):
+#If dataset is in working directory:
 # ftse <- read_csv("FTSE_12_14.csv")
 
 # first have a look at what format the date is in
