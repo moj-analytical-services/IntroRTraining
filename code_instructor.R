@@ -43,7 +43,7 @@ offenders %>%
 # Q2 Using select and filter produce a table of offender’s genders who are over 2m tall. 
 offenders %>% 
   select(HEIGHT, GENDER) %>%
-  filter(HEIGHT<200)
+  filter(HEIGHT>200)
 
 # Q3 Produce a table showing the counts of height (including missing values).
 counts_of_height <- offenders %>% 
@@ -90,7 +90,7 @@ class(ftse$formatted_date)
 # (close price - open price). 
 
 # create weekday variable
-ftse <- mutate(ftse, weekday = weekdays(formatted_date))
+ftse <- mutate(ftse, day = weekdays(formatted_date))
 
 View(ftse)
 
