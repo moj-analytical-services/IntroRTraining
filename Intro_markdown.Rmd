@@ -715,7 +715,7 @@ Extension:
 There are lots of resources that can help you develop your R knowledge, but below are a few that are particularly helpful:
 
 + DataCamp is a website which hosts multiple online courses that teach coding. Their 'Introduction to R' course is free to complete and provides a broader overview in the basic concepts for coding in R. A link to the course can be found here: https://www.datacamp.com/courses/free-introduction-to-r.
-+ Another good resourse is the 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, who is a data scientist at RStudio, who developed the tidyverse package that we introduced earlier. It gives a really good overview of R and how his package works with it.
++ Another good resource is the 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, who is a data scientist at RStudio, who developed the tidyverse package that we introduced earlier. It gives a really good overview of R and how his package works with it.
 + RStudio has also developed a list of 'cheatsheets' which give quick overviews of the functions contained in different packages, which can be quickly referred to: https://www.rstudio.com/resources/cheatsheets/ Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'.
 
 For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training
