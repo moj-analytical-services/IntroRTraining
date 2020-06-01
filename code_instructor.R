@@ -110,7 +110,7 @@ View(weekday_performance)
 
 
 # 5.4 Exercises -----------------------------------------------------------
-# Q1 Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
+# Q1 Create a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 
 # create offenders age dataset with just age column and columns we're joining on
 offenders_age <- offenders %>%
@@ -135,7 +135,7 @@ write.csv(offenders_trial_age, "offenders_trial_age.csv")
 
 mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
 
-offenders_a <- offenders %>% 
+offenders <- offenders %>% 
   mutate(height_new=replace(HEIGHT, is.na(HEIGHT),mean_height))
 
 

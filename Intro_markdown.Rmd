@@ -684,7 +684,7 @@ This assumes by default that you want to export the row headers and that the col
 
 ### 5.4 Exercises
 
-1.	Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
+1.	Create a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 2.	Export the dataset offenders_trial_age to a csv file.
 
 Extension: 

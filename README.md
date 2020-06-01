@@ -9,3 +9,4 @@ In advance of the training session please follow the basic setup guidance on pag
 
 You can also work through the training by yourself by watching recordings of it [here](https://web.microsoftstream.com/channel/aa3cda5d-99d6-4e9d-ac5e-6548dd55f52a)
 
+Please contact [George Papadopoulos](George.papadopoulos@Justice.gov.uk) if you have any questions.
