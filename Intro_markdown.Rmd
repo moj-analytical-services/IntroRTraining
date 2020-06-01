@@ -591,9 +591,9 @@ offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 Or using one of the analytical platform options:
 
 ```{r results="hide"}
-offenders_trial  <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")
+offenders_trial  <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv")
 
-offenders_trial <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Trial.csv")    
+offenders_trial <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv") %>% mutate_if(is.factor, as.character)  
 
 ```
 
@@ -635,10 +635,9 @@ nrow(offenders)
 
 The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
 
-
 ### 5.2 Handling missing values
 
-In R, missing values are represented by the symbol NA (not available). Impossible values (e.g. dividing by zero) are represented by the symbol NaN (not a number).
+In R, missing values are represented by the symbol NA (not available). Impossible values (e.g. dividing by zero) are represented by the symbol NaN (not a number). The missing data functions we’ll use in this section recognize both these types.
 
 We can look at the HEIGHT variable as previously:
 
@@ -648,13 +647,17 @@ height_table <- offenders %>%
   summarise(Count=n())
 ```
 
-
 Then we can view the height_table we've made which will include the number of missing values the height variable contains:
+
 ```{r eval=FALSE}
 View(height_table)
 ```
 
+We can create a logical vector showing whether each HEIGHT observation is missing (TRUE) or not (FALSE):
 
+```{r eval=FALSE}
+is.na(offenders$HEIGHT)
+```
 
 We can also create a logical vector showing whether the row is complete (TRUE) or has a missing value in one or more columns (FALSE):
 
@@ -669,7 +672,6 @@ complete_offenders <- offenders %>%
   filter(complete.cases(offenders))
 ```
 
-
 ### 5.3 Exporting data
 
 A command to export data into csv format is write.csv. For instance, to export our data which contains the complete cases:
@@ -680,18 +682,13 @@ write.csv(complete_offenders, file = "Complete_offenders.csv")
 
 This assumes by default that you want to export the row headers and that the columns are separated by a comma symbol (sep = ","). The data will be saved as a CSV in your working directory.  
 
-
 ### 5.4 Exercises
-
 
 1.	Creating a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 2.	Export the dataset offenders_trial_age to a csv file.
 
 Extension: 
-3.	Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: you will need to use the ifelse and is.na() functions). 
-
-
-
+3. Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: you can make use of the replace function).
 
 ## 6. Extra Resources
 
