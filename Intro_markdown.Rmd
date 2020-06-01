@@ -15,10 +15,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This document provides accompanying training material used in the Introduction to R Training session, conducted by the DASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting) - see https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#get-started. 
 
-You should then work through the following: 
-https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#deploy-analytical-tools
-https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#open-analytical-tools
-https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#configure-git-and-github
+You should then work through the following:
+
+* https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#deploy-analytical-tools
+* https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#open-analytical-tools
+* https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#configure-git-and-github
 
 This guide is hosted on Github: https://github.com/moj-analytical-services/IntroRTraining
 In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for Github, but for now, please import the project from Github by following step 1 at: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
@@ -38,7 +39,7 @@ In that repository, there is the file code_participant.R, which contains code re
 
 * Overview of R
 * Get new R users up and running with confidence
-* Introduce key functions needed in ASD work
+* Introduce key functions needed in DASD work
 
 ### 1.2 What is R?
 
@@ -78,24 +79,19 @@ Warnings and errors appear as red text.
 
 ```
 
-
 For instance if you type:
 
 ```{r}
 x <- 3
 ```
 
-
-(and press return) R creates an object called x which takes the value 3. You can see this in the 'workplace' (the environment window in the top right) and if you type: 
+(and press return) the assignment operator (less than followed by hyphen) in R assigns the name x to the object taking the value 3. You can see this in the ‘workplace’ (the environment window in the top right) and if you type:
 
 ```{r}
 x 
 ```
 
 The results are then shown in the console.  
-
-Note - to assign a name to an object in R you need to use an arrow and a hyphen:
-<-
 
 Furthermore, R is case sensitive so if you were to type X, an error would be displayed as you have not yet created and object called X.
 
@@ -105,7 +101,7 @@ As well as storing single values, you can also create vectors. The below stateme
 x <- c(3, 2, 4)
 ```
 
-This uses the "c" function - the c is short for "concatenate". You can now see the new object x in the 'workplace'. Note that the old object x has been overwritten and that the new object is of class numeric. 
+This uses the "c" function - the c is short for "concatenate". You can now see the new object x in the 'workplace'. Note that the old object x has been overwritten and that the new object is of class numeric.
 
 The console will remember your most recent commands, if you want to reuse one, just use the up and down arrows to scroll through them. When you have found the one that you want, press return, R will repeat that line of code and display the results. 
 
@@ -125,17 +121,17 @@ To execute the code, click run at the top of the screen. R will run the line of 
 
 ### 1.6 Other windows and getting help
 
-The top right panel shows all "objects" that are in your working environment. This will become clearer throughout the session but typically, this will be any data that you have created or imported, additional variables and values that you have created. For instance, if you have run the code above, 'x' should be shown here. Other objects such as regression models that you have created would also appear here. From here you can also use a drop down menu to import more data. 
+The top right panel shows all “objects” that are in your working environment. This will become clearer throughout the session but typically, this will be any data that you have created or imported, additional variables and values that you have created. For instance, if you have run the code above, ‘x’ should be shown here. Other objects containing for instance the details of regression models that you have created would also appear here. From here you can also use a drop down menu to import more data.
 
-The bottom right window has several tabs. You can see your files and any plots that you have created. It also shows what packages are available and what ones are loaded, more on packages later. 
+The bottom right window has several tabs. You can see your files and any plots that you have created. It also shows which packages are available and which ones are loaded; more on packages later.
 
-There is also a help menu. You can either use this or type ? into the console and then the name of what it is you want help on in brackets. For instance, the following line would give you help on the function called 'mean':
+There is also a help menu. You can either use this or type ? into the console and then the name of what it is you want help on in brackets. For instance, the following line would give you help on the function called ‘mean’:
 
 ```{r results = "hide"}
 ?mean
 ```
 
-Of course, you can also use google or the ASD slack to try and find the solution to the problem. 
+Of course, you can also use google or the DASD slack to try and find the solution to the problem. 
 
 
 ### 1.7 Exercises
