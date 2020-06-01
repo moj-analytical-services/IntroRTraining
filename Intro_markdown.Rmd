@@ -62,7 +62,6 @@ There a number of areas in the MoJ where R is making an impact:
 2. A number of webapps using Shiny have been produced, allowing customers to explore data in an interactive way. The PQ tool is a strong example: https://pq-tool.apps.alpha.mojanalytics.xyz/
 3. It has enabled more technical analysis to be done with the help of packages written by academics and statisticians, which would have to be coded from scratch using SAS. For example, the PQ tool makes use of packages to facilitate Natural Language Processing and Text Mining.
 
-
 ### 1.4 Command console
 
 The window in which commands are entered is called the "console" window. It is used to input and execute code. Results, errors and warnings are shown directly in the same window. 
@@ -105,7 +104,6 @@ This uses the "c" function - the c is short for "concatenate". You can now see t
 
 The console will remember your most recent commands, if you want to reuse one, just use the up and down arrows to scroll through them. When you have found the one that you want, press return, R will repeat that line of code and display the results. 
 
-
 ### 1.5 Script file
 
 While commands can be written into the console, it is a good idea to use a "script". This is a code file that can be saved and reused in future. 
@@ -117,7 +115,6 @@ To create a new file: click 'file',
 In R, these files have a '.R' extension. The code file should appear in the top left of the screen. These files can be saved and used again in future. 
 
 To execute the code, click run at the top of the screen. R will run the line of code that the cursor is currently on, if you want to run several lines of code, highlight them and then press run.
-
 
 ### 1.6 Other windows and getting help
 
@@ -132,7 +129,6 @@ There is also a help menu. You can either use this or type ? into the console an
 ```
 
 Of course, you can also use google or the DASD slack to try and find the solution to the problem. 
-
 
 ### 1.7 Exercises
 
@@ -186,7 +182,7 @@ If you have not synced your RStudio to Github or are unable to clone a repositor
 
 A lot of pre-programmed routines are included in R, and you can add a lot more through packages. One characteristic that's important to recognise is that just as there are many ways of getting from Victoria Station to 102 Petty France, there are many ways of doing the same thing in R. Some ways are (computationally) faster, some are simpler to program, and some may be more conducive to your taste.  
 
-Packages extend R's functionality enormously and are a key factor in making R so popular. For instance, to install the tidyverse package in R, use the Install button from the Packages tab in Rstudio. 
+Packages extend R's functionality enormously and are a key factor in making R so popular. For instance, to install the tidyverse package in R, which we recommend you use for data manipulation, use the Install button from the Packages tab in Rstudio. 
 
 This uses the following command:
 
@@ -202,14 +198,13 @@ Once a package is installed, you should be able to see it in the packages tab. I
 library("tidyverse")
 ```
 
-The package tidyverse contains many useful packages such as dplyr which is a particularly useful package for manipulating and processing data. Many of the functions in the rest of this training course are from this package.
+The package tidyverse contains many useful packages such as dplyr which is a particularly useful package for manipulating and processing data. Many of the functions in the rest of this introductory training are from this package.
 
 To know more about a package, it is always useful to read the associated documentation:
 
 ```{r results="hide"}
-help(package=dplyr)
+?dplyr
 ```
-
 
 ### 2.3 Importing data
 
@@ -219,7 +214,7 @@ It is important to be able to import data both from the analytical platform amaz
 
 You can import data in .csv files using Rstudio by clicking on the Environment tab and then the Import Dataset button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
 
-You can now see by looking in the 'environment' window that an object has been created (the 'offenders' dataset), and that it has 1413 observations and 9 variables.
+You can now see by looking in the environment window that an object has been created (the offenders dataset), and that it has 1413 observations and 9 variables.
 
 Now look at the Console tab. You should see the commands library and read_csv() appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won't need to do this again to load the data.
 
@@ -237,33 +232,31 @@ To import the data for this session from the platform amazon server use either o
 
 ```{r, results="hide"}
 
-offenders <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")
+offenders <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv")
 
-offenders<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/Offenders_Chicago_Police_Dept_Main.csv")    
+offenders<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv") %>% mutate_if(is.factor, as.character)  
 
 ```
 
-
-This assumes by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = ",").  
+These assume by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = “,”). The latter approach assumes that you have already loaded the dplyr package as it is part of the tidyverse package - see section 2.2.
 
 There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see http://www.statmethods.net/input/importingdata.html 
 
-
 ### 2.4 Inspecting the dataset
 
-As noted in the previous section, you can see by looking in the 'environment' window that the 'offenders' dataset has 1413 observations and 11 variables. To view this dataset, click the icon to the right of this information (or anywhere on that row), which you can see from the console is the equivalent of using the command:
+As noted in the previous section, you can see by looking in the environment window that the offenders dataset has 1413 observations and 11 variables. To view this dataset, click the icon to the right of this information (or anywhere on that row), which you can see from the console is the equivalent of using the command:
 
 ```{r eval = FALSE}
 View(offenders)
 ```
 
-To obtain a summary of the meta-data of your dataset you can click on the arrow by 'offenders' in the 'environment' window, which provides the same information as by typing the following command:
+To obtain a summary of the meta-data of your dataset you can click on the arrow by offenders in the environment window, which provides the same information as by typing the following command:
 
 ```{r}
 str(offenders)
 ```
 
-Looking at the output provided informs you that the dataset 'offenders' is in R terminology both a tibble and a dataframe, and as we've already seen has 1413 observations and 9 variables. Variables in a data frame are like columns in a table, and are stored as vectors. Also provided is some information about each variable (or vector) in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
+Looking at the output provided informs you that the dataset offenders is in R terminology a dataframe, and as we've already seen has 1413 observations and 11 variables. Variables in a data frame are like columns in a table, and are stored as vectors. Also provided is some information about each variable (or vector) in the dataset (or dataframe) as designated by R; the name, the type (in this case either integer, number or character).  
 
 The summary command also provides some useful details:
 
@@ -271,7 +264,7 @@ The summary command also provides some useful details:
 summary(offenders)
 ```
 
-Square brackets can be used to subset data. For instance 'offenders[ i , j ]' would return the value in the ith row and jth column of the dataframe 'offenders'. So, if you want the fourth variable for the 500th observation:
+Square brackets can be used to subset data. For instance offenders[ i , j ] would return the value in the ith row and jth column of the dataframe offenders. So, if you want the fourth variable for the 500th observation:
 
 ```{r}
 offenders[500,4]
@@ -289,9 +282,9 @@ If you want the first five variables for the 500th observation:
 offenders[500,1:5]
 ```
 
-The colon operator allows you to create sequences - in this case from 1 to 5, so here you will retrieve from the 1st to the 5th columns.  
+The colon operator allows you to create sequences - in this case from 1 to 5, so here you will retrieve from the 1st to the 5th variables.  
 
-Dataframes/tibbles in R are a collection of vectors where each vector is a column and represents a variable. To view a specific variable, for instance gender, you can use a dollar sign as follows:
+Dataframes in R are a collection of vectors where each vector is a column and represents a variable. To view a specific variable, for instance gender, you can also use a dollar sign as follows:
 
 ```{r results="hide"}
 offenders$GENDER
@@ -301,7 +294,7 @@ The format is dataframe name, $, variable name. Note that a vector is returned.
 
 ### 2.5 Data classes
 
-All variables have an associated class. The class will determine what calculations are possible with them and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date. 
+All variables have an associated class. The class will determine what calculations are possible and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date.
 
 We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class" (see example checking the class of the WEIGHT variable below):
 
@@ -327,7 +320,7 @@ We can change the GENDER variable in the offenders dataset to be a factor variab
 offenders$GENDER <- as.factor(offenders$GENDER)  
 ```
 
-Factors are for categorical variables involving different levels. So for example, in the dataset 'offenders', FEMALE is stored as 1, and MALE as 2. We can see this now when looking at the environment tab (after clicking the arrow to the left of offenders) and also the order from using the following command:
+Factors are for categorical variables involving different levels. So for example, in the dataset offenders, FEMALE is stored as 1, and MALE as 2. We can see this now when looking at the environment tab (after clicking the arrow to the left of offenders) and also the order using the following command:
 
 ```{r}
 levels(offenders$GENDER)
