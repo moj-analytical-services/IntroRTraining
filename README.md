@@ -1,4 +1,4 @@
-# IntroRTraining
+# Introduction to R Training
 
 If you are taking the introductory R training you will find the following documents useful:
 
