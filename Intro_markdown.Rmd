@@ -566,7 +566,7 @@ offenders <- offenders %>% mutate(weekday = weekdays(DoB_formatted))
 You can also calculate the number of days since a date. For instance, let's say we want to know the no. of days between the date of birth and 1 Jan 2000:
 
 ```{r results="hide"}
-offenders <- offenders %>%
+offenders <- offenders %>% 
   mutate(days_before_2000 = ymd("2000-01-01") - DoB_formatted)
 ```
 

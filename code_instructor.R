@@ -67,10 +67,10 @@ View(offenders_new)
 # Q1 Read in dataset ‘FTSE_12_14.csv’ and convert the variable date to class date. 
 
 # analytical platform amazon server:
-ftse <- s3tools::s3_path_to_full_df("alpha-everyone/R_training_intro/FTSE_12_14.csv")
+ftse <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/FTSE_12_14.csv")
 
 #Or we can use the below to load the data:
-ftse<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-everyone/R_training_intro/FTSE_12_14.csv") 
+ftse <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/FTSE_12_14.csv") %>% mutate_if(is.factor, as.character)  
 
 #If dataset is in working directory:
 # ftse <- read_csv("FTSE_12_14.csv")
@@ -131,13 +131,12 @@ write.csv(offenders_trial_age, "offenders_trial_age.csv")
 # Q3(Extension) Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height.
 #(hint: you will need to use the ifelse and is.na() functions)
 
-?ifelse
-?is.na
+?replace
 
 mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
 
-offenders <- offenders %>% 
-  mutate(height_new=ifelse(is.na(HEIGHT),mean_height, HEIGHT))
+offenders_a <- offenders %>% 
+  mutate(height_new=replace(HEIGHT, is.na(HEIGHT),mean_height))
 
 
 
