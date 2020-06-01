@@ -522,9 +522,10 @@ Extension:
 ## 4 Dates
 ### 4.1 Manipulating dates
 
-As you might have noticed, BIRTH_DATE in the 'offenders' dataset currently has a class of character (or factor depending how you read the data in). To be able to manipulate this data as a date in R, we first need to convert it to class date.
+As you might have noticed, BIRTH_DATE in the offenders dataset currently has class character. To be able to manipulate dates in date format, we first need to convert the data to have class date.
 
-In all of this section, we are going to use a package from tidyverse designed called lubridate, there are also ways to do the same thing using base R. First, we need to load the package:
+In this section, we are going to use a package from tidyverse called lubridate to enable R to recognize and manipulate dates. First, we need to load the package:
+
 ```{r results=FALSE, warning=FALSE, comment=FALSE}
 library(lubridate)
 ```
@@ -534,39 +535,39 @@ Class date involves dates being represented in R as the number of days since 197
 today()
 ```
 
-If you have a read of the help file, you'll see lubridate has a number of functions such as dmy(), myd() etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the string to be parsed.
+If you have a read of the help file, you'll see lubridate has a number of functions such as dmy(), myd() etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the character string to be parsed.
 
 We can therefore make a new date variable (called DoB_formatted) with class date as follows, and then check the class of the new column:
 
 ```{r results="hide"}
-offenders<- mutate(offenders, DoB_formatted = mdy(BIRTH_DATE))
+offenders<- offenders %>% 
+  mutate(DoB_formatted = mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
 
 ```
 
-
 The function mdy() specifies the format that the date in column BIRTH_DATE is currently in so R knows where to find the day, month and year needed to create a date. 
-
-Remember, to refer to a specific variable, we use a dollar sign. We have used a variable name that doesn't currently exist in 'offenders' so R has created a new variable and appended it.
 
 Now we have a variable with class date we can create new variables containing just part of the date e.g.
 
 ```{r results="hide"}
-offenders <- mutate(offenders, day = day(DoB_formatted))
+offenders <- offenders %>% mutate(day = day(DoB_formatted))
 
-offenders <- mutate(offenders, quarter = quarter(DoB_formatted))
+offenders <- offenders %>% mutate(quarter = quarter(DoB_formatted))
 
-offenders <- mutate(offenders, year = year(DoB_formatted))
+offenders <- offenders %>% mutate(year = year(DoB_formatted))
 
-offenders <- mutate(offenders, month = month(DoB_formatted))
+offenders <- offenders %>% mutate(month = month(DoB_formatted))
 
-offenders <- mutate(offenders, weekday = weekdays(DoB_formatted))
+offenders <- offenders %>% mutate(weekday = weekdays(DoB_formatted))
 ```
 
-You can also calculate the number of days since a date. For instance let's say we want to know the no. of days between the date of birth and 1 Jan 2000:
+You can also calculate the number of days since a date. For instance, let's say we want to know the no. of days between the date of birth and 1 Jan 2000:
+
 ```{r results="hide"}
-offenders <- mutate(offenders, days_before_2000 = ymd("2000-01-01") - DoB_formatted)
+offenders <- offenders %>%
+  mutate(days_before_2000 = ymd("2000-01-01") - DoB_formatted)
 ```
 
 ### 4.2 Exercises
