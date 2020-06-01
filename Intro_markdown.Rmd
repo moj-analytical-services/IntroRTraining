@@ -13,11 +13,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Basic setup
 
-This document provides accompanying training material used in the Introduction to R Training session, conducted by the ASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting). https://moj-analytical-services.github.io/platform_user_guidance/getting-started.html. Also make sure step 2.3.1 has been completed otherwise you will have difficulty importing files at later stages of this course.  
+This document provides accompanying training material used in the Introduction to R Training session, conducted by the DASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting) - see https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#get-started. 
+
+You should then work through the following: 
+https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#deploy-analytical-tools
+https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#open-analytical-tools
+https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#configure-git-and-github
 
 This guide is hosted on Github: https://github.com/moj-analytical-services/IntroRTraining
-
-In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for github, but for now, please import the project from github by following the steps outlined in section 4.1.3 of the platform guidance: https://moj-analytical-services.github.io/platform_user_guidance/using-github-with-r-studio.html
+In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for Github, but for now, please import the project from Github by following step 1 at: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
 
 ## Contents
 
@@ -25,7 +29,7 @@ In that repository, there is the file code_participant.R, which contains code re
 2. Processing data - this section introduces R packages, importing data into R,  inspecting data and data classes
 3. Data wrangling and 'group by' calculations - this section covers the most useful data manipulation functions using the dplyr package
 4. Dates - this section explores working with dates
-5. Merging data, missing values and exporting - This section explores some more advanced data wrangling techniques, as well as exporting data
+5. Merging data, missing values and exporting - this section explores some more advanced data wrangling techniques, as well as exporting data
 6. Extra resources
 
 ## 1. Introduction
