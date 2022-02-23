@@ -175,6 +175,9 @@ offenders <- offenders %>% mutate(days_before_2000 = ymd("2000-01-01") - DoB_for
 # Read in ftse data
 ftse <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/FTSE_12_14.csv")
 
+#Read in ftse data using botor
+ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/ FTSE_12_14.csv", read.csv)
+
 # Alternative way to upload the ftse data from the Analytical Platform amazon server if the option above doesn't work
 ftse <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/FTSE_12_14.csv") %>% mutate_if(is.factor, as.character)  
 
