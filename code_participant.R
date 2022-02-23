@@ -43,6 +43,9 @@ offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 # From the Analytical Platform amazon server
 offenders <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv")
 
+# From the updated Analytical Platform server
+offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read.csv)
+
 # Alternative way to upload the data from the Analytical Platform amazon server if the option above doesn't work
 offenders<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv") %>% mutate_if(is.factor, as.character)  
 
