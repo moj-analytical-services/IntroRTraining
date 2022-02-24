@@ -90,7 +90,7 @@ class(ftse$formatted_date)
 # (close price - open price). 
 
 # create weekday variable
-ftse <- mutate(ftse, day = weekdays(formatted_date))
+ftse <- mutate(ftse, weekday = weekdays(formatted_date))
 
 View(ftse)
 
