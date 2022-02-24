@@ -114,14 +114,13 @@ View(weekday_performance)
 
 # create offenders age dataset with just age column and columns we're joining on
 offenders_age <- offenders %>%
-  select(LAST, DoB=BIRTH_DATE, AGE)
+  select(LAST, BIRTH_DATE, AGE)
 
 # merge the two datasets
-offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "DoB"))
+offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "BIRTH_DATE"))
 
 # Or in one part
 offenders_trial_age <- offenders %>% 
-  rename("DoB"="BIRTH_DATE") %>%
   select(LAST, DoB, AGE) %>% 
   inner_join(offenders_trial, by=c("LAST", "DoB"))
 
