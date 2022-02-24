@@ -122,7 +122,7 @@ offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "
 # Or in one part
 offenders_trial_age <- offenders %>% 
   select(LAST, DoB, AGE) %>% 
-  inner_join(offenders_trial, by=c("LAST", "DoB"))
+  inner_join(offenders_trial, by=c("LAST", "BIRTH_DATE"))
 
 # Q2 Export the dataset offenders_trial_age to a csv file.
 write.csv(offenders_trial_age, "offenders_trial_age.csv")
