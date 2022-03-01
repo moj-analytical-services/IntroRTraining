@@ -40,14 +40,9 @@ help(package=dplyr)
 # If the csv file is in your working directory
 offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 
-# From the Analytical Platform amazon server
-offenders <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv")
-
 # From the updated Analytical Platform server
 offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read.csv)
 
-# Alternative way to upload the data from the Analytical Platform amazon server if the option above doesn't work
-offenders<-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv") %>% mutate_if(is.factor, as.character)  
 
 # 2.4 Inspecting the dataset
 
@@ -172,18 +167,13 @@ offenders <- offenders %>% mutate(days_before_2000 = ymd("2000-01-01") - DoB_for
 
 # 4.2 Exercises
 
-# Read in ftse data
-ftse <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/FTSE_12_14.csv")
-
 #Read in ftse data using botor
-ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/ FTSE_12_14.csv", read.csv)
-
-# Alternative way to upload the ftse data from the Analytical Platform amazon server if the option above doesn't work
-ftse <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/FTSE_12_14.csv") %>% mutate_if(is.factor, as.character)  
+ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read.csv)
 
 # To read the file in directly from the wd (for those on borrowed macs you will need to do this) use
 library(readr)
 ftse <- read_csv("FTSE_12_14.csv")
+
 
 # 5 Merging and exporting data --------------------------------------------
 # 5.1 Merging datasets
@@ -192,10 +182,7 @@ ftse <- read_csv("FTSE_12_14.csv")
 offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
 # Read in data on analytical platform amazon server:
-offenders_trial  <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv")
-
-# Alternative way to upload the offenders trial data from the Analytical Platform amazon server if the option above doesn't work
-offenders_trial <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv") %>% mutate_if(is.factor, as.character)  
+offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read.csv)
 
 offenders_trial <- offenders_trial %>% 
   rename(BIRTH_DATE=DoB) 

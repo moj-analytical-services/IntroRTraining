@@ -29,7 +29,7 @@ summary(offenders$WEIGHT)
 # Q3 By changing the SENTENCE class to factor output the levels of this variable. 
 
 class(offenders$SENTENCE)
-offenders$SENTENCE<-as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
+offenders$SENTENCE <- as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
 levels(offenders$SENTENCE)
 
 
@@ -67,10 +67,7 @@ View(offenders_new)
 # Q1 Read in dataset ‘FTSE_12_14.csv’ and convert the variable date to class date. 
 
 # analytical platform amazon server:
-ftse <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/FTSE_12_14.csv")
-
-#Or we can use the below to load the data:
-ftse <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/FTSE_12_14.csv") %>% mutate_if(is.factor, as.character)  
+ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read.csv)
 
 #If dataset is in working directory:
 # ftse <- read_csv("FTSE_12_14.csv")
@@ -121,7 +118,7 @@ offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "
 
 # Or in one part
 offenders_trial_age <- offenders %>% 
-  select(LAST, DoB, AGE) %>% 
+  select(LAST, BIRTH_DATE, AGE) %>% 
   inner_join(offenders_trial, by=c("LAST", "BIRTH_DATE"))
 
 # Q2 Export the dataset offenders_trial_age to a csv file.
