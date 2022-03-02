@@ -36,9 +36,13 @@ levels(offenders$SENTENCE)
 # 3.7 Exercises -----------------------------------------------------------
 # Q1 Using group_by and summarise, calculate the average and median age for females in the West.
 offenders %>% 
-  filter(GENDER=="FEMALE") %>%
   group_by(GENDER, REGION) %>%
   summarise(mean(AGE), median(AGE))
+
+offenders %>%
+  group_by(GENDER, REGION) %>%
+  summarise(mean(AGE), median(AGE)) %>%
+  filter(GENDER == 'FEMALE', REGION == 'West')
 
 # Q2 Using select and filter produce a table of offender’s genders who are over 2m tall. 
 offenders %>% 
