@@ -14,16 +14,16 @@ knitr::opts_chunk$set(eval=FALSE)
 
 ## Basic setup
 
-This document provides accompanying training material used in the Introduction to R Training session, conducted by the DASD R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform (IT system permitting) - see https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#get-started. 
+This document provides accompanying training material used in the Introduction to R Training session, conducted by the Data & Analysis R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform - see https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#get-started. 
 
 You should then work through the following:
 
-* https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#deploy-analytical-tools
-* https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#open-analytical-tools
-* https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#configure-git-and-github
-
-This guide is hosted on Github: https://github.com/moj-analytical-services/IntroRTraining
-In that repository, there is the file code_participant.R, which contains code related to the exercises in this guide. The Data Science team conduct separate training sessions for working for Github, but for now, please import the project from Github by following step 1 at: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
+ 1. https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#deploy-analytical-tools
+ 2. https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#open-analytical-tools
+ 3. https://user-guidance.services.alpha.mojanalytics.xyz/introduction.html#configure-git-and-github
+ 4. Clone the GitHub repository for this course (https://github.com/moj-analytical-services/IntroRTraining) by following step 1 here: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
+ 5. After cloning the repository, open up the file called 'code_participant.R' in RStudio, which contains example code that accompanies this course. To do this, look under the 'Files' tab in the bottom-right corner and click where it says 'code_participant.R'.
+ 6. In the Console window in RStudio, enter this command to make sure you have the required packages installed: `renv::restore()`
 
 ## Contents
 
@@ -40,7 +40,7 @@ In that repository, there is the file code_participant.R, which contains code re
 
 * Overview of R
 * Get new R users up and running with confidence
-* Introduce key functions needed in DASD work
+* Introduce key functions needed for Data & Analysis work
 
 ### 1.2 What is R?
 
