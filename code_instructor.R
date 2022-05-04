@@ -7,8 +7,6 @@ y <- 17
 y * 78
 # Q4 What does the command "head" do?
 ?head
-# Q5 What command might you use to subset a dataset?
-?subset
 
 
 # 2.7 Exercises -----------------------------------------------------------
@@ -35,10 +33,6 @@ levels(offenders$SENTENCE)
 
 # 3.7 Exercises -----------------------------------------------------------
 # Q1 Using group_by and summarise, calculate the average and median age for females in the West.
-offenders %>% 
-  group_by(GENDER, REGION) %>%
-  summarise(mean(AGE), median(AGE))
-
 offenders %>%
   group_by(GENDER, REGION) %>%
   summarise(mean(AGE), median(AGE)) %>%
@@ -91,12 +85,12 @@ class(ftse$formatted_date)
 # (close price - open price). 
 
 # create weekday variable
-ftse <- mutate(ftse, weekday = weekdays(formatted_date))
+ftse <- ftse %>% mutate(weekday = weekdays(formatted_date))
 
 View(ftse)
 
 # add daily performance column
-ftse <- mutate(ftse, daily_performance = Close - Open)
+ftse <- ftse %>% mutate(daily_performance = Close - Open)
 
 View(ftse)
 
@@ -129,7 +123,7 @@ offenders_trial_age <- offenders %>%
 write.csv(offenders_trial_age, "offenders_trial_age.csv")
 
 # Q3(Extension) Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height.
-#(hint: you will need to use the ifelse and is.na() functions)
+# (hint: you will need to use the ifelse and is.na() functions)
 
 ?replace
 
