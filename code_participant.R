@@ -27,6 +27,10 @@ setwd("~/IntroRTraining")
 
 # 2.2 Packages
 
+# renv restore (only needs running if you're cloning the repo for the first time)
+# If you do not have the renv package, please install it by running install.packages("renv") in the console.
+renv::restore()
+
 # Install packages (unnecessary if on Analytical Platform)
 install.packages("tidyverse")
 
@@ -38,7 +42,7 @@ help(package=dplyr)
 # 2.3 Importing data
 
 # If the csv file is in your working directory
-offenders <- read_csv("Offenders_Chicago_Police_Dept_Main.csv")
+offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 
 # From the updated Analytical Platform server
 offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read.csv)
@@ -82,88 +86,94 @@ offenders$GENDER <- as.character(offenders$GENDER)
 
 ?dplyr::select
 
-offenders_anonymous <- select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
+offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 
 offenders_anonymous <- offenders %>% 
-  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 
 offenders_anonymous <- offenders %>% 
-  select(-LAST, -FIRST, -BLOCK)
+  dplyr::select(-LAST, -FIRST, -BLOCK)
 
 # 3.2 Grouping and summarising data
 
 regional_gender_average <- offenders %>% 
-  group_by(REGION, GENDER) %>%
-  summarise(Ave = mean(PREV_CONVICTIONS)) 
+  dplyr::group_by(REGION, GENDER) %>%
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS)) 
 
 regional_gender_average <- offenders %>% 
-  group_by(REGION, GENDER) %>%
-  summarise(Ave = mean(PREV_CONVICTIONS), Count=n()) 
+  dplyr::group_by(REGION, GENDER) %>%
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n()) 
 
 regional_gender_average %>% 
-  summarise(Count=n())
+  dplyr::summarise(Count=n())
 
 regional_gender_average %>% 
-  ungroup() %>% 
-  summarise(Count=n())
+  dplyr::ungroup() %>% 
+  dplyr::summarise(Count=n())
 
 # 3.3 Filter
 
 offenders %>% 
-  group_by(SENTENCE) %>% 
-  summarise(Count = n())
+  dplyr::group_by(SENTENCE) %>% 
+  dplyr::summarise(Count = n())
 
 crt_order_average <- offenders %>% 
-  filter(SENTENCE == "Court_order" & AGE > 50) %>% 
-  group_by(REGION, GENDER) %>% 
-  summarise(Ave = mean(PREV_CONVICTIONS))
+  dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
+  dplyr::group_by(REGION, GENDER) %>% 
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
 
 # 3.4 Rename
 
 offenders_anonymous <- offenders %>%
-  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  rename(DoB = BIRTH_DATE) 
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  dplyr::rename(DoB = BIRTH_DATE) 
 
 offenders_anonymous <- offenders %>%
-  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
 
 # 3.5 Mutate
 
 ?mutate
 
 offenders_anonymous <- offenders %>%
-  select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
-  mutate(weight_kg = WEIGHT * 0.454)
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
+  dplyr::mutate(weight_kg = WEIGHT * 0.454)
 
 # 3.6 If_else
 
 offenders <- offenders %>% 
-  mutate(weight_under_170 = if_else(WEIGHT<170,1,0))
+  dplyr::mutate(weight_under_170 = if_else(WEIGHT<170,1,0))
 
 # Dates -------------------------------------------------------------------
 # 4.1 Manipulating dates
 
 library(lubridate)
 
-today()
+lubridate::today()
 
-offenders<- offenders %>% mutate(DoB_formatted = mdy(BIRTH_DATE))
+offenders <- offenders %>% dplyr::mutate(DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
 
-offenders <- offenders %>% mutate(day = day(DoB_formatted))
+offenders <- offenders %>% 
+  dplyr::mutate(day = lubridate::day(DoB_formatted))
 
-offenders <- offenders %>% mutate(quarter = quarter(DoB_formatted))
+offenders <- offenders %>%
+  dplyr::mutate(quarter = lubridate::quarter(DoB_formatted))
 
-offenders <- offenders %>% mutate(year = year(DoB_formatted))
+offenders <- offenders %>%
+  dplyr::mutate(year = lubridate::year(DoB_formatted))
 
-offenders <- offenders %>% mutate(month = month(DoB_formatted))
+offenders <- offenders %>%
+  dplyr::mutate(month = lubridate::month(DoB_formatted))
 
-offenders <- offenders %>% mutate(weekday = weekdays(DoB_formatted))
+offenders <- offenders %>%
+  dplyr::mutate(weekday = weekdays(DoB_formatted))
 
-offenders <- offenders %>% mutate(days_before_2000 = ymd("2000-01-01") - DoB_formatted)
+offenders <- offenders %>%
+  dplyr::mutate(days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
 
 # 4.2 Exercises
 
@@ -171,27 +181,26 @@ offenders <- offenders %>% mutate(days_before_2000 = ymd("2000-01-01") - DoB_for
 ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read.csv)
 
 # To read the file in directly from the wd (for those on borrowed macs you will need to do this) use
-library(readr)
-ftse <- read_csv("FTSE_12_14.csv")
+ftse <- readr::read_csv("FTSE_12_14.csv")
 
 
 # 5 Merging and exporting data --------------------------------------------
 # 5.1 Merging datasets
 
-# Read in data on DOM1 (assuming file in your working directory):
-offenders_trial <- read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
-
-# Read in data on analytical platform amazon server:
+# Read in data from s3 on Analytical Platform:
 offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read.csv)
 
+# Read in data on DOM1 (assuming file in your working directory):
+offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
+
 offenders_trial <- offenders_trial %>% 
-  rename(BIRTH_DATE=DoB) 
+  dplyr::rename(BIRTH_DATE=DoB) 
 
-offenders_merge <- inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
+offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
 
-men <- offenders %>% filter(GENDER == "MALE") 
-women <- offenders %>% filter(GENDER == "FEMALE")
-rejoined <- bind_rows(men, women)
+men <- offenders %>% dplyr::filter(GENDER == "MALE") 
+women <- offenders %>% dplyr::filter(GENDER == "FEMALE")
+rejoined <- dplyr::bind_rows(men, women)
 
 nrow(rejoined) # 1413 rows
 
@@ -200,8 +209,8 @@ nrow(offenders) # 1413 rows
 # 5.2 Handling missing values
 
 height_table <- offenders %>% 
-  group_by(HEIGHT) %>% 
-  summarise(Count=n())
+  dplyr::group_by(HEIGHT) %>% 
+  dplyr::summarise(Count=n())
 
 View(height_table)
 
@@ -210,7 +219,7 @@ is.na(offenders$HEIGHT)
 complete.cases(offenders)
 
 complete_offenders <- offenders %>% 
-  filter(complete.cases(offenders))
+  dplyr::filter(complete.cases(offenders))
 
 # 5.3 Exporting data
 write.csv(complete_offenders, file = "Complete_offenders.csv")
