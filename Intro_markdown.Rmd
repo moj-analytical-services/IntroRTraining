@@ -24,7 +24,7 @@ You should then work through the following:
  4. Clone the GitHub repository for this course (https://github.com/moj-analytical-services/IntroRTraining) by following step 1 here: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
  5. After cloning the repository, open up the file called 'code_participant.R' in RStudio, which contains example code that accompanies this course. To do this, look under the 'Files' tab in the bottom-right corner and click where it says 'code_participant.R'.
  6. In the Console window in RStudio, enter this command to make sure you have the required packages installed: `renv::restore()`
- 7. If you haven't already, request access to the alpha-r-training bucket on Amazon S3 (which is used to store some example data) from the session organisers. To check if you can access the bucket you can run the following code, which should output a list of files stored in the bucket: `botor::s3_ls('s3://alpha-r-training')`
+ 7. If you haven't already, request access to the alpha-r-training bucket on Amazon S3 (which is used to store some example data) from the session organisers. To check if you can access the bucket you can run the following code in the RStudio Console, which should output a list of files stored in the bucket: `botor::s3_ls('s3://alpha-r-training')`
 
 ## Contents
 
