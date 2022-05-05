@@ -229,7 +229,7 @@ Note that the above assumes that the csv file is in your working directory, othe
 
 #### Importing data from the Analytical Platform cloud storage (Amazon s3)
 
-Data that has been approved for storage on the Analytical Platform is generally stored in a folder or 'bucket' on Amazon s3, which is the cloud storage solution used by the Analytical Platform. To import the data for this session from an s3 bucket use this command:
+Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon s3, which is the cloud storage solution used by the Analytical Platform. To import the data for this session from the 'alpha-r-training' s3 bucket use this command:
 
 ```{r, results="hide"}
 offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read.csv)
