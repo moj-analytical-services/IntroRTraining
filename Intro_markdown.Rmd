@@ -550,7 +550,7 @@ Now we have a variable with class date we can create new variables containing ju
 
 ```{r results="hide"}
 offenders <- offenders %>% 
-  plyr::mutate(day = lubridate::day(DoB_formatted))
+  dplyr::mutate(day = lubridate::day(DoB_formatted))
 
 offenders <- offenders %>%
   dplyr::mutate(quarter = lubridate::quarter(DoB_formatted))
