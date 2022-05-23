@@ -7,8 +7,6 @@ y <- 17
 y * 78
 # Q4 What does the command "head" do?
 ?head
-# Q5 What command might you use to subset a dataset?
-?subset
 
 
 # 2.7 Exercises -----------------------------------------------------------
@@ -29,16 +27,16 @@ summary(offenders$WEIGHT)
 # Q3 By changing the SENTENCE class to factor output the levels of this variable. 
 
 class(offenders$SENTENCE)
-offenders$SENTENCE<-as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
+offenders$SENTENCE <- as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
 levels(offenders$SENTENCE)
 
 
 # 3.7 Exercises -----------------------------------------------------------
 # Q1 Using group_by and summarise, calculate the average and median age for females in the West.
-offenders %>% 
-  filter(GENDER=="FEMALE") %>%
+offenders %>%
   group_by(GENDER, REGION) %>%
-  summarise(mean(AGE), median(AGE))
+  summarise(mean(AGE), median(AGE)) %>%
+  filter(GENDER == 'FEMALE', REGION == 'West')
 
 # Q2 Using select and filter produce a table of offender’s genders who are over 2m tall. 
 offenders %>% 
@@ -67,10 +65,7 @@ View(offenders_new)
 # Q1 Read in dataset ‘FTSE_12_14.csv’ and convert the variable date to class date. 
 
 # analytical platform amazon server:
-ftse <- s3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/FTSE_12_14.csv")
-
-#Or we can use the below to load the data:
-ftse <-s3tools::read_using(FUN=read.csv, s3_path = "alpha-r-training/intro-r-training/FTSE_12_14.csv") %>% mutate_if(is.factor, as.character)  
+ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read.csv)
 
 #If dataset is in working directory:
 # ftse <- read_csv("FTSE_12_14.csv")
@@ -90,12 +85,12 @@ class(ftse$formatted_date)
 # (close price - open price). 
 
 # create weekday variable
-ftse <- mutate(ftse, weekday = weekdays(formatted_date))
+ftse <- ftse %>% mutate(weekday = weekdays(formatted_date))
 
 View(ftse)
 
 # add daily performance column
-ftse <- mutate(ftse, daily_performance = Close - Open)
+ftse <- ftse %>% mutate(daily_performance = Close - Open)
 
 View(ftse)
 
@@ -121,14 +116,14 @@ offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "
 
 # Or in one part
 offenders_trial_age <- offenders %>% 
-  select(LAST, DoB, AGE) %>% 
+  select(LAST, BIRTH_DATE, AGE) %>% 
   inner_join(offenders_trial, by=c("LAST", "BIRTH_DATE"))
 
 # Q2 Export the dataset offenders_trial_age to a csv file.
 write.csv(offenders_trial_age, "offenders_trial_age.csv")
 
 # Q3(Extension) Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height.
-#(hint: you will need to use the ifelse and is.na() functions)
+# (hint: you will need to use the ifelse and is.na() functions)
 
 ?replace
 
