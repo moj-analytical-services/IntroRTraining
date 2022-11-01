@@ -1,9 +1,11 @@
 
 ---
 title: "Intro R training"
-output:
-  word_document: default
-  pdf_document: default
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
 ---
 
 
@@ -12,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(eval=FALSE)
 ```
 
-## Basic setup
+# Basic setup {-}
 
 This document provides accompanying training material used in the Introduction to R Training session, conducted by the Data & Analysis R training group. Prior to joining the session, you should ensure you are set up on the Analytical Platform - see https://user-guidance.services.alpha.mojanalytics.xyz/get-started.html. 
 
@@ -25,7 +27,7 @@ You should then work through the following:
  5. In the Console window in RStudio, enter this command to make sure you have the required packages installed: `renv::restore()`
  6. If you haven't already, request access to the alpha-r-training bucket on Amazon S3 (which is used to store some example data) from the session organisers. To check if you can access the bucket you can run the following code in the RStudio Console, which should output a list of files stored in the bucket: `botor::s3_ls('s3://alpha-r-training')`
 
-## Contents
+# Overview {-}
 
 1. Introduction - in this section you will be introduced to R, the RStudio Environment and some of the basic R commands
 2. Processing data - this section introduces R packages, importing data into R,  inspecting data and data classes
@@ -34,15 +36,15 @@ You should then work through the following:
 5. Merging data, missing values and exporting - this section explores some more advanced data wrangling techniques, as well as exporting data
 6. Extra resources
 
-## 1. Introduction
+# Introduction
 
-### 1.1 Session aims
+## Session aims
 
 * Overview of R
 * Get new R users up and running with confidence
 * Introduce key functions needed for Data & Analysis work
 
-### 1.2 What is R?
+## What is R?
 
 R is an open-source programming language and software environment, designed primarily for statistical computing. It has a long history - it is based on the S language, which was developed in 1976 in Bell Labs, where the UNIX operating system and the C and C++ languages were developed. The R language itself was developed in the 1990s, with the first stable version release in 2000.
 
@@ -55,7 +57,7 @@ Some of the advantages:
 * It is **extensible** - there are a vast array of **packages** that can be added to extend the functionality of R, produced by statisticians and programmers around the world. These can range from obscure statistical techniques to tools for making interactive charts.
 * It's **free and open source** - a large part of its popularity can be owed to its low cost, particularly relative to proprietary software such as SAS.
 
-### 1.3 How is it used?
+## How is it used?
 
 There a number of areas in the MoJ where R is making an impact:
 
@@ -63,7 +65,7 @@ There a number of areas in the MoJ where R is making an impact:
 2. A number of webapps using Shiny have been produced, allowing customers to explore data in an interactive way. The PQ tool is a strong example: https://pq-tool.apps.alpha.mojanalytics.xyz/
 3. It has enabled more technical analysis to be done with the help of packages written by academics and statisticians, which would have to be coded from scratch using SAS. For example, the PQ tool makes use of packages to facilitate Natural Language Processing and Text Mining.
 
-### 1.4 Command console
+## Command console
 
 The window in which commands are entered is called the "console" window. It is used to input and execute code. Results, errors and warnings are shown directly in the same window. 
 
@@ -105,7 +107,7 @@ This uses the "c" function - the c is short for "concatenate". You can now see t
 
 The console will remember your most recent commands, if you want to reuse one, just use the up and down arrows to scroll through them. When you have found the one that you want, press return, R will repeat that line of code and display the results. 
 
-### 1.5 Script file
+## Script file
 
 While commands can be written into the console, it is a good idea to use a "script". This is a code file that can be saved and reused in future. 
 
@@ -117,7 +119,7 @@ In R, these files have a '.R' extension. The code file should appear in the top 
 
 To execute the code, click run at the top of the screen. R will run the line of code that the cursor is currently on, if you want to run several lines of code, highlight them and then press run.
 
-### 1.6 Other windows and getting help
+## Other windows and getting help
 
 The top right panel shows all “objects” that are in your working environment. This will become clearer throughout the session but typically, this will be any data that you have created or imported, additional variables and values that you have created. For instance, if you have run the code above, ‘x’ should be shown here. Other objects containing for instance the details of regression models that you have created would also appear here. From here you can also use a drop down menu to import more data.
 
@@ -131,15 +133,15 @@ There is also a help menu. You can either use this or type ? into the console an
 
 Of course, you can also use google or ASD slack to try and find the solution to the problem. 
 
-### 1.7 Exercises
+## Exercises
 
 1.	Create a new R script file in which you can store all commands you make during this exercise. Save it as 'Intro_R_Exercises.R'.
 2.  Create a new value called y which is equal to 17.
 3.  Now multiply y by 78. What answer do you get?
 4.	What does the command "head" do?
 
-##   2. Processing data
-### 2.1 Setting up a working directory
+# Processing data
+## Setting up a working directory
 
 The default behaviour of RStudio for the handling of files (e.g. datasets, code scripts, etc) is to use a working directory, which is a folder where RStudio reads and saves files. Therefore, before we start writing any code we should set up a working directory so that everything we are going to import into RStudio or export from RStudio will be saved by default into this folder. 
 
@@ -178,7 +180,7 @@ If you have not synced your RStudio to GitHub or are unable to clone a repositor
 5. Upload files to your new project by clicking Upload in the Files window menu (bottom right window) and select Browse to upload any files saved in a folder e.g. data csv files saved in a folder in your OneDrive.
 6. Set your working directory to your new project using the RStudio commands above (or using the manual steps).
 
-### 2.2 Packages
+## Packages
 
 A lot of pre-programmed routines are included in R, and you can add a lot more through packages. One characteristic that's important to recognise is that just as there are many ways of getting from Victoria Station to 102 Petty France, there are many ways of doing the same thing in R. Some ways are (computationally) faster, some are simpler to program, and some may be more conducive to your taste.  
 
@@ -206,11 +208,11 @@ To know more about a package, it is always useful to read the associated documen
 ?dplyr
 ```
 
-### 2.3 Importing data
+## Importing data
 
 It is important to be able to import data both from your own computer as well as the Analytical Platform cloud storage.
 
-#### Importing data using a local version of RStudio
+### Importing data using a local version of RStudio
 
 If you're using a local version of RStudio on your laptop (i.e. not accessed via the Analytical Platform control panel), you can import data from .csv files into Rstudio by clicking on the Environment tab and then the Import button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
 
@@ -226,7 +228,7 @@ offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 
 Note that the above assumes that the csv file is in your working directory, otherwise you will need to include the file path - see section 2.1.
 
-#### Importing data from the Analytical Platform cloud storage (Amazon s3)
+### Importing data from the Analytical Platform cloud storage (Amazon s3)
 
 Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon s3, which is the cloud storage solution used by the Analytical Platform. To import the data for this session from the 'alpha-r-training' s3 bucket use this command:
 
@@ -238,7 +240,7 @@ Both this and the code shown above are suitable for csv files, so it is assumed 
 
 There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see http://www.statmethods.net/input/importingdata.html 
 
-### 2.4 Inspecting the dataset
+## Inspecting the dataset
 
 As noted in the previous section, you can see by looking in the environment window that the offenders dataset has 1413 observations and 11 variables. To view this dataset, click the icon to the right of this information (or anywhere on that row), which you can see from the console is the equivalent of using the command:
 
@@ -288,7 +290,7 @@ offenders$GENDER
 
 The format is dataframe name, $, variable name. Note that a vector is returned. 
 
-### 2.5 Data classes
+## Data classes
 
 All variables have an associated class. The class will determine what calculations are possible and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date.
 
@@ -334,7 +336,7 @@ We can now change the GENDER variable in the offenders dataset back to be a char
 offenders$GENDER <- as.character(offenders$GENDER)  
 ```
 
-### 2.6 Some useful numeric and statistical functions include:
+## Some useful numeric and statistical functions include:
 
    - abs(x): returns the absolute value of x
    - sqrt(x): returns the square root of x
@@ -351,15 +353,15 @@ offenders$GENDER <- as.character(offenders$GENDER)
    - cor(x): gives the linear correlation coefficient
    - median(x): if x is a vector of observations, return its median
 
-### 2.7 Exercises
+## Exercises
 
 1. Find the mean and median of the AGE variable in the offenders dataset.
 2. Find the max and min for the WEIGHT variable in the offenders dataset.
 3. By changing the SENTENCE class to factor output the levels of this variable. 
 
 
-## 3 Data wrangling and 'group by' calculations
-### 3.1 Select
+# Data wrangling and 'group by' calculations
+## Select
 
 We can keep only those variables we want from the offenders dataset using the select command from the dplyr package.
 
@@ -395,7 +397,7 @@ offenders_anonymous <- offenders %>%
 
 As we don’t want them, the variables listed within the select command now have minus signs before each of them.
 
-### 3.2 Grouping and summarising data
+## Grouping and summarising data
 
 We can produce breakdowns of statistics using the group_by and summarise commands from the dplyr package:
 
@@ -439,7 +441,7 @@ regional_gender_average %>%
  dplyr::summarise(Count = n())
 ```
 
-### 3.3 Filter
+## Filter
 
 If you would like to produce statistics for a subset of rows or observations, a good function to use is filter() from the dplyr package.
 
@@ -460,7 +462,7 @@ crt_order_average <- offenders %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
 ```
 
-### 3.4 Rename
+## Rename
 
 We can rename variables using the dplyr function rename(). Let’s amend our section 3.1 coding in creating the offenders_anonymous dataset so that BIRTH_DATE is instead called "DoB".
 
@@ -478,7 +480,7 @@ offenders_anonymous <- offenders %>%
   dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
 ```
 
-### 3.5 Mutate
+## Mutate
 
 You can create new variables and perform calculations on variables using the dplyr command mutate().
  
@@ -497,7 +499,7 @@ offenders_anonymous <- offenders %>%
 
 You can download the Data Transformation Cheat Sheet (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/
 
-### 3.6 If_else
+## if_else
 
 Another useful function found in the dplyr package is if_else, which works in a similar way to if statements in Excel. This uses a logical statement to determine the output. The below code uses the if_else function to identify offenders who have weight under 170lbs, the mutate function being used together with it to add a variable in to the ‘offenders’ dataset which is 1 if they are under 170lbs and 0 if they are over 170lbs.
 
@@ -506,7 +508,7 @@ offenders <- offenders %>%
   dplyr::mutate(weight_under_170 = if_else(WEIGHT<170,1,0))
 ```
 
-### 3.7 Exercises
+## Exercises
 
 1.  Using group_by and summarise, calculate the average and median age for females in the West.
 2.  Using select and filter produce a table of offender’s genders who are over 2m tall (note that the heights are currently in cm). 
@@ -515,8 +517,8 @@ offenders <- offenders %>%
 Extension: 
 4.  Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename SENTENCE as sentence_type, and create a new variable num_convictions that is PREV_CONVICTIONS + 1 (to take account of the latest conviction).
 
-## 4 Dates
-### 4.1 Manipulating dates
+# Dates
+## Manipulating dates
 
 As you might have noticed, BIRTH_DATE in the offenders dataset currently has class character. To be able to manipulate dates in date format, we first need to convert the data to have class date.
 
@@ -571,15 +573,15 @@ offenders <- offenders %>%
   dplyr::mutate(days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
 ```
 
-### 4.2 Exercises
+## Exercises
 
 1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
 (To read in the data, use the code given in the participant code script) 
 2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
 3.	Work out which day of the week has the highest mean performance. 
 
-## 5 Merging data, missing values and exporting
-### 5.1 Merging datasets
+# Merging data, missing values and exporting
+## Merging datasets
 
 There are dplyr functions left_join, right_join, inner_join, full_join, semi_join and anti_join which can merge data sets, provided you have some common fields to match on. This is similar to SQL.
 
@@ -631,7 +633,7 @@ nrow(offenders)
 
 The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
 
-### 5.2 Handling missing values
+## Handling missing values
 
 In R, missing values are represented by the symbol NA (not available). Impossible values (e.g. dividing by zero) are represented by the symbol NaN (not a number). The missing data functions we’ll use in this section recognize both these types.
 
@@ -668,7 +670,7 @@ complete_offenders <- offenders %>%
   dplyr::filter(complete.cases(offenders))
 ```
 
-### 5.3 Exporting data
+## Exporting data
 
 A command to export data into csv format is write.csv. For instance, to export our data which contains the complete cases:
 
@@ -678,7 +680,7 @@ write.csv(complete_offenders, file = "Complete_offenders.csv")
 
 This assumes by default that you want to export the row headers and that the columns are separated by a comma symbol (sep = ","). The data will be saved as a csv file in your working directory.  
 
-### 5.4 Exercises
+## Exercises
 
 1.	Create a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 2.	Export the dataset offenders_trial_age to a csv file.
@@ -686,7 +688,7 @@ This assumes by default that you want to export the row headers and that the col
 Extension: 
 3. Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: you can make use of the replace function).
 
-## 6. Extra Resources
+# Extra Resources
 
 There are lots of resources that can help you develop your R knowledge, but below are a few that are particularly helpful:
 
