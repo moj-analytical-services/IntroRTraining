@@ -19,11 +19,12 @@ This document provides accompanying training material used in the Introduction t
 You should then work through the following:
 
  1. Deploy (if necessary) and open RStudio: https://user-guidance.services.alpha.mojanalytics.xyz/tools/control-panel.html#control-panel
- 2. Connect RStudio to GitHub: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#setup-github-keys-to-access-it-from-r-studio-and-jupyter
- 3. Clone the GitHub repository for this course (https://github.com/moj-analytical-services/IntroRTraining) by following step 1 here: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
- 4. After cloning the repository, open up the file called 'code_participant.R' in RStudio, which contains example code that accompanies this course. To do this, look under the 'Files' tab in the bottom-right corner and click where it says 'code_participant.R'.
- 5. In the Console window in RStudio, enter this command to make sure you have the required packages installed: `renv::restore()`
- 6. If you haven't already, request access to the alpha-r-training bucket on Amazon S3 (which is used to store some example data) from the session organisers. To check if you can access the bucket you can run the following code in the RStudio Console, which should output a list of files stored in the bucket: `botor::s3_ls('s3://alpha-r-training')`
+ 1. Connect RStudio to GitHub: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#setup-github-keys-to-access-it-from-r-studio-and-jupyter
+ 1. Clone the GitHub repository for this course (https://github.com/moj-analytical-services/IntroRTraining) by following step 1 here: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
+ 1. After cloning the repository, open up the file called 'code_participant.R' in RStudio, which contains example code that accompanies this course. To do this, look under the 'Files' tab in the bottom-right corner and click where it says 'code_participant.R'.
+ 1. In the Console window in RStudio, install the `renv` package, which helps create reproducible environments for R projects, by running `install.packages("renv")`
+ 1. Use `renv` to ensure you have the required packages installed by running in the Console window: `renv::restore()`
+ 1. If you haven't already, request access to the alpha-r-training bucket on Amazon S3 (which is used to store some example data) from the session organisers. To check if you can access the bucket you can run the following code in the RStudio Console, which should output a list of files stored in the bucket: `botor::s3_ls('s3://alpha-r-training')`
 
 # Overview {-}
 
@@ -141,51 +142,47 @@ Of course, you can also use google or ASD slack to try and find the solution to 
 # Processing data
 ## Setting up a working directory
 
-The default behaviour of RStudio for the handling of files (e.g. datasets, code scripts, etc) is to use a working directory, which is a folder where RStudio reads and saves files. Therefore, before we start writing any code we should set up a working directory so that everything we are going to import into RStudio or export from RStudio will be saved by default into this folder. 
+The default behaviour of RStudio for the handling of files (e.g. datasets, code scripts, etc) is to use a working directory, which is a folder where RStudio reads and saves files. Therefore, before we start writing any code we should be aware of what the current working directory is, as everything we are going to import into or export from RStudio will be relative to this folder. 
 
-You can check what the working directory currently is by using the getwd() command (which stands for get working directory):
+You can check what the working directory currently is by using the `getwd()` command (which stands for get working directory):
 
 
 ```r
 getwd()
 ```
 
-If you want to change the working directory you can use the setwd() command:
+If you want to change the working directory to a specific repository/folder, you can use the `setwd()` command as follows:
 
 
 ```r
-setwd("~")
+setwd("~/folder_name")
 ```
 
-If you want to change the working directory to a specific repository/folder you have cloned from GitHub, for example, the "IntroRTraining" repository, you can use the setwd() command as follows:
-
-
-```r
-setwd("~/IntroRTraining")
-```
-
-Additionally, you can set your working directory manually following the steps below:
+Alternatively, you can set your working directory following the steps below:
 
 1. Create a folder with an appropriate name containing any files you need for your RStudio session.
-2. From RStudio, use the menu to change your working directory under Session > Set Working Directory > Choose Directory. 
-3. Choose the directory (folder) you’ve just created in step 1.
+1. From RStudio, use the menu to change your working directory under Session > Set Working Directory > Choose Directory. 
+1. Choose the directory (folder) you’ve just created in step 1.
 
-If you have not synced your RStudio to GitHub or are unable to clone a repository from GitHub you can create a new project using RStudio and upload files from a folder in your laptop into this new project. You can then set your working directory to this new project that you have created. Steps to create a new project are detailed below:  
+Note that if you have cloned the IntroRTraining repository from GitHub into a new directory in RStudio, that directory automatically becomes an RStudio project and is set as the working directory, which you can check by running `getwd()`.
+
+If you have not synced your RStudio to GitHub and are unable to clone a repository from GitHub, you can create a new RStudio project and upload files from a folder in your laptop into this new project. Steps to create a new project are detailed below:  
 
 1. Click on the File Menu and select New Project.
-2. Select New Directory
-3. Select New Project
-4. Write an appropriate name for your project in the Directory Name text box and select Create Project.
-5. Upload files to your new project by clicking Upload in the Files window menu (bottom right window) and select Browse to upload any files saved in a folder e.g. data csv files saved in a folder in your OneDrive.
-6. Set your working directory to your new project using the RStudio commands above (or using the manual steps).
+1. Select New Directory
+1. Select New Project
+1. Write an appropriate name for your project in the Directory Name text box and select Create Project.
+1. Upload files to your new project by clicking Upload in the Files window menu (bottom right window) and select Browse to upload any files saved in a folder e.g. data csv files saved in a folder in your OneDrive.
+
+Your new directory will be automatically set as the working directory. If you have not set the new directory as an RStudio project, you will have to manually set the working directory using the steps above.
 
 ## Packages
 
-A lot of pre-programmed routines are included in R, and you can add a lot more through packages. One characteristic that's important to recognise is that just as there are many ways of getting from Victoria Station to 102 Petty France, there are many ways of doing the same thing in R. Some ways are (computationally) faster, some are simpler to program, and some may be more conducive to your taste.  
+A lot of pre-programmed routines are included in R, and you can add a lot more through packages. One characteristic that's important to recognize is that just as there are many ways of getting from Victoria Station to 102 Petty France, there are many ways of doing the same thing in R. Some ways are (computationally) faster, some are simpler to program, and some may be more conducive to your taste.  
 
-Packages extend R's functionality enormously and are a key factor in making R so popular. For instance, to install the tidyverse package in R, which we recommend you use for data manipulation, use the Install button from the Packages tab in Rstudio. 
+Packages extend R's functionality enormously and are a key factor in making R so popular. For instance, to install the `tidyverse` suite of packages in R, which we recommend you use for data manipulation and analysis, use the Install button from the Packages tab in Rstudio. 
 
-This uses the following command:
+This runs the following command:
 
 
 ```r
@@ -201,7 +198,7 @@ Once a package is installed, you should be able to see it in the packages tab. I
 library("tidyverse")
 ```
 
-The package suite tidyverse contains many useful packages such as dplyr which is a particularly useful package for manipulating and processing data. Many of the functions in the rest of this introductory training are from this package.
+The package suite `tidyverse` contains many useful packages such as `dplyr` which is a particularly useful package for manipulating and processing data. Many of the functions in the rest of this introductory training are from this package.
 
 To know more about a package, it is always useful to read the associated documentation:
 
@@ -214,15 +211,15 @@ To know more about a package, it is always useful to read the associated documen
 
 It is important to be able to import data both from your own computer as well as the Analytical Platform cloud storage.
 
-### Importing data using a local version of RStudio
+### Importing data using a local version of RStudio 
 
-If you're using a local version of RStudio on your laptop (i.e. not accessed via the Analytical Platform control panel), you can import data from .csv files into Rstudio by clicking on the Environment tab and then the Import button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
+If you're using a local version of RStudio on your laptop (i.e. not accessed via the Analytical Platform control panel), you can import data from .csv files into RStudio by clicking on the Environment tab and then the Import button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
 
 You can now see by looking in the environment window that an object has been created (the offenders dataset), and that it has 1413 observations and 9 variables.
 
-Now look at the Console tab. You should see the commands library and read_csv() appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won't need to do this again to load the data.
+Now look at the Console tab. You should see the commands library and `read_csv()` appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won't need to do this again to load the data.
 
-Alternatively you can simply use the function read_csv() from the readr package (which is included as part of tidyverse - see section 2.2):
+Alternatively you can simply use the function `read_csv()` from the `readr` package (which is included as part of tidyverse - see section 2.2:
 
 
 ```r
@@ -231,16 +228,16 @@ offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 
 Note that the above assumes that the csv file is in your working directory, otherwise you will need to include the file path - see section 2.1.
 
-### Importing data from the Analytical Platform cloud storage (Amazon s3)
+### Importing data from the Analytical Platform cloud storage (Amazon S3)
 
-Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon s3, which is the cloud storage solution used by the Analytical Platform. To import the data for this session from the 'alpha-r-training' s3 bucket use this command:
+Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon S3, which is the cloud storage solution used by the Analytical Platform. To import the data for this session from the 'alpha-r-training' S3 bucket use this command:
 
 
 ```r
 offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read.csv)
 ```
 
-Both this and the code shown above are suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = “,”). The latter approach assumes that you have already loaded the readr package, as it is part of tidyverse - see section 2.2.
+Both this and the code shown above are suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = “,”). The former approach assumes that you have already loaded the `readr` package, as it is part of `tidyverse` - see section 2.2.
 
 There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see http://www.statmethods.net/input/importingdata.html 
 
@@ -303,7 +300,7 @@ The format is dataframe name, $, variable name. Note that a vector is returned.
 
 ## Data classes
 
-All variables have an associated class. The class will determine what calculations are possible and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful types are factor, logical and date.
+All variables have an associated class. The class will determine what calculations are possible and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful classes are factor, logical and date.
 
 We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class" (see example checking the class of the WEIGHT variable below):
 
@@ -356,26 +353,26 @@ offenders$GENDER <- as.character(offenders$GENDER)
 
 ## Some useful numeric and statistical functions include:
 
-   - abs(x): returns the absolute value of x
-   - sqrt(x): returns the square root of x
-   - round(x, digits = n): rounds a number to the nth place
-   - exp(x): returns the exponential of x
-   - log(x): returns the natural log of x
-   - sum(x): if x is a vector, returns the sum of its elements
-   - min(x): if x is a vector, returns the smallest of its elements
-   - max(x): if x is a vector, returns the biggest of its elements
-   - rnorm(n, mean = 0, sd = 1): return n random numbers from the standard normal distribution
-   - rbinom(n, no. of trials = 1, prob = 0.5): return random numbers from n coin tosses
-   - mean(x): if x is a vector of observations, return the mean of its elements
-   - sd(x): if x is a vector of observations, return its standard deviation
-   - cor(x): gives the linear correlation coefficient
-   - median(x): if x is a vector of observations, return its median
+   - `abs(x)`: returns the absolute value of x
+   - `sqrt(x)`: returns the square root of x
+   - `round(x, digits = n)`: rounds a number to the nth place
+   - `exp(x)`: returns the exponential of x
+   - `log(x)`: returns the natural log of x
+   - `sum(x)`: if x is a vector, returns the sum of its elements
+   - `min(x)`: if x is a vector, returns the smallest of its elements
+   - `max(x)`: if x is a vector, returns the biggest of its elements
+   - `rnorm(n, mean = 0, sd = 1)`: return n random numbers from the standard normal distribution
+   - `rbinom(n, no. of trials = 1, prob = 0.5)`: return random numbers from n coin tosses
+   - `mean(x)`: if x is a vector of observations, return the mean of its elements
+   - `sd(x)`: if x is a vector of observations, return its standard deviation
+   - `cor(x)`: gives the linear correlation coefficient
+   - `median(x)`: if x is a vector of observations, return its median
 
 ## Exercises
 
 1. Find the mean and median of the AGE variable in the offenders dataset.
 2. Find the max and min for the WEIGHT variable in the offenders dataset.
-3. By changing the SENTENCE class to factor output the levels of this variable. 
+3. Change the class of the SENTENCE variable to factor, and output its levels. 
 
 
 # Data wrangling and 'group by' calculations
@@ -399,7 +396,7 @@ offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICT
 
 The first argument within the select command specifies use of the offenders dataset. Following this we list the variables we want to keep.
 
-A more popular way to obtain the same result is to use the pipe (%>%) operator: 
+A more popular way to obtain the same result is to use the pipe (`%>%`) operator: 
 
 
 ```r
@@ -407,7 +404,7 @@ offenders_anonymous <- offenders %>%
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 ```
 
-Here the offenders data are ‘piped’ like water into the select command using the pipe symbol %>%. This is interpreted by R as the first argument of the select command so the offenders dataset is not specified within the select command. The pipe operator makes code more readable by allowing us to chain together multiple functions and means you don’t have to either create a new object each time you run a command or use nested functions (functions that are within other functions).  
+Here the offenders data are ‘piped’ like water into the select command using the pipe symbol `%>%`. This is interpreted by R as the first argument of the select command so the offenders dataset is not specified within the select command. The pipe operator makes code more readable by allowing us to chain together multiple functions and means you don’t have to either create a new object each time you run a command or use nested functions (functions that are within other functions).  
 
 Let’s say that now we want the offenders_anonymous dataset to be the same as the dataset offenders but without the names and addresses:
 
@@ -421,12 +418,12 @@ As we don’t want them, the variables listed within the select command now have
 
 ## Grouping and summarising data
 
-We can produce breakdowns of statistics using the group_by and summarise commands from the dplyr package:
+We can produce breakdowns of statistics using the `group_by` and `summarise` commands from the `dplyr` package:
 
-* group_by() identifies which variables we want to produce breakdowns by. 
-* summarise() is used to indicate which values we want to calculate. 
+* `group_by()` identifies which variables we want to produce breakdowns by. 
+* `summarise()` is used to indicate which values we want to calculate. 
 
-Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use the pipe (%>%) operator to chain these functions together so that we don’t have to create a new object each time we run each of the commands, and in a manner which makes the code easy to read.
+Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use the pipe (`%>%`) operator to chain these functions together so that we don’t have to create a new object each time we run each of the commands, and in a manner which makes the code easy to read.
 
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
@@ -439,9 +436,9 @@ regional_gender_average <- offenders %>%
 
 Here R takes the offenders dataset, then (the pipe operator can be read as “then”) groups it first by REGION and then by GENDER and then outputs the mean number of previous convictions by REGION and GENDER. The mean number of previous convictions variable created we’ve decided to call "Ave". The results are saved into a new dataset called regional_gender_average.
 
-There are other functions that could be used here instead of mean e.g. n, n_distinct, min, max, mean, median, var and sd. 
+There are other functions that could be used here instead of mean e.g. `n`, `n_distinct`, `min`, `max`, `mean`, `median`, `var` and `sd`. 
 
-If we want to add a new variable that we decide to call "Count"" that provides the counts by REGION and GENDER we can rerun as follows using the pipe operator:
+If we want to add a new variable that we decide to call "Count" that provides the counts by REGION and GENDER we can rerun as follows using the pipe operator:
 
 
 ```r
@@ -450,7 +447,15 @@ regional_gender_average <- offenders %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
 ```
 
-It is important to pay attention to the way in which the data have been grouped. The regional_gender_average dataset is currently grouped by REGION and GENDER. If we run it through summarise as is, then the result will be grouped by the first grouping variable, which in this case is REGION:
+The `count` function can also be used to calculate the counts by REGION and GENDER in one line, replacing the `group_by` and `summarise` above:
+
+
+```r
+offenders %>% 
+  dplyr::count(REGION, GENDER)
+```
+
+It is important to pay attention to the way in which the data have been grouped. The regional_gender_average dataset is currently grouped by REGION and GENDER. If we run it through `summarise` as is, then the result will be grouped by the first grouping variable, which in this case is REGION:
 
 
 ```r
@@ -458,7 +463,7 @@ regional_gender_average %>%
   dplyr::summarise(Count = n())
 ```
 
-But if we want to count all the rows in the regional_gender_average dataset with the grouping removed we add in the ungroup() function:
+But if we want to count all the rows in the regional_gender_average dataset with the grouping removed we add in the `ungroup()` function:
 
 
 ```r
@@ -466,18 +471,27 @@ regional_gender_average %>%
  dplyr::ungroup() %>% 
  dplyr::summarise(Count = n())
 ```
+The `summarise(Count = n())` above can also be replaced with `tally()` to count the number of rows in a dataset.
 
 ## Filter
 
-If you would like to produce statistics for a subset of rows or observations, a good function to use is filter() from the dplyr package.
+If you would like to produce statistics for a subset of rows or observations, a good function to use is `filter()` from the `dplyr` package.
 
-Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the group_by/summarise combination.
+Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the `group_by`/`summarise` combination.
 
 
 ```r
 offenders %>% 
   dplyr::group_by(SENTENCE) %>% 
   dplyr::summarise(Count = n())
+```
+
+Or using the `count` function:
+
+
+```r
+offenders %>% 
+  dplyr::count(SENTENCE)
 ```
 
 To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
@@ -492,7 +506,7 @@ crt_order_average <- offenders %>%
 
 ## Rename
 
-We can rename variables using the dplyr function rename(). Let’s amend our section 3.1 coding in creating the offenders_anonymous dataset so that BIRTH_DATE is instead called "DoB".
+We can rename variables using the `dplyr` function `rename()`. Let’s amend our section 3.1 coding in creating the offenders_anonymous dataset so that BIRTH_DATE is instead called "DoB".
 
 
 ```r
@@ -512,7 +526,7 @@ offenders_anonymous <- offenders %>%
 
 ## Mutate
 
-You can create new variables and perform calculations on variables using the dplyr command mutate().
+You can create new variables and perform calculations on variables using the `dplyr` command `mutate()`.
  
 
 ```r
@@ -533,7 +547,7 @@ You can download the Data Transformation Cheat Sheet (and other cheatsheets) at:
 
 ## if_else
 
-Another useful function found in the dplyr package is if_else, which works in a similar way to if statements in Excel. This uses a logical statement to determine the output. The below code uses the if_else function to identify offenders who have weight under 170lbs, the mutate function being used together with it to add a variable in to the ‘offenders’ dataset which is 1 if they are under 170lbs and 0 if they are over 170lbs.
+Another useful function found in the `dplyr` package is `if_else`, which works in a similar way to if statements in Excel. This uses a logical statement to determine the output. The below code uses the `if_else` function to identify offenders who have weight under 170lbs, the `mutate` function being used together with it to add a variable in to the ‘offenders’ dataset which is 1 if they are under 170lbs and 0 if they are over 170lbs.
 
 
 ```r
@@ -543,19 +557,17 @@ offenders <- offenders %>%
 
 ## Exercises
 
-1.  Using group_by and summarise, calculate the average and median age for females in the West.
-2.  Using select and filter produce a table of offender’s genders who are over 2m tall (note that the heights are currently in cm). 
+1.  Using `group_by` and `summarise`, calculate the average and median age for females in the West.
+2.  Using `select` and `filter` produce a table of offender’s genders who are over 2m tall (note that the heights are currently in cm). 
 3.	Produce a table showing the counts of height (including missing values). 
-
-Extension: 
-4.  Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename SENTENCE as sentence_type, and create a new variable num_convictions that is PREV_CONVICTIONS + 1 (to take account of the latest conviction).
+4.  (Extension) Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename SENTENCE as sentence_type, and create a new variable num_convictions that is PREV_CONVICTIONS + 1 (to take account of the latest conviction).
 
 # Dates
 ## Manipulating dates
 
 As you might have noticed, BIRTH_DATE in the offenders dataset currently has class character. To be able to manipulate dates in date format, we first need to convert the data to have class date.
 
-In this section, we are going to use a package from tidyverse called lubridate to enable R to recognize and manipulate dates. First, we need to load the package:
+In this section, we are going to use a package from `tidyverse` called `lubridate` to enable R to recognize and manipulate dates. First, we need to load the package:
 
 
 ```r
@@ -568,7 +580,7 @@ Class date involves dates being represented in R as the number of days since 197
 lubridate::today()
 ```
 
-If you have a read of the help file, you'll see lubridate has a number of functions such as dmy(), myd() etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the character string to be parsed.
+If you have a read of the help file, you'll see `lubridate` has a number of functions such as `dmy()`, `myd()` etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the character string to be parsed.
 
 We can therefore make a new date variable (called DoB_formatted) with class date as follows, and then check the class of the new column:
 
@@ -580,7 +592,7 @@ offenders<- offenders %>%
 class(offenders$DoB_formatted)
 ```
 
-The function mdy() specifies the format that the date in column BIRTH_DATE is currently in so R knows where to find the day, month and year needed to create a date. 
+The function `mdy()` specifies the format that the date in column BIRTH_DATE is currently in so R knows where to find the day, month and year needed to create a date. 
 
 Now we have a variable with class date we can create new variables containing just part of the date e.g.
 
@@ -599,7 +611,7 @@ offenders <- offenders %>%
   dplyr::mutate(month = lubridate::month(DoB_formatted))
 
 offenders <- offenders %>%
-  dplyr::mutate(weekday = weekdays(DoB_formatted))
+  dplyr::mutate(weekday = lubridate::wday(DoB_formatted, label=TRUE, abbr=FALSE))
 ```
 
 You can also calculate the number of days since a date. For instance, let's say we want to know the no. of days between the date of birth and 1 Jan 2000:
@@ -620,7 +632,7 @@ offenders <- offenders %>%
 # Merging data, missing values and exporting
 ## Merging datasets
 
-There are dplyr functions left_join, right_join, inner_join, full_join, semi_join and anti_join which can merge data sets, provided you have some common fields to match on. This is similar to SQL.
+There are `dplyr` functions `left_join`, `right_join`, `inner_join`, `full_join`, `semi_join` and `anti_join` which can merge data sets, provided you have some common fields to match on. This is similar to SQL.
 
 Let's import a new dataset which contains information on whether the offenders faced trial. Use either of the following commands, depending on whether you're using the Analytical Platform version of RStudio or a local version:
 
@@ -648,11 +660,18 @@ Now the variables that together form a unique identifier have the same names, we
 offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
 ```
 
+Alternatively, instead of renaming the columns we want to join two datasets on that have different names, we can simply provide both column names to the `by` argument of `inner_join`, as below:
+
+
+```r
+offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE" = "DoB")) 
+```
+
 For more information about the different sorts of joins and other data transformation functions see the 'Data Transformation Cheat Sheet' at: https://www.rstudio.com/resources/cheatsheets/  
 
-We can also join two datasets vertically or horizontally, using the bind_rows() or bind_cols() functions respectively. 
+We can also join two datasets vertically or horizontally, using the `bind_rows()` or `bind_cols()` functions respectively. 
 
-If we have two datasets with the same variables, we can use bind_rows to join them vertically. 
+If we have two datasets with the same variables, we can use `bind_rows` to join them vertically. 
 
 For instance:
 
@@ -674,11 +693,11 @@ nrow(rejoined)
 nrow(offenders) 
 ```
 
-The bind_cols function does something similar but appends data horizontally. Be sure the rows align before using this function! 
+The `bind_cols` function does something similar but appends data horizontally. Be sure the rows align before using this function! 
 
 ## Handling missing values
 
-In R, missing values are represented by the symbol NA (not available). Impossible values (e.g. dividing by zero) are represented by the symbol NaN (not a number). The missing data functions we’ll use in this section recognize both these types.
+In R, missing values are represented by the symbol `NA` (not available). Impossible values (e.g. dividing by zero) are represented by the symbol `NaN` (not a number). The missing data functions we’ll use in this section recognize both these types.
 
 We can look at the HEIGHT variable as previously:
 
@@ -696,7 +715,7 @@ Then we can view the height_table we've made which will include the number of mi
 View(height_table)
 ```
 
-We can create a logical vector showing whether each HEIGHT observation is missing (TRUE) or not (FALSE):
+We can create a logical vector showing whether each HEIGHT observation is missing (`TRUE`) or not (`FALSE`):
 
 
 ```r
@@ -720,7 +739,7 @@ complete_offenders <- offenders %>%
 
 ## Exporting data
 
-A command to export data into csv format is write.csv. For instance, to export our data which contains the complete cases:
+A command to export data into csv format is `write.csv`. For instance, to export our data which contains the complete cases:
 
 
 ```r
@@ -731,11 +750,9 @@ This assumes by default that you want to export the row headers and that the col
 
 ## Exercises
 
-1.	Create a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
-2.	Export the dataset offenders_trial_age to a csv file.
-
-Extension: 
-3. Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: you can make use of the replace function).
+1. Create a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
+2. Export the dataset offenders_trial_age to a csv file.
+3. (Extension) Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height (hint: you can make use of the replace function).
 
 # Extra Resources
 
@@ -745,7 +762,7 @@ There are lots of resources that can help you develop your R knowledge, but belo
 + RStudio also lists some useful free resources at: [education.rstudio.com](education.rstudio.com)
 + The 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, a data scientist at RStudio, who developed the tidyverse package. It gives a really good overview of R and how his package works with it.
 
-For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training
+For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training or https://moj-analytical-services.github.io/ap-tools-training/
 
 
 
