@@ -388,15 +388,15 @@ div.tocify {
 <p>If you’re using a local version of RStudio on your laptop (i.e. not accessed via the Analytical Platform control panel), you can import data from .csv files into RStudio by clicking on the Environment tab and then the Import button. You can then navigate to the folder where the dataset “Offenders_Chicago_Police_Dept_Main.csv” is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import.</p>
 <p>You can now see by looking in the environment window that an object has been created (the offenders dataset), and that it has 1413 observations and 9 variables.</p>
 <p>Now look at the Console tab. You should see the commands library and <code>read_csv()</code> appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won’t need to do this again to load the data.</p>
-<p>Alternatively you can simply use the function <code>read_csv()</code> from the <code>readr</code> package (which is included as part of tidyverse - see section 2.2:</p>
+<p>Alternatively you can simply use the function <code>read_csv()</code> from the <code>readr</code> package (which is included as part of tidyverse - see section 2.2):</p>
 <pre class="r"><code>offenders &lt;- readr::read_csv(&quot;Offenders_Chicago_Police_Dept_Main.csv&quot;)</code></pre>
 <p>Note that the above assumes that the csv file is in your working directory, otherwise you will need to include the file path - see section 2.1.</p>
 </div>
 <div id="importing-data-from-the-analytical-platform-cloud-storage-amazon-s3" class="section level3" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Importing data from the Analytical Platform cloud storage (Amazon S3)</h3>
 <p>Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a ‘bucket’) on Amazon S3, which is the cloud storage solution used by the Analytical Platform. To import the data for this session from the ‘alpha-r-training’ S3 bucket use this command:</p>
-<pre class="r"><code>offenders &lt;- botor::s3_read(&quot;s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv&quot;, read.csv)</code></pre>
-<p>Both this and the code shown above are suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = “,”). The former approach assumes that you have already loaded the <code>readr</code> package, as it is part of <code>tidyverse</code> - see section 2.2.</p>
+<pre class="r"><code>offenders &lt;- botor::s3_read(&quot;s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv&quot;, read_csv)</code></pre>
+<p>Both this code and the code in the previous subsection are suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = “,”).</p>
 <p>There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see <a href="http://www.statmethods.net/input/importingdata.html" class="uri">http://www.statmethods.net/input/importingdata.html</a></p>
 </div>
 </div>
@@ -422,13 +422,13 @@ div.tocify {
 </div>
 <div id="data-classes" class="section level2" number="2.5">
 <h2><span class="header-section-number">2.5</span> Data classes</h2>
-<p>All variables have an associated class. The class will determine what calculations are possible and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful classes are factor, logical and date.</p>
+<p>All variables have an associated class. The class will determine what calculations are possible and how R should treat them. So far, our dataset offenders has variables of two different classes: number, and character. Other useful classes are integer, factor, logical and date.</p>
 <p>We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command “class” (see example checking the class of the WEIGHT variable below):</p>
 <pre class="r"><code>class(offenders$WEIGHT) </code></pre>
-<p>It’s possible to coerce variables from one class to another. We can change the WEIGHT variable in the offenders dataset to be a numeric variable as follows:</p>
-<pre class="r"><code>offenders$WEIGHT &lt;- as.numeric(offenders$WEIGHT)</code></pre>
+<p>It’s possible to coerce variables from one class to another. We can change the WEIGHT variable in the offenders dataset to be a integer variable as follows:</p>
+<pre class="r"><code>offenders$WEIGHT &lt;- as.integer(offenders$WEIGHT)</code></pre>
 <p>and back again as follows:</p>
-<pre class="r"><code>offenders$WEIGHT &lt;- as.integer(offenders$WEIGHT) </code></pre>
+<pre class="r"><code>offenders$WEIGHT &lt;- as.numeric(offenders$WEIGHT) </code></pre>
 <p>We can change the GENDER variable in the offenders dataset to be a factor variable as follows:</p>
 <pre class="r"><code>offenders$GENDER &lt;- as.factor(offenders$GENDER)  </code></pre>
 <p>Factors are for categorical variables involving different levels. So for example, in the dataset offenders, FEMALE is stored as 1, and MALE as 2. We can see this now when looking at the environment tab (after clicking the arrow to the left of offenders) and also the order using the following command:</p>
@@ -619,7 +619,7 @@ offenders &lt;- offenders %&gt;%
 <h2><span class="header-section-number">5.1</span> Merging datasets</h2>
 <p>There are <code>dplyr</code> functions <code>left_join</code>, <code>right_join</code>, <code>inner_join</code>, <code>full_join</code>, <code>semi_join</code> and <code>anti_join</code> which can merge data sets, provided you have some common fields to match on. This is similar to SQL.</p>
 <p>Let’s import a new dataset which contains information on whether the offenders faced trial. Use either of the following commands, depending on whether you’re using the Analytical Platform version of RStudio or a local version:</p>
-<pre class="r"><code>offenders_trial &lt;- botor::s3_read(&quot;s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv&quot;, read.csv)</code></pre>
+<pre class="r"><code>offenders_trial &lt;- botor::s3_read(&quot;s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv&quot;, read_csv)</code></pre>
 <pre class="r"><code>offenders_trial &lt;- readr::read_csv(&quot;Offenders_Chicago_Police_Dept_Trial.csv&quot;)</code></pre>
 <p>We merge the datasets with offenders using the combination of fields that together form a unique identifier. But first we need to rename DoB to BIRTH_DATE in the offenders_trial dataset:</p>
 <pre class="r"><code>offenders_trial &lt;- offenders_trial %&gt;% dplyr::rename(BIRTH_DATE=DoB) </code></pre>

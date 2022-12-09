@@ -69,7 +69,7 @@ View(offenders_new)
 # Q1 Read in dataset ‘FTSE_12_14.csv’ and convert the variable date to class date. 
 
 # analytical platform amazon server:
-ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read.csv)
+ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read_csv)
 
 #If dataset is in working directory:
 # ftse <- read_csv("FTSE_12_14.csv")

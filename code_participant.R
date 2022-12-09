@@ -43,7 +43,7 @@ help(package=dplyr)
 offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 
 # From the updated Analytical Platform server
-offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read.csv)
+offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read_csv)
 
 
 # 2.4 Inspecting the dataset
@@ -66,9 +66,9 @@ offenders$GENDER
 
 class(offenders$WEIGHT)
 
-offenders$WEIGHT <- as.numeric(offenders$WEIGHT)
+offenders$WEIGHT <- as.integer(offenders$WEIGHT)
 
-offenders$WEIGHT <- as.integer(offenders$WEIGHT) 
+offenders$WEIGHT <- as.numeric(offenders$WEIGHT) 
 
 offenders$GENDER <- as.factor(offenders$GENDER)  
 
@@ -183,7 +183,7 @@ offenders <- offenders %>%
 # 4.2 Exercises
 
 #Read in ftse data using botor
-ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read.csv)
+ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read_csv)
 
 # To read the file in directly from the wd (for those on borrowed macs you will need to do this) use
 ftse <- readr::read_csv("FTSE_12_14.csv")
@@ -193,7 +193,7 @@ ftse <- readr::read_csv("FTSE_12_14.csv")
 # 5.1 Merging datasets
 
 # Read in data from s3 on Analytical Platform:
-offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read.csv)
+offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read_csv)
 
 # Read in data on DOM1 (assuming file in your working directory):
 offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")

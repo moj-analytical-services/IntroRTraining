@@ -219,7 +219,7 @@ You can now see by looking in the environment window that an object has been cre
 
 Now look at the Console tab. You should see the commands library and `read_csv()` appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won't need to do this again to load the data.
 
-Alternatively you can simply use the function `read_csv()` from the `readr` package (which is included as part of tidyverse - see section 2.2:
+Alternatively you can simply use the function `read_csv()` from the `readr` package (which is included as part of tidyverse - see section 2.2):
 
 
 ```r
@@ -234,10 +234,10 @@ Data that has been approved for storage on the Analytical Platform is generally 
 
 
 ```r
-offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read.csv)
+offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read_csv)
 ```
 
-Both this and the code shown above are suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = “,”). The former approach assumes that you have already loaded the `readr` package, as it is part of `tidyverse` - see section 2.2.
+Both this code and the code in the previous subsection are suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = “,”).
 
 There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see http://www.statmethods.net/input/importingdata.html 
 
@@ -300,7 +300,7 @@ The format is dataframe name, $, variable name. Note that a vector is returned.
 
 ## Data classes
 
-All variables have an associated class. The class will determine what calculations are possible and how R should treat them. So far, our dataset offenders has variables of three different classes; integer, number, and character. Other useful classes are factor, logical and date.
+All variables have an associated class. The class will determine what calculations are possible and how R should treat them. So far, our dataset offenders has variables of two different classes: number, and character. Other useful classes are integer, factor, logical and date.
 
 We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class" (see example checking the class of the WEIGHT variable below):
 
@@ -309,18 +309,18 @@ We can check what class a variable is using summary, looking at the information 
 class(offenders$WEIGHT) 
 ```
 
-It's possible to coerce variables from one class to another. We can change the WEIGHT variable in the offenders dataset to be a numeric variable as follows:
+It's possible to coerce variables from one class to another. We can change the WEIGHT variable in the offenders dataset to be a integer variable as follows:
 
 
 ```r
-offenders$WEIGHT <- as.numeric(offenders$WEIGHT)
+offenders$WEIGHT <- as.integer(offenders$WEIGHT)
 ```
 
 and back again as follows:
 
 
 ```r
-offenders$WEIGHT <- as.integer(offenders$WEIGHT) 
+offenders$WEIGHT <- as.numeric(offenders$WEIGHT) 
 ```
 
 We can change the GENDER variable in the offenders dataset to be a factor variable as follows:
@@ -638,7 +638,7 @@ Let's import a new dataset which contains information on whether the offenders f
 
 
 ```r
-offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read.csv)
+offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read_csv)
 ```
 
 
