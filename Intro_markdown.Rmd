@@ -227,6 +227,8 @@ Note that the above assumes that the csv file is in your working directory, othe
 
 ### Importing data from the Analytical Platform cloud storage (Amazon S3)
 
+#### Importing data using the `botor` package {-}
+
 Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon S3, which is the cloud storage solution used by the Analytical Platform. To import the data for this session from the 'alpha-r-training' S3 bucket use this command:
 
 ```{r, results="hide"}
@@ -235,7 +237,17 @@ offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Ch
 
 Both this code and the code in the previous subsection are suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = ",").
 
-There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see http://www.statmethods.net/input/importingdata.html 
+There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see http://www.statmethods.net/input/importingdata.html.
+
+#### Importing data using the `Rs3tools` package {-}
+
+The `Rs3tools` package is an alternative to `botor` and is maintained by other analysts in MoJ. The main advantage is that it is R-native, meaning it doesn't have the slightly complicated dependencies that `botor` has. The disadvantage is that it isn't officially maintained, so must be maintained by the analytical community.
+
+The following code shows how to use `Rs3tools` to read in the `offenders` dataset from s3:
+
+```{r, results="hide"}
+offenders <- Rs3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv")
+```
 
 ## Inspecting the dataset
 
