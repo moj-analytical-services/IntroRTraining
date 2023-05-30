@@ -136,7 +136,7 @@ write.csv(offenders_trial_age, "offenders_trial_age.csv")
 mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
 
 offenders <- offenders %>% 
-  dplyr::mutate(height_new=replace(HEIGHT, is.na(HEIGHT),mean_height))
+  dplyr::mutate(height_new=replace(HEIGHT, is.na(HEIGHT), mean_height))
 
 # Alternative with if_else function
 offenders <- offenders %>% 
