@@ -1,6 +1,6 @@
 # Introduction to R Training
 
-This is the repository for the Introduction to R training course, which aims to get participants up and running with using R on the MoJ's Analytical Platform. If you haven't yet used the Analytical Platform (AP), there is a prerequisite course that gives an [introduction to the Analytical Platform](https://github.com/moj-analytical-services/Intro_AP).
+This is the repository for the Introduction to R training course, which aims to get participants up and running with using R on the MoJ's Analytical Platform. If you haven't yet used the Analytical Platform (AP), there is a prerequisite course that gives an [introduction to using R on the Analytical Platform](https://github.com/moj-analytical-services/intro_using_r_on_ap).
 
 If you are taking this Introduction to R course you will find the following documents useful:
 
@@ -21,4 +21,4 @@ In advance of the training session please follow these setup steps:
 
 This training session is run in person/over Teams every few months. Alternatively, you can go through this material in your own time - all course material is included in the document [Intro_markdown.html](https://github.com/moj-analytical-services/IntroRTraining/blob/master/Intro_markdown.html), which you can find listed above, and you can find recordings of previous sessions [here](https://web.microsoftstream.com/channel/aa3cda5d-99d6-4e9d-ac5e-6548dd55f52a). If you work through the material by yourself please leave feedback about the material [here](https://airtable.com/shr9u2OJB2pW8Y0Af)  
 
-Please contact [George Papadopoulos](George.papadopoulos@Justice.gov.uk) if you have any questions.
+Please contact [Georgina Eaton](Georgina.Eaton4@Justice.gov.uk) if you have any questions.

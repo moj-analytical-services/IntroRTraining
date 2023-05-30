@@ -626,7 +626,7 @@ offenders <- offenders %>%
 
 1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
 (To read in the data, use the code given in the participant code script) 
-2.	Add a variable called day with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
+2.	Add a variable called weekday with the day of the week, and another variable called daily_performance for how much the share price has increased or decreased that day (close price - open price). 
 3.	Work out which day of the week has the highest mean performance. 
 
 # Merging data, missing values and exporting
