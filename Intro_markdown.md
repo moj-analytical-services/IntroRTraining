@@ -10,10 +10,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(eval=FALSE)
-```
+
 
 # Basic setup {-}
 
@@ -77,21 +74,19 @@ Code appears in blue text.
 Results appear in black text. 
 Warnings and errors appear as red text. 
 
-```{r, include = FALSE}
 
-### have to change the colours manually in word. Markdown doesn't allow for font colour changes without some clever HTML programming
-
-```
 
 For instance if you type:
 
-```{r}
+
+```r
 x <- 3
 ```
 
 (and press return) the assignment operator (less than followed by hyphen) in R assigns the name x to the object taking the value 3. You can see this in the ‘workplace’ (the environment window in the top right) and if you type:
 
-```{r}
+
+```r
 x 
 ```
 
@@ -101,7 +96,8 @@ Furthermore, R is case sensitive so if you were to type X, an error would be dis
 
 As well as storing single values, you can also create vectors. The below statement creates a vector object with the values 3, 2 and 4:
 
-```{r}
+
+```r
 x <- c(3, 2, 4)
 ```
 
@@ -129,7 +125,8 @@ The bottom right window has several tabs. You can see your files and any plots t
 
 There is also a help menu. You can either use this or type ? into the console and then the name of what it is you want help on in brackets. For instance, the following line would give you help on the function called ‘mean’:
 
-```{r results = "hide"}
+
+```r
 ?mean
 ```
 
@@ -149,13 +146,15 @@ The default behaviour of RStudio for the handling of files (e.g. datasets, code 
 
 You can check what the working directory currently is by using the `getwd()` command (which stands for get working directory):
 
-```{r results="hide"}
+
+```r
 getwd()
 ```
 
 If you want to change the working directory to a specific repository/folder, you can use the `setwd()` command as follows:
 
-```{r}
+
+```r
 setwd("~/folder_name")
 ```
 
@@ -185,7 +184,8 @@ Packages extend R's functionality enormously and are a key factor in making R so
 
 This runs the following command:
 
-```{r eval = FALSE}
+
+```r
 install.packages("tidyverse")
 ```
 
@@ -193,7 +193,8 @@ Note that if you are using R on the Analytical Platform the tidyverse package ma
 
 Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can put inside your script, so they will automatically load when you run it:
 
-```{r results=FALSE, warning=FALSE, comment=FALSE}
+
+```r
 library("tidyverse")
 ```
 
@@ -201,7 +202,8 @@ The package suite `tidyverse` contains many useful packages such as `dplyr` whic
 
 To know more about a package, it is always useful to read the associated documentation:
 
-```{r results="hide"}
+
+```r
 ?dplyr
 ```
 
@@ -219,7 +221,8 @@ Now look at the Console tab. You should see the commands library and `read_csv()
 
 Alternatively you can simply use the function `read_csv()` from the `readr` package (which is included as part of tidyverse - see section 2.2):
 
-```{r eval = FALSE, results="hide"}
+
+```r
 offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 ```
 
@@ -229,7 +232,8 @@ Note that the above assumes that the csv file is in your working directory, othe
 
 Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon S3, which is the cloud storage solution used by the Analytical Platform. To import the data for this session from the 'alpha-r-training' S3 bucket use this command:
 
-```{r, results="hide"}
+
+```r
 offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read_csv)
 ```
 
@@ -241,13 +245,15 @@ There are other commands and various packages that can be used to import dataset
 
 As noted in the previous section, you can see by looking in the environment window that the offenders dataset has 1413 observations and 11 variables. To view this dataset, click the icon to the right of this information (or anywhere on that row), which you can see from the console is the equivalent of using the command:
 
-```{r eval = FALSE}
+
+```r
 View(offenders)
 ```
 
 To obtain a summary of the meta-data of your dataset you can click on the arrow by offenders in the environment window, which provides the same information as by typing the following command:
 
-```{r}
+
+```r
 str(offenders)
 ```
 
@@ -255,25 +261,29 @@ Looking at the output provided informs you that the dataset offenders is in R te
 
 The summary command also provides some useful details:
 
-```{r}
+
+```r
 summary(offenders)
 ```
 
 Square brackets can be used to subset data. For instance offenders[ i , j ] would return the value in the ith row and jth column of the dataframe offenders. So, if you want the fourth variable for the 500th observation:
 
-```{r}
+
+```r
 offenders[500,4]
 ```
 
 If you want the fourth variable for the 500th and 502nd observations you can use the concatenate (c) command:
 
-```{r}
+
+```r
 offenders[c(500, 502),4]
 ```
 
 If you want the first five variables for the 500th observation:
 
-```{r}
+
+```r
 offenders[500,1:5]
 ```
 
@@ -281,7 +291,8 @@ The colon operator allows you to create sequences - in this case from 1 to 5, so
 
 Dataframes in R are a collection of vectors where each vector is a column and represents a variable. To view a specific variable, for instance gender, you can also use a dollar sign as follows:
 
-```{r results="hide"}
+
+```r
 offenders$GENDER
 ```
 
@@ -293,43 +304,50 @@ All variables have an associated class. The class will determine what calculatio
 
 We can check what class a variable is using summary, looking at the information in the Environment pane or by using the command "class" (see example checking the class of the WEIGHT variable below):
 
-```{r}
+
+```r
 class(offenders$WEIGHT) 
 ```
 
 It's possible to coerce variables from one class to another. We can change the WEIGHT variable in the offenders dataset to be a integer variable as follows:
 
-```{r results="hide"}
+
+```r
 offenders$WEIGHT <- as.integer(offenders$WEIGHT)
 ```
 
 and back again as follows:
 
-```{r results="hide"}
+
+```r
 offenders$WEIGHT <- as.numeric(offenders$WEIGHT) 
 ```
 
 We can change the GENDER variable in the offenders dataset to be a factor variable as follows:
 
-```{r results="hide"}
+
+```r
 offenders$GENDER <- as.factor(offenders$GENDER)  
 ```
 
 Factors are for categorical variables involving different levels. So for example, in the dataset offenders, FEMALE is stored as 1, and MALE as 2. We can see this now when looking at the environment tab (after clicking the arrow to the left of offenders) and also the order using the following command:
 
-```{r}
+
+```r
 levels(offenders$GENDER)
 ```
 
 The ordering is useful when we do regression analyses as we may want a particular category to be the reference category. By default, the first category is the reference category but this can be changed e.g. from FEMALE to MALE using the following command:
 
-```{r}
+
+```r
 offenders$GENDER <- relevel(offenders$GENDER, "MALE")
 ```
 
 We can now change the GENDER variable in the offenders dataset back to be a character variable as follows:
 
-```{r results="hide"}
+
+```r
 offenders$GENDER <- as.character(offenders$GENDER)  
 ```
 
@@ -362,7 +380,8 @@ offenders$GENDER <- as.character(offenders$GENDER)
 
 We can keep only those variables we want from the offenders dataset using the select command from the dplyr package.
 
-```{r results="hide"}
+
+```r
 ?dplyr::select
 ```
 
@@ -370,7 +389,8 @@ The use of double colons enables you to specify the package you are referring to
 
 So, if we want to create a new dataset called offenders_anonymous which only includes the variables representing date of birth, weight and number of previous convictions from the dataset offenders:
 
-```{r results="hide"}
+
+```r
 offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 ```
 
@@ -378,7 +398,8 @@ The first argument within the select command specifies use of the offenders data
 
 A more popular way to obtain the same result is to use the pipe (`%>%`) operator: 
 
-```{r results="hide"}
+
+```r
 offenders_anonymous <- offenders %>% 
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 ```
@@ -387,7 +408,8 @@ Here the offenders data are ‘piped’ like water into the select command using
 
 Let’s say that now we want the offenders_anonymous dataset to be the same as the dataset offenders but without the names and addresses:
 
-```{r results="hide"}
+
+```r
 offenders_anonymous <- offenders %>% 
   dplyr::select(-LAST, -FIRST, -BLOCK)
 ```
@@ -405,7 +427,8 @@ Using these functions together we can produce summary statistics in a similar wa
 
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
-```{r results="hide"}
+
+```r
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
@@ -417,7 +440,8 @@ There are other functions that could be used here instead of mean e.g. `n`, `n_d
 
 If we want to add a new variable that we decide to call "Count" that provides the counts by REGION and GENDER we can rerun as follows using the pipe operator:
 
-```{r results="hide"}
+
+```r
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
@@ -425,21 +449,24 @@ regional_gender_average <- offenders %>%
 
 The `count` function can also be used to calculate the counts by REGION and GENDER in one line, replacing the `group_by` and `summarise` above:
 
-```{r results="hide"}
+
+```r
 offenders %>% 
   dplyr::count(REGION, GENDER)
 ```
 
 It is important to pay attention to the way in which the data have been grouped. The regional_gender_average dataset is currently grouped by REGION and GENDER. If we run it through `summarise` as is, then the result will be grouped by the first grouping variable, which in this case is REGION:
 
-```{r results="hide"}
+
+```r
 regional_gender_average %>% 
   dplyr::summarise(Count = n())
 ```
 
 But if we want to count all the rows in the regional_gender_average dataset with the grouping removed we add in the `ungroup()` function:
 
-```{r results="hide"}
+
+```r
 regional_gender_average %>% 
  dplyr::ungroup() %>% 
  dplyr::summarise(Count = n())
@@ -452,7 +479,8 @@ If you would like to produce statistics for a subset of rows or observations, a 
 
 Let's first take a look at the different possible values of the SENTENCE variable. We can do that quickly using the `group_by`/`summarise` combination.
 
-```{r results="hide"}
+
+```r
 offenders %>% 
   dplyr::group_by(SENTENCE) %>% 
   dplyr::summarise(Count = n())
@@ -460,14 +488,16 @@ offenders %>%
 
 Or using the `count` function:
 
-```{r results="hide"}
+
+```r
 offenders %>% 
   dplyr::count(SENTENCE)
 ```
 
 To filter we just specify the data that we want to filter (offenders) and the value that we want to filter on. In this case lets filter where SENTENCE is "Court_order" and AGE is more than 50 and then recalculate the mean number of previous convictions with breakdown by REGION and GENDER:
 
-```{r results="hide"}
+
+```r
 crt_order_average <- offenders %>% 
   dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
   dplyr::group_by(REGION, GENDER) %>% 
@@ -478,7 +508,8 @@ crt_order_average <- offenders %>%
 
 We can rename variables using the `dplyr` function `rename()`. Let’s amend our section 3.1 coding in creating the offenders_anonymous dataset so that BIRTH_DATE is instead called "DoB".
 
-```{r results="hide"}
+
+```r
 offenders_anonymous <- offenders %>%
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
   dplyr::rename(DoB = BIRTH_DATE) 
@@ -486,7 +517,8 @@ offenders_anonymous <- offenders %>%
        
 Within the rename function, the new name "DoB" is specified on the left and the old name on the right of the equal sign. If you also wanted to rename PREV_CONVICTIONS to "Num_prev_convictions" to make it easier to understand then simply add this as an extra argument within the rename function, with the two arguments separated by a comma:
 
-```{r results="hide"}
+
+```r
 offenders_anonymous <- offenders %>%
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
   dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
@@ -496,13 +528,15 @@ offenders_anonymous <- offenders %>%
 
 You can create new variables and perform calculations on variables using the `dplyr` command `mutate()`.
  
-```{r eval = FALSE}
+
+```r
 ?mutate
 ```
 
 So if we wanted to amend our coding to include a new derived variable weight_kg in the offenders_anonymous dataset: 
 
-```{r results="hide", warning=FALSE, comment=FALSE}
+
+```r
 offenders_anonymous <- offenders %>%
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
   dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
@@ -515,7 +549,8 @@ You can download the Data Transformation Cheat Sheet (and other cheatsheets) at:
 
 Another useful function found in the `dplyr` package is `if_else`, which works in a similar way to if statements in Excel. This uses a logical statement to determine the output. The below code uses the `if_else` function to identify offenders who have weight under 170lbs, the `mutate` function being used together with it to add a variable in to the ‘offenders’ dataset which is 1 if they are under 170lbs and 0 if they are over 170lbs.
 
-```{r results="hide"}
+
+```r
 offenders <- offenders %>% 
   dplyr::mutate(weight_under_170 = if_else(WEIGHT<170,1,0))
 ```
@@ -534,12 +569,14 @@ As you might have noticed, BIRTH_DATE in the offenders dataset currently has cla
 
 In this section, we are going to use a package from `tidyverse` called `lubridate` to enable R to recognize and manipulate dates. First, we need to load the package:
 
-```{r results=FALSE, warning=FALSE, comment=FALSE}
+
+```r
 library(lubridate)
 ```
 
 Class date involves dates being represented in R as the number of days since 1970-01-01, with negative values for earlier dates. The format is year (4 digits) - month (2 digits) - day (2 digits). You can see this if we ask R for today's date:
-```{r results="hide"}
+
+```r
 lubridate::today()
 ```
 
@@ -547,19 +584,20 @@ If you have a read of the help file, you'll see `lubridate` has a number of func
 
 We can therefore make a new date variable (called DoB_formatted) with class date as follows, and then check the class of the new column:
 
-```{r results="hide"}
+
+```r
 offenders<- offenders %>% 
   dplyr::mutate(DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
-
 ```
 
 The function `mdy()` specifies the format that the date in column BIRTH_DATE is currently in so R knows where to find the day, month and year needed to create a date. 
 
 Now we have a variable with class date we can create new variables containing just part of the date e.g.
 
-```{r results="hide"}
+
+```r
 offenders <- offenders %>% 
   dplyr::mutate(day = lubridate::day(DoB_formatted))
 
@@ -578,7 +616,8 @@ offenders <- offenders %>%
 
 You can also calculate the number of days since a date. For instance, let's say we want to know the no. of days between the date of birth and 1 Jan 2000:
 
-```{r results="hide"}
+
+```r
 offenders <- offenders %>% 
   dplyr::mutate(days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
 ```
@@ -597,29 +636,34 @@ There are `dplyr` functions `left_join`, `right_join`, `inner_join`, `full_join`
 
 Let's import a new dataset which contains information on whether the offenders faced trial. Use either of the following commands, depending on whether you're using the Analytical Platform version of RStudio or a local version:
 
-```{r results="hide"}
+
+```r
 offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read_csv)
 ```
 
-```{r eval=FALSE, results="hide"}
+
+```r
 offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 ```
 
 We merge the datasets with offenders using the combination of fields that together form a unique identifier. But first we need to rename DoB to BIRTH_DATE in the offenders_trial dataset:
 
-```{r results="hide"}
+
+```r
 offenders_trial <- offenders_trial %>% dplyr::rename(BIRTH_DATE=DoB) 
 ```
 
 Now the variables that together form a unique identifier have the same names, we can do the merge:
 
-```{r results="hide"}
+
+```r
 offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
 ```
 
 Alternatively, instead of renaming the columns we want to join two datasets on that have different names, we can simply provide both column names to the `by` argument of `inner_join`, as below:
 
-```{r results="hide"}
+
+```r
 offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE" = "DoB")) 
 ```
 
@@ -630,7 +674,8 @@ We can also join two datasets vertically or horizontally, using the `bind_rows()
 If we have two datasets with the same variables, we can use `bind_rows` to join them vertically. 
 
 For instance:
-```{r results="hide"}
+
+```r
 men <- offenders %>% 
   dplyr::filter(GENDER == "MALE")
 women <- offenders %>% 
@@ -641,7 +686,8 @@ rejoined <- dplyr::bind_rows(men, women)
 
 Note that 'rejoined' has the same number of observations and variables as 'offenders'. 
 
-```{r results="hide"}
+
+```r
 nrow(rejoined) 
 
 nrow(offenders) 
@@ -655,7 +701,8 @@ In R, missing values are represented by the symbol `NA` (not available). Impossi
 
 We can look at the HEIGHT variable as previously:
 
-```{r results="hide"}
+
+```r
 height_table <- offenders %>% 
   dplyr::group_by(HEIGHT) %>% 
   dplyr::summarise(Count=n())
@@ -663,25 +710,29 @@ height_table <- offenders %>%
 
 Then we can view the height_table we've made which will include the number of missing values the height variable contains:
 
-```{r eval=FALSE}
+
+```r
 View(height_table)
 ```
 
 We can create a logical vector showing whether each HEIGHT observation is missing (`TRUE`) or not (`FALSE`):
 
-```{r eval=FALSE}
+
+```r
 is.na(offenders$HEIGHT)
 ```
 
 We can also create a logical vector showing whether the row is complete (TRUE) or has a missing value in one or more columns (FALSE):
 
-```{r results="hide"}
+
+```r
 complete.cases(offenders)
 ```
 
 Using filter we can create a new data frame just with those that are complete:
 
-```{r results="hide"}
+
+```r
 complete_offenders <- offenders %>% 
   dplyr::filter(complete.cases(offenders))
 ```
@@ -690,7 +741,8 @@ complete_offenders <- offenders %>%
 
 A command to export data into csv format is `write.csv`. For instance, to export our data which contains the complete cases:
 
-```{r results="hide"}
+
+```r
 write.csv(complete_offenders, file = "Complete_offenders.csv")
 ```
 

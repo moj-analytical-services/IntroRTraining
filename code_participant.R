@@ -19,10 +19,8 @@ x <- c(3, 2, 4)
 # get working directory
 getwd()
 
-# set working directory 
-setwd("~")
-
-# set working directory if "IntroRTraining" repo has been cloned
+# set working directory manually, if the "IntroRTraining" repo hasn't been 
+# cloned and an RStudio project is not used
 setwd("~/IntroRTraining")
 
 # 2.2 Packages
@@ -45,7 +43,7 @@ help(package=dplyr)
 offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
 
 # From the updated Analytical Platform server
-offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read.csv)
+offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read_csv)
 
 
 # 2.4 Inspecting the dataset
@@ -68,9 +66,9 @@ offenders$GENDER
 
 class(offenders$WEIGHT)
 
-offenders$WEIGHT <- as.numeric(offenders$WEIGHT)
+offenders$WEIGHT <- as.integer(offenders$WEIGHT)
 
-offenders$WEIGHT <- as.integer(offenders$WEIGHT) 
+offenders$WEIGHT <- as.numeric(offenders$WEIGHT) 
 
 offenders$GENDER <- as.factor(offenders$GENDER)  
 
@@ -104,6 +102,9 @@ regional_gender_average <- offenders %>%
   dplyr::group_by(REGION, GENDER) %>%
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n()) 
 
+offenders %>% 
+  dplyr::count(REGION, GENDER)
+
 regional_gender_average %>% 
   dplyr::summarise(Count=n())
 
@@ -116,6 +117,9 @@ regional_gender_average %>%
 offenders %>% 
   dplyr::group_by(SENTENCE) %>% 
   dplyr::summarise(Count = n())
+
+offenders %>% 
+  dplyr::count(SENTENCE)
 
 crt_order_average <- offenders %>% 
   dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
@@ -153,7 +157,8 @@ library(lubridate)
 
 lubridate::today()
 
-offenders <- offenders %>% dplyr::mutate(DoB_formatted = lubridate::mdy(BIRTH_DATE))
+offenders <- offenders %>% 
+  dplyr::mutate(DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
 
@@ -170,7 +175,7 @@ offenders <- offenders %>%
   dplyr::mutate(month = lubridate::month(DoB_formatted))
 
 offenders <- offenders %>%
-  dplyr::mutate(weekday = weekdays(DoB_formatted))
+  dplyr::mutate(weekday = lubridate::wday(DoB_formatted, label=TRUE, abbr=FALSE))
 
 offenders <- offenders %>%
   dplyr::mutate(days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
@@ -178,7 +183,7 @@ offenders <- offenders %>%
 # 4.2 Exercises
 
 #Read in ftse data using botor
-ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read.csv)
+ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read_csv)
 
 # To read the file in directly from the wd (for those on borrowed macs you will need to do this) use
 ftse <- readr::read_csv("FTSE_12_14.csv")
@@ -188,15 +193,16 @@ ftse <- readr::read_csv("FTSE_12_14.csv")
 # 5.1 Merging datasets
 
 # Read in data from s3 on Analytical Platform:
-offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read.csv)
+offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read_csv)
 
 # Read in data on DOM1 (assuming file in your working directory):
 offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
-offenders_trial <- offenders_trial %>% 
-  dplyr::rename(BIRTH_DATE=DoB) 
+offenders_trial <- offenders_trial %>% dplyr::rename(BIRTH_DATE=DoB) 
 
 offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
+
+offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE" = "DoB")) 
 
 men <- offenders %>% dplyr::filter(GENDER == "MALE") 
 women <- offenders %>% dplyr::filter(GENDER == "FEMALE")
