@@ -1819,9 +1819,9 @@ S3: <code>Rs3tools</code> and <code>botor</code>.</p>
 <h4 class="unnumbered">Importing data using the <code>Rs3tools</code>
 package</h4>
 <p>The <code>Rs3tools</code> package is maintained by other analysts in
-MoJ and has the advantage of being R-native, meaning it is simpler to
-install and use compared to <code>botor</code>. Here’s how it can be
-installed:</p>
+MoJ and has the advantage of being R-native, resulting in it being
+quicker to install than <code>botor</code>, which requires a python
+environment. Here’s how it can be installed:</p>
 <pre class="r"><code>install.packages(&quot;moj-analytical-services/Rs3tools&quot;)</code></pre>
 <p>And here’s how to use <code>Rs3tools</code> to read in the
 <code>offenders</code> dataset that we’ll be using in this session from
@@ -1831,8 +1831,10 @@ the ‘alpha-r-training’ S3 bucket:</p>
 <div id="importing-data-using-the-botor-package" class="section level4 unnumbered">
 <h4 class="unnumbered">Importing data using the <code>botor</code>
 package</h4>
-<p>The <code>botor</code> package provides an alternative method for
-reading from S3, which can be done using this command:</p>
+<p>The <code>botor</code> package provides an alternative to
+<code>Rs3tools</code>. It’s maintained by the wider R community and
+contains a larger range of functionality. Reading from S3 using
+<code>botor</code> can be done using this command:</p>
 <pre class="r"><code>offenders &lt;- botor::s3_read(&quot;s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv&quot;, read_csv)</code></pre>
 <p>More information on <code>Rs3tools</code> and <code>botor</code> can
 be found in the <a href="https://user-guidance.analytical-platform.service.justice.gov.uk/data/amazon-s3/#rstudio">AP

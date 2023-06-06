@@ -236,7 +236,7 @@ Data that has been approved for storage on the Analytical Platform is generally 
 
 #### Importing data using the `Rs3tools` package {-}
 
-The `Rs3tools` package is maintained by other analysts in MoJ and has the advantage of being R-native, meaning it is simpler to install and use compared to `botor`. Here's how it can be installed:
+The `Rs3tools` package is maintained by other analysts in MoJ and has the advantage of being R-native, resulting in it being quicker to install than `botor`, which requires a python environment. Here's how it can be installed:
 
 ```{r, results="hide"}
 install.packages("moj-analytical-services/Rs3tools")
@@ -250,7 +250,7 @@ offenders <- Rs3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/Off
 
 #### Importing data using the `botor` package {-}
 
-The `botor` package provides an alternative method for reading from S3, which can be done using this command:
+The `botor` package provides an alternative to `Rs3tools`. It's maintained by the wider R community and contains a larger range of functionality. Reading from S3 using `botor` can be done using this command:
 
 ```{r, results="hide"}
 offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read_csv)
