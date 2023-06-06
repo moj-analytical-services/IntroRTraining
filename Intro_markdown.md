@@ -239,7 +239,7 @@ Data that has been approved for storage on the Analytical Platform is generally 
 
 #### Importing data using the `Rs3tools` package {-}
 
-The `Rs3tools` package is maintained by other analysts in MoJ and has the advantage of being R-native, resulting in it being quicker to install than `botor`, which requires a python environment. Here's how it can be installed:
+The `Rs3tools` package is maintained by other analysts in MoJ and has the advantage of being R-native, resulting in it being quicker to install than `botor` (which requires a Python environment). Here's how it can be installed:
 
 
 ```r
