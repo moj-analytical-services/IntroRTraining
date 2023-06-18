@@ -155,7 +155,7 @@ If you want to change the working directory to a specific repository/folder, you
 
 
 ```r
-setwd("~/folder_name")
+setwd("~/IntroRTraining")
 ```
 
 Alternatively, you can set your working directory following the steps below:
@@ -180,25 +180,64 @@ Your new directory will be automatically set as the working directory. If you ha
 
 A lot of pre-programmed routines are included in R, and you can add a lot more through packages. One characteristic that's important to recognize is that just as there are many ways of getting from Victoria Station to 102 Petty France, there are many ways of doing the same thing in R. Some ways are (computationally) faster, some are simpler to program, and some may be more conducive to your taste.  
 
-Packages extend R's functionality enormously and are a key factor in making R so popular. For instance, to install the `tidyverse` suite of packages in R, which we recommend you use for data manipulation and analysis, use the Install button from the Packages tab in Rstudio. 
+Packages (also known as libraries) extend R's functionality enormously and are a key factor in making R so popular.
 
-This runs the following command:
+Assuming that you are working with R on the AP, you are encouraged to use the
+package `renv` to manage your packages.
 
-
-```r
-install.packages("tidyverse")
-```
-
-Note that if you are using R on the Analytical Platform the tidyverse package may already be installed, hence the above step can be skipped. 
-
-Once a package is installed, you should be able to see it in the packages tab. If you want to use it, you can load it by ticking the appropriate box in the packages window. You can also load packages using the library command, which you can put inside your script, so they will automatically load when you run it:
+To synchronise your working R environment with this course's repo, run
 
 
 ```r
-library("tidyverse")
+renv::restore()
 ```
+If you have no installed `renv` yet, you can do this with
+
+
+```r
+install.packages('renv')
+```
+
+If prompted to update, enter Y for Yes. This should now update your project 
+environment.
+
+This is the command to install/update a package using `renv`:
+
+
+```r
+renv::install('tidyverse')
+```
+
+Run this, and the tidyverse package (actually a suite of packages) should update
+to a more recent version.
 
 The package suite `tidyverse` contains many useful packages such as `dplyr` which is a particularly useful package for manipulating and processing data. Many of the functions in the rest of this introductory training are from this package.
+
+There are different ways of using packages  It is possible to load them with library calls, usually found at the start of scripts, e.g.
+
+
+```r
+library("magrittr")
+```
+
+You can also load packages via the GUI. You should be able to see them in the packages tab. You can load them by ticking the appropriate box in the packages window.
+
+However, for the most part it is considered best practice to not rely on having libraries loaded, but instead to specify them when they are being called, e.g.
+
+
+```r
+lubridate::days_in_month(Sys.Date())
+```
+
+Here we're using function `days_in_month()` from the `lubridate` package. We're passing to it the current date.
+
+Functions that are 'base' R, or part of a core package such as the `stats` package, which we use below, do not require.
+
+Although including the library call makes the code longer, it also makes it more readable, as anyone who is unfamiliar with the code can see very easily where functions are being called, and which packages are being used. It also avoids the wrong function being called if two functions have the same name and are from different packages. If the package isn't specified by using the double-colon notation then R will use the function from your most recently loaded package and will warn you when you load a package if there is some overlap.
+
+However there are exceptions to this. In particular, we want to use the operator `%>%` (pipe) without specifying the package name, because it would be bad for our readability. So we do want to load the package `magrittr`.
+
+Please load `magrittr` by one of the methods described above (which do you you think would be best practice overall)?
 
 To know more about a package, it is always useful to read the associated documentation:
 
@@ -206,6 +245,8 @@ To know more about a package, it is always useful to read the associated documen
 ```r
 ?dplyr
 ```
+
+
 
 ## Importing data
 
@@ -235,34 +276,18 @@ There are other commands and various packages that can be used to import dataset
 
 ### Importing data from the Analytical Platform cloud storage (Amazon S3)
 
-Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon S3, which is the cloud storage solution used by the Analytical Platform. There are two options for packages that can be used to import data from S3: `Rs3tools` and `botor`.
-
-#### Importing data using the `Rs3tools` package {-}
-
-The `Rs3tools` package is maintained by other analysts in MoJ and has the advantage of being R-native, resulting in it being quicker to install than `botor` (which requires a Python environment). Here's how it can be installed:
-
-
-```r
-install.packages("moj-analytical-services/Rs3tools")
-```
-
-And here's how to use `Rs3tools` to read in the `offenders` dataset that we'll be using in this session from the 'alpha-r-training' S3 bucket:
-
-
-```r
-offenders <- Rs3tools::s3_path_to_full_df("alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv")
-```
-
-#### Importing data using the `botor` package {-}
+Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon S3, which is the cloud storage solution used by the Analytical Platform. To import data from S3 we use `botor`.
 
 The `botor` package provides an alternative to `Rs3tools`. It's maintained by the wider R community and contains a larger range of functionality. Reading from S3 using `botor` can be done using this command:
 
 
 ```r
-offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read_csv)
+offenders <- botor::s3_read(
+  uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv",
+  fun = readr::read_csv)
 ```
 
-More information on `Rs3tools` and `botor` can be found in the [AP guidance](https://user-guidance.analytical-platform.service.justice.gov.uk/data/amazon-s3/#rstudio).
+More information on `botor` can be found on the [AP guidance](https://user-guidance.analytical-platform.service.justice.gov.uk/data/amazon-s3/#rstudio).
 
 
 ## Inspecting the dataset
@@ -409,8 +434,6 @@ We can keep only those variables we want from the `offenders` dataset using the 
 ?dplyr::select
 ```
 
-The use of double colons enables you to specify the package you are referring to before calling the function, hence avoiding using the wrong function if two functions have the same name and are from different packages. If the package isn't specified by using the double-colon notation then R will use the function from your most recently loaded package and will warn you when you load a package if there is some overlap.
-
 So, if we want to create a new dataset called offenders_anonymous which only includes the variables representing date of birth, weight and number of previous convictions from the dataset offenders:
 
 
@@ -428,7 +451,7 @@ offenders_anonymous <- offenders %>%
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 ```
 
-Here the offenders data are "piped" like water into the select command using the pipe symbol `%>%`. This is interpreted by R as the first argument of the select command so the offenders dataset is not specified within the select command. The pipe operator makes code more readable by allowing us to chain together multiple functions and means you don't have to either create a new object each time you run a command or use nested functions (functions that are within other functions).  
+This is part of the `magrittr` package, which we loaded earlier. Here the offenders data are "piped" like water into the select command using the pipe symbol `%>%`. This is interpreted by R as the first argument of the select command so the offenders dataset is not specified within the select command. The pipe operator makes code more readable by allowing us to chain together multiple functions and means you don't have to either create a new object each time you run a command or use nested functions (functions that are within other functions).  
 
 Let's say that now we want the offenders_anonymous dataset to be the same as the dataset offenders but without the names and addresses:
 
@@ -455,7 +478,8 @@ So if we want the mean number of previous convictions with breakdown by REGION a
 ```r
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
-  dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
+                   .groups = 'keep')
 ```
 
 Here R takes the offenders dataset, then (the pipe operator can be read as "then") groups it first by `REGION` and then by `GENDER` and then outputs the mean number of previous convictions by `REGION` and `GENDER`. The mean number of previous convictions variable created we've decided to call `Ave`. The results are saved into a new dataset called `regional_gender_average`.
@@ -468,7 +492,9 @@ If we want to add a new variable that we decide to call `Count` that provides th
 ```r
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
-  dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n())
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
+                   Count = dplyr::n(),
+                   groups = 'keep')
 ```
 
 The `count()` function can also be used to calculate the counts by `REGION` and `GENDER` in one line, replacing the `group_by()` and `summarise()` above:
@@ -484,7 +510,7 @@ It is important to pay attention to the way in which the data have been grouped.
 
 ```r
 regional_gender_average %>% 
-  dplyr::summarise(Count = n())
+  dplyr::summarise(Count = dplyr::n())
 ```
 
 But if we want to count all the rows in the `regional_gender_average` dataset with the grouping removed we add in the `ungroup()` function:
@@ -493,7 +519,7 @@ But if we want to count all the rows in the `regional_gender_average` dataset wi
 ```r
 regional_gender_average %>% 
  dplyr::ungroup() %>% 
- dplyr::summarise(Count = n())
+ dplyr::summarise(Count = dlyr::n())
 ```
 The `summarise(Count = n())` above can also be replaced with `tally()` to count the number of rows in a dataset.
 
@@ -507,9 +533,8 @@ Let's first take a look at the different possible values of the `SENTENCE` varia
 ```r
 offenders %>% 
   dplyr::group_by(SENTENCE) %>% 
-  dplyr::summarise(Count = n())
+  dplyr::summarise(Count = dplyr::n())
 ```
-
 Or using the `count()` function:
 
 
@@ -525,7 +550,8 @@ To filter we just specify the data that we want to filter (`offenders`) and the 
 crt_order_average <- offenders %>% 
   dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
   dplyr::group_by(REGION, GENDER) %>% 
-  dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
+                   .groups = 'keep')
 ```
 
 ## Rename
@@ -576,7 +602,10 @@ Another useful function found in the `dplyr` package is `if_else()`, which works
 
 ```r
 offenders <- offenders %>% 
-  dplyr::mutate(weight_under_170 = if_else(WEIGHT < 170, 1, 0))
+  dplyr::mutate(weight_under_170 = dplyr::if_else(
+    condition = WEIGHT < 170,
+    true = 1,
+    false = 0))
 ```
 
 ## Exercises
@@ -591,12 +620,7 @@ offenders <- offenders %>%
 
 As you might have noticed, `BIRTH_DATE` in the `offenders` dataset currently has class character. To be able to manipulate dates in date format, we first need to convert the data to have class date.
 
-In this section, we are going to use a package from `tidyverse` called `lubridate` to enable R to recognize and manipulate dates. First, we need to load the package:
-
-
-```r
-library(lubridate)
-```
+In this section, we are going to use a package from `tidyverse` called `lubridate` to enable R to recognize and manipulate dates.
 
 Class date involves dates being represented in R as the number of days since 1970-01-01, with negative values for earlier dates. The format is year (4 digits) - month (2 digits) - day (2 digits). You can see this if we ask R for today's date:
 
@@ -610,7 +634,7 @@ We can therefore make a new date variable (called `DoB_formatted`) with class da
 
 
 ```r
-offenders<- offenders %>% 
+offenders <- offenders %>% 
   dplyr::mutate(DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
@@ -635,7 +659,10 @@ offenders <- offenders %>%
   dplyr::mutate(month = lubridate::month(DoB_formatted))
 
 offenders <- offenders %>%
-  dplyr::mutate(weekday = lubridate::wday(DoB_formatted, label=TRUE, abbr=FALSE))
+  dplyr::mutate(weekday = lubridate::wday(
+    x = DoB_formatted,
+    label = TRUE,
+    abbr = FALSE))
 ```
 
 You can also calculate the number of days since a date. For instance, let's say we want to know the number of days between the date of birth and 1 Jan 2000:
@@ -662,7 +689,9 @@ Let's import a new dataset which contains information on whether the offenders f
 
 
 ```r
-offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read_csv)
+offenders_trial <- botor::s3_read(
+  uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv",
+  fun = readr::read_csv)
 ```
 
 
@@ -674,21 +703,27 @@ We merge the datasets with offenders using the combination of fields that togeth
 
 
 ```r
-offenders_trial <- offenders_trial %>% dplyr::rename(BIRTH_DATE=DoB) 
+offenders_trial <- offenders_trial %>% dplyr::rename(BIRTH_DATE = DoB) 
 ```
 
 Now the variables that together form a unique identifier have the same names, we can do the merge:
 
 
 ```r
-offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
+offenders_merge <- dplyr::inner_join(
+  x = offenders,
+  y = offenders_trial,
+  by = c("LAST", "BIRTH_DATE")) 
 ```
 
 Alternatively, instead of renaming the columns we want to join two datasets on that have different names, we can simply provide both column names to the `by` argument of `inner_join()`, as below:
 
 
 ```r
-offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE" = "DoB")) 
+offenders_merge <- dplyr::inner_join(
+  x = offenders, 
+  y = offenders_trial,
+  by = c("LAST", "BIRTH_DATE" = "DoB")) 
 ```
 
 For more information about the different sorts of joins and other data transformation functions see the 'Data Transformation Cheat Sheet' at: https://www.rstudio.com/resources/cheatsheets/  
@@ -729,7 +764,7 @@ We can look at the `HEIGHT` variable as previously:
 ```r
 height_table <- offenders %>% 
   dplyr::group_by(HEIGHT) %>% 
-  dplyr::summarise(Count=n())
+  dplyr::summarise(Count= dplyr::n())
 ```
 
 Then we can view the `height_table` we've made which will include the number of missing values the height variable contains:
