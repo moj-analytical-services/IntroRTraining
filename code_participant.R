@@ -25,26 +25,39 @@ setwd("~/IntroRTraining")
 
 # 2.2 Packages
 
-# renv restore (only needs running if you're cloning the repo for the first time)
-# If you do not have the renv package, please install it by running install.packages("renv") in the console.
+# renv restore (only needs running if you're cloning the repo for the first
+# time)
+# If you do not have the renv package, please install it by running
+# install.packages("renv") in the console.
 renv::restore()
 
-# Install packages (unnecessary if on Analytical Platform)
-install.packages("tidyverse")
+# This the command to install/update a package using renv.
+# If you are not using renv, e.g. if you are not on the AP, then the command is
+# install.packages('tidyverse')
+renv::install("tidyverse")
 
-# Load packages
-library("tidyverse")
+# RESTART, with the red button on the top right.
 
-help(package=dplyr)
+# This is the command to load a package. It is generally considered better
+# not to load packages, but to call the package at the time the function is
+# called. However, 'magrittr' is an exception (more on this below).
+
+library('magrittr')
+# If you get an error, it might be because of not restarting above.
+
+help(package = dplyr)
 
 # 2.3 Importing data
 
-# If the csv file is in your working directory
-offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
-
 # From the updated Analytical Platform server
-offenders <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv", read_csv)
+# Here the function s3_read is using the function read_csv to read the data it
+# downloads
+offenders <- botor::s3_read(
+  uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv",
+  fun = readr::read_csv)
 
+# If the csv file is in your working directory
+offenders <- readr::read_csv(file = "Offenders_Chicago_Police_Dept_Main.csv")
 
 # 2.4 Inspecting the dataset
 
@@ -78,13 +91,14 @@ offenders$GENDER <- relevel(offenders$GENDER, "MALE")
 
 offenders$GENDER <- as.character(offenders$GENDER) 
 
-# 3.	Data wrangling and ‘group by’ calculations --------------------------------------
+# 3.	Data wrangling and ‘group by’ calculations -------------------------------
 
 # 3.1 Select
 
 ?dplyr::select
 
-offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
+offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT,
+                                     PREV_CONVICTIONS)
 
 offenders_anonymous <- offenders %>% 
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
