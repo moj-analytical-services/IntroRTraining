@@ -110,27 +110,30 @@ offenders_anonymous <- offenders %>%
 
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
-  dplyr::summarise(Ave = mean(PREV_CONVICTIONS)) 
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
+                   .groups = 'keep') 
 
 regional_gender_average <- offenders %>% 
   dplyr::group_by(REGION, GENDER) %>%
-  dplyr::summarise(Ave = mean(PREV_CONVICTIONS), Count=n()) 
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
+                   Count = dplyr::n(),
+                   .groups = 'keep') 
 
 offenders %>% 
   dplyr::count(REGION, GENDER)
 
 regional_gender_average %>% 
-  dplyr::summarise(Count=n())
+  dplyr::summarise(Count = dplyr::n())
 
 regional_gender_average %>% 
   dplyr::ungroup() %>% 
-  dplyr::summarise(Count=n())
+  dplyr::summarise(Count = dplyr::n())
 
 # 3.3 Filter
 
 offenders %>% 
   dplyr::group_by(SENTENCE) %>% 
-  dplyr::summarise(Count = n())
+  dplyr::summarise(Count = dplyr::n())
 
 offenders %>% 
   dplyr::count(SENTENCE)
@@ -138,7 +141,7 @@ offenders %>%
 crt_order_average <- offenders %>% 
   dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
   dplyr::group_by(REGION, GENDER) %>% 
-  dplyr::summarise(Ave = mean(PREV_CONVICTIONS))
+  dplyr::summarise(Ave = mean(PREV_CONVICTIONS), .groups = 'keep')
 
 # 3.4 Rename
 
@@ -162,12 +165,16 @@ offenders_anonymous <- offenders %>%
 # 3.6 If_else
 
 offenders <- offenders %>% 
-  dplyr::mutate(weight_under_170 = if_else(WEIGHT<170,1,0))
+  dplyr::mutate(weight_under_170 =
+                  dplyr::if_else(condition = WEIGHT < 170,
+                                 true = 1,
+                                 false = 0))
+
+offenders <- offenders %>% dplyr::mutate(
+  weight_under_170 = dplyr::if_else(WEIGHT<170, 1, 0))
 
 # Dates -------------------------------------------------------------------
 # 4.1 Manipulating dates
-
-library(lubridate)
 
 lubridate::today()
 
@@ -189,7 +196,10 @@ offenders <- offenders %>%
   dplyr::mutate(month = lubridate::month(DoB_formatted))
 
 offenders <- offenders %>%
-  dplyr::mutate(weekday = lubridate::wday(DoB_formatted, label=TRUE, abbr=FALSE))
+  dplyr::mutate(weekday = lubridate::wday(
+    x = DoB_formatted,
+    label = TRUE,
+    abbr = FALSE))
 
 offenders <- offenders %>%
   dplyr::mutate(days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
@@ -197,26 +207,36 @@ offenders <- offenders %>%
 # 4.2 Exercises
 
 #Read in ftse data using botor
-ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read_csv)
+ftse <- botor::s3_read(
+  uri = "s3://alpha-r-training/intro-r-training/FTSE_12_14.csv",
+  fun = readr::read_csv)
 
-# To read the file in directly from the wd (for those on borrowed macs you will need to do this) use
-ftse <- readr::read_csv("FTSE_12_14.csv")
+# To read the file in directly from the wd, use:
+# ftse <- readr::read_csv(file = "FTSE_12_14.csv")
 
 
 # 5 Merging and exporting data --------------------------------------------
 # 5.1 Merging datasets
 
 # Read in data from s3 on Analytical Platform:
-offenders_trial <- botor::s3_read("s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv", read_csv)
+offenders_trial <- botor::s3_read(
+  uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv",
+  fun = readr::read_csv)
 
 # Read in data on DOM1 (assuming file in your working directory):
-offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
+# offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
-offenders_trial <- offenders_trial %>% dplyr::rename(BIRTH_DATE=DoB) 
+offenders_trial <- offenders_trial %>% dplyr::rename( BIRTH_DATE = DoB) 
 
-offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE")) 
+offenders_merge <- dplyr::inner_join(
+  x = offenders, 
+  y = offenders_trial,
+  by = c("LAST", "BIRTH_DATE")) 
 
-offenders_merge <- dplyr::inner_join(offenders, offenders_trial, by=c("LAST", "BIRTH_DATE" = "DoB")) 
+offenders_merge <- dplyr::inner_join(
+  x = offenders,
+  y = offenders_trial,
+  by = c("LAST", "BIRTH_DATE" = "DoB")) 
 
 men <- offenders %>% dplyr::filter(GENDER == "MALE") 
 women <- offenders %>% dplyr::filter(GENDER == "FEMALE")
@@ -230,7 +250,7 @@ nrow(offenders) # 1413 rows
 
 height_table <- offenders %>% 
   dplyr::group_by(HEIGHT) %>% 
-  dplyr::summarise(Count=n())
+  dplyr::summarise(Count = dplyr::n())
 
 View(height_table)
 
