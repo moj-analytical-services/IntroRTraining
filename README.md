@@ -14,8 +14,9 @@ In advance of the training session please follow these setup steps:
  - If you do not already have an account on the Analytical Platform. following these instructions to sign up for one: https://user-guidance.services.alpha.mojanalytics.xyz/get-started.html
  - If you're using RStudio on the Analytical Platform for the first time, you will first need to deploy it: https://user-guidance.services.alpha.mojanalytics.xyz/tools/control-panel.html
  - Open RStudio from your Analytical Platform control panel: https://user-guidance.services.alpha.mojanalytics.xyz/tools/control-panel.html
- - If you've not used Git/GitHub with you RStudio account before, follow these steps to connect your RStudio to your GitHub account: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#setup-github-keys-to-access-it-from-r-studio-and-jupyter
- - Clone this GitHub repository by following step 1 here: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
+ - If you've not used Git/GitHub with you RStudio account before, follow these steps to connect your RStudio to your GitHub account: https://user-guidance.analytical-platform.service.justice.gov.uk/github/rstudio-git.html#work-with-git-in-rstudio
+ - Clone this GitHub repository by following the same process as here, but using the course's repo:
+ https://user-guidance.analytical-platform.service.justice.gov.uk/tools/create-a-derived-table/instructions/#clone-the-repository-using-the-rstudio-gui
  - In the Console window in RStudio, enter this command to make sure you have the required packages installed: `renv::restore()`
  - Request access to the alpha-r-training bucket on Amazon S3 (which is used to store some example data) from the session organisers or by posting on the #intro_r channel on ASD Slack. To check if you can access the bucket you can run the following code in the RStudio Console, which should output a list of files stored in the bucket: `botor::s3_ls('s3://alpha-r-training')`
 
