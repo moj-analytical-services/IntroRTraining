@@ -151,7 +151,7 @@ You can check what the working directory currently is by using the `getwd()` com
 getwd()
 ```
 
-If you want to change the working directory to a specific repository/folder - in this case `IntroRTraining`, you can use the `setwd()` command as follows:
+If you want to change the working directory to a specific repository/folder - in this case `IntroRTraining` - you can use the `setwd()` command as follows:
 
 
 ```r
@@ -283,7 +283,7 @@ The `Rs3tools` package is maintained by other analysts in MoJ and has the advant
 
 
 ```r
-install.packages("moj-analytical-services/Rs3tools")
+renv::install("moj-analytical-services/Rs3tools")
 ```
 
 And here's how to use `Rs3tools` to read in the `offenders` dataset that we'll be using in this session from the 'alpha-r-training' S3 bucket:
@@ -304,6 +304,10 @@ offenders <- botor::s3_read(
   uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv",
   fun = readr::read_csv)
 ```
+
+Here we are passing another function to `botor::s3_read` which it uses to read the data
+from the uri.
+
 More information on `Rs3tools` and `botor` can be found in the [AP guidance](https://user-guidance.analytical-platform.service.justice.gov.uk/data/amazon-s3/#rstudio).
 
 ## Inspecting the dataset
@@ -701,7 +705,17 @@ offenders <- offenders %>%
 
 There are `dplyr` functions `left_join()`, `right_join()`, `inner_join()`, `full_join()`, `semi_join()` and `anti_join()` which can merge data sets, provided you have some common fields to match on. This is similar to SQL.
 
-Let's import a new dataset which contains information on whether the offenders faced trial. Use either of the following commands, depending on whether you're using the Analytical Platform version of RStudio or a local version:
+Let's import a new dataset which contains information on whether the offenders faced trial. Use one of the following commands:
+
+Using Rs3tools
+
+
+```r
+offenders_trial <-  Rs3tools::s3_path_to_full_df(
+  s3_path = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv")
+```
+
+Using botor:
 
 
 ```r
@@ -709,6 +723,8 @@ offenders_trial <- botor::s3_read(
   uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv",
   fun = readr::read_csv)
 ```
+
+Using local file read:
 
 
 ```r

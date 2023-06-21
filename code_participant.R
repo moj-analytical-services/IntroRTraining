@@ -49,14 +49,24 @@ help(package = dplyr)
 
 # 2.3 Importing data
 
-# From the updated Analytical Platform server
+# Use one of the methods below to read in the data
+
+# Method 1: Rs3tools
+# Here the function s3_path_to_full_df() from the package Rs3tools is directly
+# reading in the the file from the uri
+offenders <- Rs3tools::s3_path_to_full_df(
+  s3_path = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv"
+)
+
+# Method 2: botor
 # Here the function s3_read is using the function read_csv to read the data it
-# downloads
+# downloads from the uri
 offenders <- botor::s3_read(
   uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv",
   fun = readr::read_csv)
 
-# If the csv file is in your working directory
+# Method 3: local file read
+# If the csv file is in your working directory:
 offenders <- readr::read_csv(file = "Offenders_Chicago_Police_Dept_Main.csv")
 
 # 2.4 Inspecting the dataset
@@ -206,25 +216,34 @@ offenders <- offenders %>%
 
 # 4.2 Exercises
 
-#Read in ftse data using botor
+# Read in ftse data using Rs3tools
+ftse <- Rs3tools::s3_path_to_full_df(
+  s3_path = "s3://alpha-r-training/intro-r-training/FTSE_12_14.csv")
+
+# Read in ftse data using botor
 ftse <- botor::s3_read(
   uri = "s3://alpha-r-training/intro-r-training/FTSE_12_14.csv",
   fun = readr::read_csv)
 
-# To read the file in directly from the working directory use:
-# ftse <- readr::read_csv(file = "FTSE_12_14.csv")
+# Read in data from the working directory:
+ftse <- readr::read_csv(file = "FTSE_12_14.csv")
 
 
 # 5 Merging and exporting data --------------------------------------------
 # 5.1 Merging datasets
 
-# Read in data from s3 on Analytical Platform:
+# Data read using Rs3tools:
+offenders_trial <- Rs3tools::s3_path_to_full_df(
+  s3_path = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv")
+
+# Data read using botor:
 offenders_trial <- botor::s3_read(
   uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv",
   fun = readr::read_csv)
 
-# Read in data on DOM1 (assuming file in your working directory):
-# offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
+# Read in data from the working directory:
+offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
+
 
 offenders_trial <- offenders_trial %>% dplyr::rename( BIRTH_DATE = DoB) 
 

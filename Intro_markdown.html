@@ -1705,7 +1705,7 @@ RStudio will be relative to this folder.</p>
 directory):</p>
 <pre class="r"><code>getwd()</code></pre>
 <p>If you want to change the working directory to a specific
-repository/folder - in this case <code>IntroRTraining</code>, you can
+repository/folder - in this case <code>IntroRTraining</code> - you can
 use the <code>setwd()</code> command as follows:</p>
 <pre class="r"><code>setwd(&quot;~/IntroRTraining&quot;)</code></pre>
 <p>Alternatively, you can set your working directory following the steps
@@ -1854,7 +1854,7 @@ package</h4>
 MoJ and has the advantage of being R-native, resulting in it being
 quicker to install than <code>botor</code> (which requires a Python
 environment). Here’s how it can be installed:</p>
-<pre class="r"><code>install.packages(&quot;moj-analytical-services/Rs3tools&quot;)</code></pre>
+<pre class="r"><code>renv::install(&quot;moj-analytical-services/Rs3tools&quot;)</code></pre>
 <p>And here’s how to use <code>Rs3tools</code> to read in the
 <code>offenders</code> dataset that we’ll be using in this session from
 the ‘alpha-r-training’ S3 bucket:</p>
@@ -1871,6 +1871,8 @@ contains a larger range of functionality. Reading from S3 using
 <pre class="r"><code>offenders &lt;- botor::s3_read(
   uri = &quot;s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv&quot;,
   fun = readr::read_csv)</code></pre>
+<p>Here we are passing another function to <code>botor::s3_read</code>
+which it uses to read the data from the uri.</p>
 <p>More information on <code>Rs3tools</code> and <code>botor</code> can
 be found in the <a href="https://user-guidance.analytical-platform.service.justice.gov.uk/data/amazon-s3/#rstudio">AP
 guidance</a>.</p>
@@ -2274,12 +2276,15 @@ values and exporting</h1>
 <code>anti_join()</code> which can merge data sets, provided you have
 some common fields to match on. This is similar to SQL.</p>
 <p>Let’s import a new dataset which contains information on whether the
-offenders faced trial. Use either of the following commands, depending
-on whether you’re using the Analytical Platform version of RStudio or a
-local version:</p>
+offenders faced trial. Use one of the following commands:</p>
+<p>Using Rs3tools</p>
+<pre class="r"><code>offenders_trial &lt;-  Rs3tools::s3_path_to_full_df(
+  s3_path = &quot;s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv&quot;)</code></pre>
+<p>Using botor:</p>
 <pre class="r"><code>offenders_trial &lt;- botor::s3_read(
   uri = &quot;s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Trial.csv&quot;,
   fun = readr::read_csv)</code></pre>
+<p>Using local file read:</p>
 <pre class="r"><code>offenders_trial &lt;- readr::read_csv(&quot;Offenders_Chicago_Police_Dept_Trial.csv&quot;)</code></pre>
 <p>We merge the datasets with offenders using the combination of fields
 that together form a unique identifier. But first we need to rename
