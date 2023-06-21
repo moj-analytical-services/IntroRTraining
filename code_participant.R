@@ -54,6 +54,9 @@ help(package = dplyr)
 # Method 1: Rs3tools
 # Here the function s3_path_to_full_df() from the package Rs3tools is directly
 # reading in the the file from the uri
+
+renv::install("moj-analytical-services/Rs3tools")
+
 offenders <- Rs3tools::s3_path_to_full_df(
   s3_path = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv"
 )

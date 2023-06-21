@@ -46,7 +46,7 @@ offenders %>%
 # Q3 Produce a table showing the counts of height (including missing values).
 counts_of_height <- offenders %>% 
   dplyr::group_by(HEIGHT) %>%
-  dplyr::summarise(Count = n())
+  dplyr::summarise(Count = dplyr::n())
 
 # Or
 counts_of_height <- offenders %>% 
@@ -68,11 +68,17 @@ View(offenders_new)
 # 4.2 Exercises -----------------------------------------------------------
 # Q1 Read in dataset ‘FTSE_12_14.csv’ and convert the variable date to class date. 
 
-# analytical platform amazon server:
-ftse <- botor::s3_read("s3://alpha-r-training/intro-r-training/FTSE_12_14.csv", read_csv)
+# Read in ftse data using Rs3tools
+ftse <- Rs3tools::s3_path_to_full_df(
+  s3_path = "s3://alpha-r-training/intro-r-training/FTSE_12_14.csv")
 
-#If dataset is in working directory:
-# ftse <- read_csv("FTSE_12_14.csv")
+# Read in ftse data using botor
+ftse <- botor::s3_read(
+  uri = "s3://alpha-r-training/intro-r-training/FTSE_12_14.csv",
+  fun = readr::read_csv)
+
+# Read in data from the working directory:
+ftse <- readr::read_csv(file = "FTSE_12_14.csv")
 
 # first have a look at what format the date is in
 str(ftse)

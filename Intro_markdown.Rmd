@@ -233,7 +233,7 @@ Although including the library call makes the code longer, it also makes it more
 
 However there are exceptions to this. In particular, we want to use the operator `%>%` (pipe) without specifying the package name, because it would be bad for our readability. So we do want to load the package `magrittr`.
 
-Please load `magrittr` by one of the methods described above (which do you you think would be best practice overall)?
+If you haven't already, load `magrittr` by one of the methods described above (which do you you think would be best practice overall)?
 
 To know more about a package, it is always useful to read the associated documentation:
 
@@ -507,7 +507,7 @@ But if we want to count all the rows in the `regional_gender_average` dataset wi
 ```{r results="hide"}
 regional_gender_average %>% 
  dplyr::ungroup() %>% 
- dplyr::summarise(Count = dlyr::n())
+ dplyr::summarise(Count = dplyr::n())
 ```
 The `summarise(Count = n())` above can also be replaced with `tally()` to count the number of rows in a dataset.
 

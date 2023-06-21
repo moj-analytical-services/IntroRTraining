@@ -1799,8 +1799,9 @@ warned about any overlaps when you load a package.</p>
 the operator <code>%&gt;%</code> (pipe) without specifying the package
 name, because it would be bad for our readability. So we do want to load
 the package <code>magrittr</code>.</p>
-<p>Please load <code>magrittr</code> by one of the methods described
-above (which do you you think would be best practice overall)?</p>
+<p>If you haven’t already, load <code>magrittr</code> by one of the
+methods described above (which do you you think would be best practice
+overall)?</p>
 <p>To know more about a package, it is always useful to read the
 associated documentation:</p>
 <pre class="r"><code>?dplyr</code></pre>
@@ -2094,7 +2095,7 @@ grouped by the first grouping variable, which in this case is
 we add in the <code>ungroup()</code> function:</p>
 <pre class="r"><code>regional_gender_average %&gt;% 
  dplyr::ungroup() %&gt;% 
- dplyr::summarise(Count = dlyr::n())</code></pre>
+ dplyr::summarise(Count = dplyr::n())</code></pre>
 <p>The <code>summarise(Count = n())</code> above can also be replaced
 with <code>tally()</code> to count the number of rows in a dataset.</p>
 </div>
