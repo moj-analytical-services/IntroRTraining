@@ -153,7 +153,7 @@ You can check what the working directory currently is by using the `getwd()` com
 getwd()
 ```
 
-If you want to change the working directory to a specific repository/folder - in this case `IntroRTraining`, you can use the `setwd()` command as follows:
+If you want to change the working directory to a specific repository/folder - in this case `IntroRTraining` - you can use the `setwd()` command as follows:
 
 ```{r}
 setwd("~/IntroRTraining")
