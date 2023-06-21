@@ -153,7 +153,7 @@ You can check what the working directory currently is by using the `getwd()` com
 getwd()
 ```
 
-If you want to change the working directory to a specific repository/folder, you can use the `setwd()` command as follows:
+If you want to change the working directory to a specific repository/folder - in this case `IntroRTraining`, you can use the `setwd()` command as follows:
 
 ```{r}
 setwd("~/IntroRTraining")
@@ -191,7 +191,7 @@ To synchronise your working R environment with this course's repo, run
 ```{r eval = FALSE}
 renv::restore()
 ```
-If you have no installed `renv` yet, you can do this with
+If you have not installed `renv` yet, you can do this with
 
 ```{r eval = FALSE}
 install.packages('renv')
@@ -227,9 +227,9 @@ lubridate::days_in_month(Sys.Date())
 
 Here we're using function `days_in_month()` from the `lubridate` package. We're passing to it the current date.
 
-Functions that are 'base' R, or part of a core package such as the `stats` package, which we use below, do not require.
+Functions that are 'base' R, or part of a core package such as the `stats` package, which we use below, do not require the package/library name to precede the function name when the function is called.
 
-Although including the library call makes the code longer, it also makes it more readable, as anyone who is unfamiliar with the code can see very easily where functions are being called, and which packages are being used. It also avoids the wrong function being called if two functions have the same name and are from different packages. If the package isn't specified by using the double-colon notation then R will use the function from your most recently loaded package and will warn you when you load a package if there is some overlap.
+Although including the library call makes the code longer, it also makes it more readable, as anyone who is unfamiliar with the code can see very easily where functions are being called, and which packages are being used. It also avoids the wrong function being called if two functions have the same name and are from different packages. If the package isn't specified by using the double-colon notation then R will use the function from your most recently loaded package. You will be warned about any overlaps when you load a package.
 
 However there are exceptions to this. In particular, we want to use the operator `%>%` (pipe) without specifying the package name, because it would be bad for our readability. So we do want to load the package `magrittr`.
 
@@ -267,10 +267,26 @@ Note that this code is only suitable for csv files, so it is assumed by default 
 
 There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see http://www.statmethods.net/input/importingdata.html.
 
-
 ### Importing data from the Analytical Platform cloud storage (Amazon S3)
 
-Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon S3, which is the cloud storage solution used by the Analytical Platform. To import data from S3 we use `botor`.
+Data that has been approved for storage on the Analytical Platform is generally stored in a data source (referred to as a 'bucket') on Amazon S3, which is the cloud storage solution used by the Analytical Platform. There are two options for packages that can be used to import data from S3: `Rs3tools` and `botor`.
+
+#### Importing data using the `Rs3tools` package {-}
+
+The `Rs3tools` package is maintained by other analysts in MoJ and has the advantage of being R-native, resulting in it being quicker to install than `botor` (which requires a Python environment). Here's how it can be installed:
+
+```{r, results="hide"}
+install.packages("moj-analytical-services/Rs3tools")
+```
+
+And here's how to use `Rs3tools` to read in the `offenders` dataset that we'll be using in this session from the 'alpha-r-training' S3 bucket:
+
+```{r, results="hide"}
+offenders <- Rs3tools::s3_path_to_full_df(
+  s3_path = "alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv")
+```
+
+#### Importing data using the `botor` package {-}
 
 The `botor` package provides an alternative to `Rs3tools`. It's maintained by the wider R community and contains a larger range of functionality. Reading from S3 using `botor` can be done using this command:
 
@@ -279,9 +295,7 @@ offenders <- botor::s3_read(
   uri = "s3://alpha-r-training/intro-r-training/Offenders_Chicago_Police_Dept_Main.csv",
   fun = readr::read_csv)
 ```
-
-More information on `botor` can be found on the [AP guidance](https://user-guidance.analytical-platform.service.justice.gov.uk/data/amazon-s3/#rstudio).
-
+More information on `Rs3tools` and `botor` can be found in the [AP guidance](https://user-guidance.analytical-platform.service.justice.gov.uk/data/amazon-s3/#rstudio).
 
 ## Inspecting the dataset
 

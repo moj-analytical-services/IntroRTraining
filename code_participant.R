@@ -211,7 +211,7 @@ ftse <- botor::s3_read(
   uri = "s3://alpha-r-training/intro-r-training/FTSE_12_14.csv",
   fun = readr::read_csv)
 
-# To read the file in directly from the wd, use:
+# To read the file in directly from the working directory use:
 # ftse <- readr::read_csv(file = "FTSE_12_14.csv")
 
 
