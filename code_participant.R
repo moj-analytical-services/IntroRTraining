@@ -258,7 +258,7 @@ offenders_merge <- dplyr::inner_join(
 offenders_merge <- dplyr::inner_join(
   x = offenders,
   y = offenders_trial,
-  by = c("LAST", "BIRTH_DATE" = "DoB")) 
+  by = c("LAST", "BIRTH_DATE")) 
 
 men <- offenders %>% dplyr::filter(GENDER == "MALE") 
 women <- offenders %>% dplyr::filter(GENDER == "FEMALE")
