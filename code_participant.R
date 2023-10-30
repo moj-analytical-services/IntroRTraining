@@ -255,10 +255,11 @@ offenders_merge <- dplyr::inner_join(
   y = offenders_trial,
   by = c("LAST", "BIRTH_DATE")) 
 
+# this code will give an error if the above rename has occurred
 offenders_merge <- dplyr::inner_join(
   x = offenders,
   y = offenders_trial,
-  by = c("LAST", "BIRTH_DATE")) 
+  by = c("LAST", "BIRTH_DATE" = "DoB")) 
 
 men <- offenders %>% dplyr::filter(GENDER == "MALE") 
 women <- offenders %>% dplyr::filter(GENDER == "FEMALE")
