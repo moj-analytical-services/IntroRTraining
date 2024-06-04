@@ -70,6 +70,7 @@ offenders <- botor::s3_read(
 
 # Method 3: local file read
 # If the csv file is in your working directory:
+#(Note that sensitive data should not be uploaded to the working directory)
 offenders <- readr::read_csv(file = "Offenders_Chicago_Police_Dept_Main.csv")
 
 # 2.4 Inspecting the dataset
@@ -186,7 +187,7 @@ offenders <- offenders %>%
 offenders <- offenders %>% dplyr::mutate(
   weight_under_170 = dplyr::if_else(WEIGHT<170, 1, 0))
 
-# Dates -------------------------------------------------------------------
+# 4 Dates -------------------------------------------------------------------
 # 4.1 Manipulating dates
 
 lubridate::today()

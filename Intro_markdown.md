@@ -117,6 +117,10 @@ In R, these files have a '.R' extension. The code file should appear in the top 
 
 To execute the code, click run at the top of the screen. R will run the line of code that the cursor is currently on, if you want to run several lines of code, highlight them and then press run.
 
+If you use a # symbol in your script, R will ignore all text on the line after the #, so it is only there for those reading your code. This is known as **commenting** - leaving informative comments is considered best practice.
+
+If you have long scripts, it can be useful to split it into sections. Start a new section with a line that starts with a # and ends with at least 4 hyphens, for instance `# Section 1 -----`. This allows you to toggle viewing the structure of the file using Alt + o /Alt + Shift + o.
+
 ## Other windows and getting help
 
 The top right panel shows all "objects" that are in your working environment. This will become clearer throughout the session but typically, this will be any data that you have created or imported, additional variables and values that you have created. For instance, if you have run the code above, `x` should be shown here. Other objects containing for instance the details of regression models that you have created would also appear here. From here you can also use a drop down menu to import more data.
@@ -255,6 +259,8 @@ It is important to be able to import data both from your own computer as well as
 ### Importing data using a local version of RStudio 
 
 If you're using a local version of RStudio on your laptop (i.e. not accessed via the Analytical Platform control panel), you can import data from .csv files into RStudio by clicking on the Environment tab and then the Import button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
+
+Note that sensitive data should not be uploaded to your working directory, since there is a risk of it inadvertantly being uploaded to github.
 
 You can now see by looking in the environment window that an object has been created (the `offenders` dataset), and that it has 1413 observations and 9 variables.
 
