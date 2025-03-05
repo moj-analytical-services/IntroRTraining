@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.4.0",
+    "Version": "4.4.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -18,7 +18,7 @@
       "Package": "Matrix",
       "Version": "1.7-0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Hash": "1920b2f11133b12350024297d8a4ff4a"
     },
     "R6": {
@@ -44,15 +44,15 @@
     },
     "Rs3tools": {
       "Package": "Rs3tools",
-      "Version": "0.4.4",
+      "Version": "0.4.5",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteUsername": "moj-analytical-services",
       "RemoteRepo": "Rs3tools",
       "RemoteRef": "main",
-      "RemoteSha": "53078744d0e96be8e3d3865f9ebdddc4e21cfb04",
-      "Hash": "b9cac31bc707f94d1c90a2da7cd0d70d"
+      "RemoteSha": "d9872b4912bce820dffb50d5dec2d72d41a37f93",
+      "Hash": "3e89cc4d5831dd16ffaa7db418dc4c62"
     },
     "askpass": {
       "Package": "askpass",
@@ -91,10 +91,10 @@
     },
     "botor": {
       "Package": "botor",
-      "Version": "0.3.0",
+      "Version": "0.4.1",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "dc6ab51cf3922fdc38421f4dc79fd2af"
+      "Hash": "f2e827e9ef9fff3918fe9a0750d1612b"
     },
     "checkmate": {
       "Package": "checkmate",
@@ -476,10 +476,10 @@
     },
     "reticulate": {
       "Package": "reticulate",
-      "Version": "1.36.1",
+      "Version": "1.41.0",
       "Source": "Repository",
       "Repository": "RSPM",
-      "Hash": "e037fb5dc364efdaf616eb6bc05aaca2"
+      "Hash": "66f55bae80360a3fe427bcb66451f57e"
     },
     "rlang": {
       "Package": "rlang",
