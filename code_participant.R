@@ -12,6 +12,8 @@ x <- c(3, 2, 4)
 
 ?mean
 
+
+
 # 2. Processing Data ------------------------------------------------------
 
 # 2.1 Setting up a working directory
@@ -22,6 +24,7 @@ getwd()
 # set working directory manually, if the "IntroRTraining" repo hasn't been 
 # cloned and an RStudio project is not used
 setwd("~/IntroRTraining")
+
 
 # 2.2 Packages
 
@@ -45,7 +48,10 @@ renv::install("tidyverse")
 library('magrittr')
 # If you get an error, it might be because of not restarting above.
 
+lubridate::days_in_month(Sys.Date())
+
 help(package = dplyr)
+
 
 # 2.3 Importing data
 
@@ -73,6 +79,7 @@ offenders <- botor::s3_read(
 #(Note that sensitive data should not be uploaded to the working directory)
 offenders <- readr::read_csv(file = "Offenders_Chicago_Police_Dept_Main.csv")
 
+
 # 2.4 Inspecting the dataset
 
 View(offenders) # note the capital V!
@@ -89,6 +96,7 @@ offenders[500,1:5]
 
 offenders$GENDER
 
+
 # 2.5 Data classes
 
 class(offenders$WEIGHT)
@@ -104,6 +112,8 @@ levels(offenders$GENDER)
 offenders$GENDER <- relevel(offenders$GENDER, "MALE")
 
 offenders$GENDER <- as.character(offenders$GENDER) 
+
+
 
 # 3.	Data wrangling and ‘group by’ calculations -------------------------------
 
@@ -187,16 +197,29 @@ offenders <- offenders %>%
 offenders <- offenders %>% dplyr::mutate(
   weight_under_170 = dplyr::if_else(WEIGHT<170, 1, 0))
 
+
+
 # 4 Dates -------------------------------------------------------------------
 # 4.1 Manipulating dates
 
+class(offenders$BIRTH_DATE)
+
+# The lubridate package allows us to work with dates
 lubridate::today()
 
+?lubridate()
+
+# Note the month/day/year date format
 offenders <- offenders %>% 
   dplyr::mutate(DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
 
+# What happens if the wrong date format is specified
+offenders_wrong_date <- offenders %>% 
+  dplyr::mutate(wrong_DoB_format = lubridate::dmy(BIRTH_DATE))
+
+# Getting components of a date
 offenders <- offenders %>% 
   dplyr::mutate(day = lubridate::day(DoB_formatted))
 
@@ -215,8 +238,10 @@ offenders <- offenders %>%
     label = TRUE,
     abbr = FALSE))
 
+# Date differences
 offenders <- offenders %>%
   dplyr::mutate(days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
+
 
 # 4.2 Exercises
 
@@ -231,6 +256,7 @@ ftse <- botor::s3_read(
 
 # Read in data from the working directory:
 ftse <- readr::read_csv(file = "FTSE_12_14.csv")
+
 
 
 # 5 Merging and exporting data --------------------------------------------
@@ -248,18 +274,19 @@ offenders_trial <- botor::s3_read(
 # Read in data from the working directory:
 offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
-
-offenders_trial <- offenders_trial %>% dplyr::rename( BIRTH_DATE = DoB) 
+offenders_trial <- offenders_trial %>% dplyr::mutate(BIRTH_DATE = DoB) 
 
 offenders_merge <- dplyr::inner_join(
   x = offenders, 
   y = offenders_trial,
   by = c("LAST", "BIRTH_DATE")) 
 
+
 offenders_merge <- dplyr::inner_join(
   x = offenders,
   y = offenders_trial,
   by = c("LAST", "BIRTH_DATE" = "DoB")) 
+
 
 men <- offenders %>% dplyr::filter(GENDER == "MALE") 
 women <- offenders %>% dplyr::filter(GENDER == "FEMALE")
@@ -268,6 +295,7 @@ rejoined <- dplyr::bind_rows(men, women)
 nrow(rejoined) # 1413 rows
 
 nrow(offenders) # 1413 rows
+
 
 # 5.2 Handling missing values
 
@@ -283,6 +311,7 @@ complete.cases(offenders)
 
 complete_offenders <- offenders %>% 
   dplyr::filter(complete.cases(offenders))
+
 
 # 5.3 Exporting data
 write.csv(complete_offenders, file = "Complete_offenders.csv")
