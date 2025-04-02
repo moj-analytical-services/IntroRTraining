@@ -9,6 +9,7 @@ y * 78
 ?head
 
 
+
 # 2.7 Exercises -----------------------------------------------------------
 
 # Q1 Find the mean and median for the AGE variable in the offenders dataset. 
@@ -29,6 +30,7 @@ summary(offenders$WEIGHT)
 class(offenders$SENTENCE)
 offenders$SENTENCE <- as.factor(offenders$SENTENCE) #SENTENCE may already be stored as a factor if it is the next line is all that is needed
 levels(offenders$SENTENCE)
+
 
 
 # 3.7 Exercises -----------------------------------------------------------
@@ -65,8 +67,9 @@ offenders_new <- offenders %>%
 View(offenders_new)
 
 
+
 # 4.2 Exercises -----------------------------------------------------------
-# Q1 Read in dataset ‘FTSE_12_14.csv’ and convert the variable date to class date. 
+# Q1 Read in dataset ‘FTSE_12_14.csv’ and convert the variable Date to class date. 
 
 # Read in ftse data using Rs3tools
 ftse <- Rs3tools::s3_path_to_full_df(
@@ -116,6 +119,7 @@ weekday_performance <- ftse %>%
 View(weekday_performance)
 
 
+
 # 5.4 Exercises -----------------------------------------------------------
 # Q1 Create a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 
@@ -124,7 +128,7 @@ offenders_age <- offenders %>%
   dplyr::select(LAST, BIRTH_DATE, AGE)
 
 # merge the two datasets
-offenders_trial_age <- inner_join(offenders_age, offenders_trial, by=c("LAST", "BIRTH_DATE"))
+offenders_trial_age <- dplyr::inner_join(offenders_age, offenders_trial, by=c("LAST", "BIRTH_DATE"))
 
 # Or in one go
 offenders_trial_age <- offenders %>% 
@@ -134,7 +138,8 @@ offenders_trial_age <- offenders %>%
 # Q2 Export the dataset offenders_trial_age to a csv file.
 write.csv(offenders_trial_age, "offenders_trial_age.csv")
 
-# Q3(Extension) Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the missing values replaced by the average height.
+# Q3(Extension) Using offenders create a new variable HEIGHT_NEW which is as HEIGHT except with the
+# missing values replaced by the average height.
 # (hint: you will need to use the ifelse and is.na() functions)
 
 ?replace
@@ -142,8 +147,10 @@ write.csv(offenders_trial_age, "offenders_trial_age.csv")
 mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
 
 offenders <- offenders %>% 
-  dplyr::mutate(height_new=replace(HEIGHT, is.na(HEIGHT), mean_height))
+  dplyr::mutate(height_new = replace(HEIGHT, is.na(HEIGHT), mean_height))
 
 # Alternative with if_else function
 offenders <- offenders %>% 
-  dplyr::mutate(height_new=dplyr::if_else(is.na(HEIGHT), mean_height, HEIGHT))
+  dplyr::mutate(height_new = dplyr::if_else(is.na(HEIGHT), mean_height, HEIGHT))
+
+offenders %>% dplyr::count(height_new)

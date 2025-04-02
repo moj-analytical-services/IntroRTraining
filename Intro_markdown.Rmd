@@ -121,6 +121,10 @@ In R, these files have a '.R' extension. The code file should appear in the top 
 
 To execute the code, click run at the top of the screen. R will run the line of code that the cursor is currently on, if you want to run several lines of code, highlight them and then press run.
 
+If you use a # symbol in your script, R will ignore all text on the line after the #, so it is only there for those reading your code. This is known as **commenting** - leaving informative comments is considered best practice.
+	
+If you have long scripts, it can be useful to split it into sections. Start a new section with a line that starts with a # and ends with at least 4 hyphens, for instance `# Section 1 -----`. This allows you to toggle viewing the structure of the file using Alt + o /Alt + Shift + o.
+
 ## Other windows and getting help
 
 The top right panel shows all "objects" that are in your working environment. This will become clearer throughout the session but typically, this will be any data that you have created or imported, additional variables and values that you have created. For instance, if you have run the code above, `x` should be shown here. Other objects containing for instance the details of regression models that you have created would also appear here. From here you can also use a drop down menu to import more data.
@@ -141,6 +145,7 @@ Of course, you can also use google or ASD slack to try and find the solution to 
 2.  Create a new value called `y` which is equal to 17.
 3.  Now multiply `y` by 78. What answer do you get?
 4.	What does the command `head` do?
+
 
 # Processing data
 ## Setting up a working directory
@@ -250,6 +255,8 @@ It is important to be able to import data both from your own computer as well as
 ### Importing data using a local version of RStudio 
 
 If you're using a local version of RStudio on your laptop (i.e. not accessed via the Analytical Platform control panel), you can import data from .csv files into RStudio by clicking on the Environment tab and then the Import button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
+
+Note that sensitive data should not be uploaded to your working directory, since there is a risk of it inadvertently being uploaded to GitHub.
 
 You can now see by looking in the environment window that an object has been created (the `offenders` dataset), and that it has 1413 observations and 9 variables.
 
@@ -574,7 +581,7 @@ offenders_anonymous <- offenders %>%
   dplyr::mutate(weight_kg = WEIGHT * 0.454)
 ```
 
-You can download the Data Transformation Cheat Sheet (and other cheatsheets) at: https://www.rstudio.com/resources/cheatsheets/
+You can download the Data Transformation Cheat Sheet (and other cheatsheets) at: https://rstudio.github.io/cheatsheets/html/data-transformation.html
 
 ## if_else
 
@@ -652,8 +659,8 @@ offenders <- offenders %>%
 
 ## Exercises
 
-1.	Read in dataset 'FTSE_12_14.csv' and convert the variable date to class date.
-(To read in the data, use the code given in the participant code script) 
+1.	Read in dataset 'FTSE_12_14.csv' and convert the variable `Date` to be a date class.
+(To read in the data, use the code given in the code_participant.R script) 
 2.	Add a variable called `weekday` with the day of the week, and another variable called `daily_performance` for how much the share price has increased or decreased that day (close price - open price). 
 3.	Work out which day of the week has the highest mean performance. 
 
@@ -792,9 +799,10 @@ This assumes by default that you want to export the row headers and that the col
 
 There are lots of resources that can help you develop your R knowledge, but below are a few that are particularly helpful:
 
-+ RStudio has developed a list of cheatsheets which give quick overviews of the functions contained in different packages and can be quickly referred to - see: https://www.rstudio.com/resources/cheatsheets/ Some can be accessed directly through the top menu help > Cheatsheets e.g. 'Data Transformation with dplyr'.
-+ RStudio also lists some useful free resources at: [education.rstudio.com](education.rstudio.com)
-+ The 'R for Data Science' online book: [r4ds.had.co.nz/](r4ds.had.co.nz/), written by Hadley Wickham, a data scientist at RStudio, who developed the tidyverse package. It gives a really good overview of R and how his package works with it.
++ RStudio has developed a list of cheatsheets which give quick overviews of the functions contained in different packages and can be quickly referred to - see: https://posit.co/resources/cheatsheets/
++ RStudio also lists some useful free resources at: https://education.rstudio.com/
++ The 'Hands-On Programming with R' free online book, providing a friendly introduction to R for new programmers: https://rstudio-education.github.io/hopr/
++ The 'R for Data Science' online book: https://r4ds.hadley.nz/, written by Hadley Wickham, Chief Scientist at Posit (formerly RStudio), who developed the tidyverse package. It gives a really good overview of R and how his package works with it.
 
 For further lists of useful resources please see: https://trello.com/b/D5pSkqnT/online-analytical-training or https://moj-analytical-services.github.io/ap-tools-training/
 
