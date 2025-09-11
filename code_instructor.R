@@ -35,23 +35,23 @@ levels(offenders$SENTENCE)
 
 # 3.7 Exercises -----------------------------------------------------------
 # Q1 Using group_by and summarise, calculate the average and median age for females in the West.
-offenders %>%
-  dplyr::group_by(GENDER, REGION) %>%
-  dplyr::summarise(mean(AGE), median(AGE)) %>%
+offenders |>
+  dplyr::group_by(GENDER, REGION) |>
+  dplyr::summarise(mean(AGE), median(AGE)) |>
   dplyr::filter(GENDER == 'FEMALE', REGION == 'West')
 
 # Q2 Using select and filter produce a table of offender’s genders who are over 2m tall. 
-offenders %>% 
-  dplyr::select(HEIGHT, GENDER) %>%
+offenders |> 
+  dplyr::select(HEIGHT, GENDER) |>
   dplyr::filter(HEIGHT>200)
 
 # Q3 Produce a table showing the counts of height (including missing values).
-counts_of_height <- offenders %>% 
-  dplyr::group_by(HEIGHT) %>%
+counts_of_height <- offenders |> 
+  dplyr::group_by(HEIGHT) |>
   dplyr::summarise(Count = dplyr::n())
 
 # Or
-counts_of_height <- offenders %>% 
+counts_of_height <- offenders |> 
   dplyr::count(HEIGHT)
 
 View(counts_of_height)
@@ -59,9 +59,9 @@ View(counts_of_height)
 # Extension: Q4	Create a new dataset containing PREV_CONVICTIONS and SENTENCE variables, rename 
 # SENTENCE as sentence_type, and create a new variable num_convictions that is 
 # PREV_CONVICTIONS + 1 (to take account of the latest conviction).
-offenders_new <- offenders %>%
-  dplyr::select(SENTENCE, PREV_CONVICTIONS) %>%
-  dplyr::rename(sentence_type = SENTENCE) %>%
+offenders_new <- offenders |>
+  dplyr::select(SENTENCE, PREV_CONVICTIONS) |>
+  dplyr::rename(sentence_type = SENTENCE) |>
   dplyr::mutate(num_convictions = PREV_CONVICTIONS + 1)
 
 View(offenders_new)
@@ -87,7 +87,7 @@ ftse <- readr::read_csv(file = "FTSE_12_14.csv")
 str(ftse)
 
 # convert into date format
-ftse <- ftse %>%
+ftse <- ftse |>
   dplyr::mutate(formatted_date = lubridate::dmy(Date))
 
 # check it worked
@@ -98,22 +98,22 @@ class(ftse$formatted_date)
 # (close price - open price). 
 
 # create weekday variable
-ftse <- ftse %>% 
+ftse <- ftse |> 
   dplyr::mutate(weekday = lubridate::wday(formatted_date, label=TRUE, abbr=FALSE))
 
 View(ftse)
 
 # add daily performance column
-ftse <- ftse %>% 
+ftse <- ftse |> 
   dplyr::mutate(daily_performance = Close - Open)
 
 View(ftse)
 
 # Q3 Work out which day of the week has the highest mean performance. 
 
-weekday_performance <- ftse %>%
-  dplyr::group_by(weekday) %>%
-  dplyr::summarise(Mean_performance = mean(daily_performance)) %>%
+weekday_performance <- ftse |>
+  dplyr::group_by(weekday) |>
+  dplyr::summarise(Mean_performance = mean(daily_performance)) |>
   dplyr::arrange(desc(Mean_performance))
 
 View(weekday_performance)
@@ -124,15 +124,15 @@ View(weekday_performance)
 # Q1 Create a new dataset called offenders_trial_age which includes the data in offenders_trial and the age column of offenders.
 
 # create offenders age dataset with just age column and columns we're joining on
-offenders_age <- offenders %>%
+offenders_age <- offenders |>
   dplyr::select(LAST, BIRTH_DATE, AGE)
 
 # merge the two datasets
 offenders_trial_age <- dplyr::inner_join(offenders_age, offenders_trial, by=c("LAST", "BIRTH_DATE"))
 
 # Or in one go
-offenders_trial_age <- offenders %>% 
-  dplyr::select(LAST, BIRTH_DATE, AGE) %>% 
+offenders_trial_age <- offenders |> 
+  dplyr::select(LAST, BIRTH_DATE, AGE) |> 
   dplyr::inner_join(offenders_trial, by=c("LAST", "BIRTH_DATE"))
 
 # Q2 Export the dataset offenders_trial_age to a csv file.
@@ -146,11 +146,11 @@ write.csv(offenders_trial_age, "offenders_trial_age.csv")
 
 mean_height <- mean(offenders$HEIGHT, na.rm = TRUE)
 
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(height_new = replace(HEIGHT, is.na(HEIGHT), mean_height))
 
 # Alternative with if_else function
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(height_new = dplyr::if_else(is.na(HEIGHT), mean_height, HEIGHT))
 
-offenders %>% dplyr::count(height_new)
+offenders |> dplyr::count(height_new)
