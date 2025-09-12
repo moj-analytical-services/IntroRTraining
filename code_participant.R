@@ -124,77 +124,77 @@ offenders$GENDER <- as.character(offenders$GENDER)
 offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT,
                                      PREV_CONVICTIONS)
 
-offenders_anonymous <- offenders %>% 
+offenders_anonymous <- offenders |> 
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 
-offenders_anonymous <- offenders %>% 
+offenders_anonymous <- offenders |> 
   dplyr::select(-LAST, -FIRST, -BLOCK)
 
 # 3.2 Grouping and summarising data
 
-regional_gender_average <- offenders %>% 
-  dplyr::group_by(REGION, GENDER) %>%
+regional_gender_average <- offenders |> 
+  dplyr::group_by(REGION, GENDER) |>
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
                    .groups = 'keep') 
 
-regional_gender_average <- offenders %>% 
-  dplyr::group_by(REGION, GENDER) %>%
+regional_gender_average <- offenders |> 
+  dplyr::group_by(REGION, GENDER) |>
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
                    Count = dplyr::n(),
                    .groups = 'keep') 
 
-offenders %>% 
+offenders |> 
   dplyr::count(REGION, GENDER)
 
-regional_gender_average %>% 
+regional_gender_average |> 
   dplyr::summarise(Count = dplyr::n())
 
-regional_gender_average %>% 
-  dplyr::ungroup() %>% 
+regional_gender_average |> 
+  dplyr::ungroup() |> 
   dplyr::summarise(Count = dplyr::n())
 
 # 3.3 Filter
 
-offenders %>% 
-  dplyr::group_by(SENTENCE) %>% 
+offenders |> 
+  dplyr::group_by(SENTENCE) |> 
   dplyr::summarise(Count = dplyr::n())
 
-offenders %>% 
+offenders |> 
   dplyr::count(SENTENCE)
 
-crt_order_average <- offenders %>% 
-  dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
-  dplyr::group_by(REGION, GENDER) %>% 
+crt_order_average <- offenders |> 
+  dplyr::filter(SENTENCE == "Court_order" & AGE > 50) |> 
+  dplyr::group_by(REGION, GENDER) |> 
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS), .groups = 'keep')
 
 # 3.4 Rename
 
-offenders_anonymous <- offenders %>%
-  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+offenders_anonymous <- offenders |>
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) |>
   dplyr::rename(DoB = BIRTH_DATE) 
 
-offenders_anonymous <- offenders %>%
-  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+offenders_anonymous <- offenders |>
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) |>
   dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
 
 # 3.5 Mutate
 
 ?mutate
 
-offenders_anonymous <- offenders %>%
-  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
+offenders_anonymous <- offenders |>
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) |>
+  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) |>
   dplyr::mutate(weight_kg = WEIGHT * 0.454)
 
 # 3.6 If_else
 
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(weight_under_170 =
                   dplyr::if_else(condition = WEIGHT < 170,
                                  true = 1,
                                  false = 0))
 
-offenders <- offenders %>% dplyr::mutate(
+offenders <- offenders |> dplyr::mutate(
   weight_under_170 = dplyr::if_else(WEIGHT<170, 1, 0))
 
 
@@ -207,39 +207,39 @@ class(offenders$BIRTH_DATE)
 # The lubridate package allows us to work with dates
 lubridate::today()
 
-?lubridate()
+?lubridate
 
 # Note the month/day/year date format
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
 
 # What happens if the wrong date format is specified
-offenders_wrong_date <- offenders %>% 
+offenders_wrong_date <- offenders |> 
   dplyr::mutate(wrong_DoB_format = lubridate::dmy(BIRTH_DATE))
 
 # Getting components of a date
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(day = lubridate::day(DoB_formatted))
 
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(quarter = lubridate::quarter(DoB_formatted))
 
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(year = lubridate::year(DoB_formatted))
 
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(month = lubridate::month(DoB_formatted))
 
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(weekday = lubridate::wday(
     x = DoB_formatted,
     label = TRUE,
     abbr = FALSE))
 
 # Date differences
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
 
 
@@ -274,7 +274,7 @@ offenders_trial <- botor::s3_read(
 # Read in data from the working directory:
 offenders_trial <- readr::read_csv("Offenders_Chicago_Police_Dept_Trial.csv")
 
-offenders_trial <- offenders_trial %>% dplyr::mutate(BIRTH_DATE = DoB) 
+offenders_trial <- offenders_trial |> dplyr::mutate(BIRTH_DATE = DoB) 
 
 offenders_merge <- dplyr::inner_join(
   x = offenders, 
@@ -288,8 +288,8 @@ offenders_merge <- dplyr::inner_join(
   by = c("LAST", "BIRTH_DATE" = "DoB")) 
 
 
-men <- offenders %>% dplyr::filter(GENDER == "MALE") 
-women <- offenders %>% dplyr::filter(GENDER == "FEMALE")
+men <- offenders |> dplyr::filter(GENDER == "MALE") 
+women <- offenders |> dplyr::filter(GENDER == "FEMALE")
 rejoined <- dplyr::bind_rows(men, women)
 
 nrow(rejoined) # 1413 rows
@@ -299,8 +299,8 @@ nrow(offenders) # 1413 rows
 
 # 5.2 Handling missing values
 
-height_table <- offenders %>% 
-  dplyr::group_by(HEIGHT) %>% 
+height_table <- offenders |> 
+  dplyr::group_by(HEIGHT) |> 
   dplyr::summarise(Count = dplyr::n())
 
 View(height_table)
@@ -309,10 +309,9 @@ is.na(offenders$HEIGHT)
 
 complete.cases(offenders)
 
-complete_offenders <- offenders %>% 
+complete_offenders <- offenders |> 
   dplyr::filter(complete.cases(offenders))
 
 
 # 5.3 Exporting data
 write.csv(complete_offenders, file = "Complete_offenders.csv")
-

@@ -19,8 +19,8 @@ This document provides accompanying training material used in the Introduction t
 You should then work through the following:
 
  1. Deploy (if necessary) and open RStudio: https://user-guidance.services.alpha.mojanalytics.xyz/tools/control-panel.html#control-panel
- 1. Connect RStudio to GitHub: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#setup-github-keys-to-access-it-from-r-studio-and-jupyter
- 1. Clone the GitHub repository for this course (https://github.com/moj-analytical-services/IntroRTraining) by following step 1 here: https://user-guidance.services.alpha.mojanalytics.xyz/github.html#r-studio
+ 1. Connect RStudio to GitHub: https://user-guidance.analytical-platform.service.justice.gov.uk/github/set-up-github.html#set-up-github
+ 1. Clone the GitHub repository for this course (https://github.com/moj-analytical-services/IntroRTraining) by following step 1 here: https://user-guidance.analytical-platform.service.justice.gov.uk/github/rstudio-git.html#work-with-git-in-rstudio
  1. After cloning the repository, open up the file called 'code_participant.R' in RStudio, which contains example code that accompanies this course. To do this, look under the 'Files' tab in the bottom-right corner and click where it says 'code_participant.R'.
  1. In the Console window in RStudio, install the `renv` package, which helps create reproducible environments for R projects, by running `install.packages("renv")`
  1. Use `renv` to ensure you have the required packages installed by running in the Console window: `renv::restore()`
@@ -47,7 +47,7 @@ You should then work through the following:
 
 R is an open-source programming language and software environment, designed primarily for statistical computing. It has a long history - it is based on the S language, which was developed in 1976 in Bell Labs, where the UNIX operating system and the C and C++ languages were developed. The R language itself was developed in the 1990s, with the first stable version release in 2000.
 
-R has grown rapidly in popularity particularly in the last five years, due to the increased interest in the data science field. It is now a key tool in the MoJ's Analytical Platform.
+R has grown rapidly in popularity particularly in the last ten years, due to the increased interest in the data science field. It is now a key tool in the MoJ's Analytical Platform.
 
 Some of the advantages:
 
@@ -58,7 +58,7 @@ Some of the advantages:
 
 ## How is it used?
 
-There a number of areas in the MoJ where R is making an impact:
+There are a number of areas in the MoJ where R is making an impact:
 
 1. The Reproducible Analytical Pipeline (RAP) is a set of tools and standards for producing our statistical publications in a more automated and reproducible way. The Offender Management Statistics Quarterly publication already runs on RAP https://github.com/moj-analytical-services/OMSQ_RAP
 2. A number of webapps using Shiny have been produced, allowing customers to explore data in an interactive way. The PQ tool is a strong example: https://pq-tool.apps.alpha.mojanalytics.xyz/
@@ -240,15 +240,17 @@ Functions that are 'base' R, or part of a core package such as the `stats` packa
 
 Although including the library call makes the code longer, it also makes it more readable, as anyone who is unfamiliar with the code can see very easily where functions are being called, and which packages are being used. It also avoids the wrong function being called if two functions have the same name and are from different packages. If the package isn't specified by using the double-colon notation then R will use the function from your most recently loaded package. You will be warned about any overlaps when you load a package.
 
-However there are exceptions to this. In particular, we want to use the operator `%>%` (pipe) without specifying the package name, because it would be bad for our readability. So we do want to load the package `magrittr`.
+However there are exceptions to this. In particular, if we want to use the operator `%>%` (pipe) without specifying the package name, because it would be bad for our readability, we would want to load the package `magrittr`.
 
 If you haven't already, load `magrittr` by one of the methods described above (which do you you think would be best practice overall)?
+
+If you are using R version 4.1.0 or later, you can use the R-native pipe operator `|>` as an alternative to `%>%`. In most cases, this will work the same as the `magrittr` pipe and, since it is part of base R, there is no need to load in a package before using it. This makes `|>` a preferable alternative. Further details about the differences between the two pipe operators can be found at: https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/.
 
 To know more about a package, it is always useful to read the associated documentation:
 
 
 ```r
-?dplyr
+help(package = dplyr)
 ```
 
 
@@ -256,29 +258,6 @@ To know more about a package, it is always useful to read the associated documen
 ## Importing data
 
 It is important to be able to import data both from your own computer as well as the Analytical Platform cloud storage.
-
-### Importing data using a local version of RStudio 
-
-If you're using a local version of RStudio on your laptop (i.e. not accessed via the Analytical Platform control panel), you can import data from .csv files into RStudio by clicking on the Environment tab and then the Import button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
-
-Note that sensitive data should not be uploaded to your working directory, since there is a risk of it inadvertently being uploaded to GitHub.
-
-You can now see by looking in the environment window that an object has been created (the `offenders` dataset), and that it has 1413 observations and 9 variables.
-
-Now look at the Console tab. You should see the commands library and `read_csv()` appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won't need to do this again to load the data.
-
-Alternatively you can simply use the function `read_csv()` from the `readr` package (which is included as part of tidyverse - see section 2.2):
-
-
-```r
-offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
-```
-
-Note that the above assumes that the csv file is in your working directory, otherwise you will need to include the file path - see section 2.1.
-
-Note that this code is only suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = ",").
-
-There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see http://www.statmethods.net/input/importingdata.html.
 
 ### Importing data from the Analytical Platform cloud storage (Amazon S3)
 
@@ -316,6 +295,29 @@ Here we are passing another function to `botor::s3_read` which it uses to read t
 from the uri.
 
 More information on `Rs3tools` and `botor` can be found in the [AP guidance](https://user-guidance.analytical-platform.service.justice.gov.uk/data/amazon-s3/#rstudio).
+
+### Importing data using a local version of RStudio 
+
+If you're using a local version of RStudio on your laptop (i.e. not accessed via the Analytical Platform control panel), you can import data from .csv files into RStudio by clicking on the Environment tab and then the Import button. You can then navigate to the folder where the dataset "Offenders_Chicago_Police_Dept_Main.csv" is saved and click on it. A window will then appear which will include on the bottom right a preview of your data. Here it looks good, so we can click on import. 
+
+Note that sensitive data should not be uploaded to your working directory, since there is a risk of it inadvertently being uploaded to GitHub.
+
+You can now see by looking in the environment window that an object has been created (the `offenders` dataset), and that it has 1413 observations and 9 variables.
+
+Now look at the Console tab. You should see the commands library and `read_csv()` appear with the whole path to the data set. It is a good idea to copy and paste these commands inside your script, so you won't need to do this again to load the data.
+
+Alternatively you can simply use the function `read_csv()` from the `readr` package (which is included as part of tidyverse - see section 2.2):
+
+
+```r
+offenders <- readr::read_csv("Offenders_Chicago_Police_Dept_Main.csv")
+```
+
+Note that the above assumes that the csv file is in your working directory, otherwise you will need to include the file path - see section 2.1.
+
+Note that this code is only suitable for csv files, so it is assumed by default that the first line of the file contains a header (header = T) and the columns are separated by a comma symbol (sep = ",").
+
+There are other commands and various packages that can be used to import datasets with other extensions (e.g. .xls) e.g. see https://www.datacamp.com/tutorial/r-data-import-tutorial.
 
 ## Inspecting the dataset
 
@@ -470,21 +472,21 @@ offenders_anonymous <- dplyr::select(offenders, BIRTH_DATE, WEIGHT, PREV_CONVICT
 
 The first argument within the select command specifies use of the offenders dataset. Following this we list the variables we want to keep.
 
-A more popular way to obtain the same result is to use the pipe (`%>%`) operator: 
+A more popular way to obtain the same result is to use the pipe (`|>`) operator: 
 
 
 ```r
-offenders_anonymous <- offenders %>% 
+offenders_anonymous <- offenders |> 
   dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS)
 ```
 
-This is part of the `magrittr` package, which we loaded earlier. Here the offenders data are "piped" like water into the select command using the pipe symbol `%>%`. This is interpreted by R as the first argument of the select command so the offenders dataset is not specified within the select command. The pipe operator makes code more readable by allowing us to chain together multiple functions and means you don't have to either create a new object each time you run a command or use nested functions (functions that are within other functions).  
+This is the R-native pipe operator. If you are not using R version 4.1.0 or later, you will need to use the pipe operator `%>%` from the `magrittr` package instead, which we loaded earlier. Here the offenders data are "piped" like water into the select command using the pipe symbol `|>`. You can think of reading the pipe symbol as saying "then", i.e. "take the offenders data **then** select the variables of interest". The offenders dataset is interpreted by R as the first argument of the select command so the offenders dataset is not specified within the select command. The pipe operator makes code more readable by allowing us to chain together multiple functions and means you don't have to either create a new object each time you run a command or use nested functions (functions that are within other functions).  
 
 Let's say that now we want the offenders_anonymous dataset to be the same as the dataset offenders but without the names and addresses:
 
 
 ```r
-offenders_anonymous <- offenders %>% 
+offenders_anonymous <- offenders |> 
   dplyr::select(-LAST, -FIRST, -BLOCK)
 ```
 
@@ -497,14 +499,14 @@ We can produce breakdowns of statistics using the `group_by` and `summarise` com
 * `group_by()` identifies which variables we want to produce breakdowns by. 
 * `summarise()` is used to indicate which values we want to calculate. 
 
-Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use the pipe (`%>%`) operator to chain these functions together so that we don't have to create a new object each time we run each of the commands, and in a manner which makes the code easy to read.
+Using these functions together we can produce summary statistics in a similar way to pivot tables in Excel. We can use the pipe (`|>`) operator to chain these functions together so that we don't have to create a new object each time we run each of the commands, and in a manner which makes the code easy to read.
 
 So if we want the mean number of previous convictions with breakdown by REGION and GENDER:
 
 
 ```r
-regional_gender_average <- offenders %>% 
-  dplyr::group_by(REGION, GENDER) %>%
+regional_gender_average <- offenders |> 
+  dplyr::group_by(REGION, GENDER) |>
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
                    .groups = 'keep')
 ```
@@ -517,8 +519,8 @@ If we want to add a new variable that we decide to call `Count` that provides th
 
 
 ```r
-regional_gender_average <- offenders %>% 
-  dplyr::group_by(REGION, GENDER) %>%
+regional_gender_average <- offenders |> 
+  dplyr::group_by(REGION, GENDER) |>
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
                    Count = dplyr::n(),
                    groups = 'keep')
@@ -528,7 +530,7 @@ The `count()` function can also be used to calculate the counts by `REGION` and 
 
 
 ```r
-offenders %>% 
+offenders |> 
   dplyr::count(REGION, GENDER)
 ```
 
@@ -536,7 +538,7 @@ It is important to pay attention to the way in which the data have been grouped.
 
 
 ```r
-regional_gender_average %>% 
+regional_gender_average |> 
   dplyr::summarise(Count = dplyr::n())
 ```
 
@@ -544,8 +546,8 @@ But if we want to count all the rows in the `regional_gender_average` dataset wi
 
 
 ```r
-regional_gender_average %>% 
- dplyr::ungroup() %>% 
+regional_gender_average |> 
+ dplyr::ungroup() |> 
  dplyr::summarise(Count = dplyr::n())
 ```
 The `summarise(Count = n())` above can also be replaced with `tally()` to count the number of rows in a dataset.
@@ -558,15 +560,15 @@ Let's first take a look at the different possible values of the `SENTENCE` varia
 
 
 ```r
-offenders %>% 
-  dplyr::group_by(SENTENCE) %>% 
+offenders |> 
+  dplyr::group_by(SENTENCE) |> 
   dplyr::summarise(Count = dplyr::n())
 ```
 Or using the `count()` function:
 
 
 ```r
-offenders %>% 
+offenders |> 
   dplyr::count(SENTENCE)
 ```
 
@@ -574,9 +576,9 @@ To filter we just specify the data that we want to filter (`offenders`) and the 
 
 
 ```r
-crt_order_average <- offenders %>% 
-  dplyr::filter(SENTENCE == "Court_order" & AGE > 50) %>% 
-  dplyr::group_by(REGION, GENDER) %>% 
+crt_order_average <- offenders |> 
+  dplyr::filter(SENTENCE == "Court_order" & AGE > 50) |> 
+  dplyr::group_by(REGION, GENDER) |> 
   dplyr::summarise(Ave = mean(PREV_CONVICTIONS),
                    .groups = 'keep')
 ```
@@ -587,8 +589,8 @@ We can rename variables using the `dplyr` function `rename()`. Let's amend our s
 
 
 ```r
-offenders_anonymous <- offenders %>%
-  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+offenders_anonymous <- offenders |>
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) |>
   dplyr::rename(DoB = BIRTH_DATE) 
 ```
        
@@ -596,8 +598,8 @@ Within the rename function, the new name "DoB" is specified on the left and the 
 
 
 ```r
-offenders_anonymous <- offenders %>%
-  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
+offenders_anonymous <- offenders |>
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) |>
   dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) 
 ```
 
@@ -614,9 +616,9 @@ So if we wanted to amend our code to include a new derived variable `weight_kg` 
 
 
 ```r
-offenders_anonymous <- offenders %>%
-  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) %>%
-  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) %>%
+offenders_anonymous <- offenders |>
+  dplyr::select(BIRTH_DATE, WEIGHT, PREV_CONVICTIONS) |>
+  dplyr::rename(DoB = BIRTH_DATE, Num_prev_convictions = PREV_CONVICTIONS) |>
   dplyr::mutate(weight_kg = WEIGHT * 0.454)
 ```
 
@@ -628,11 +630,19 @@ Another useful function found in the `dplyr` package is `if_else()`, which works
 
 
 ```r
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(weight_under_170 = dplyr::if_else(
     condition = WEIGHT < 170,
     true = 1,
     false = 0))
+```
+
+Although the argument names aren't required for many functions, it's often good practice to include them for clarity. The following code will still produce the same output as above even though the "condition", "true" and "false" arguments aren't explicitly stated. This is because R will interpret any arguments inputted in this order by default. You can check the default order of arguments for any function in its help file.
+
+
+```r
+offenders <- offenders |> dplyr::mutate(
+  weight_under_170 = dplyr::if_else(WEIGHT<170, 1, 0))
 ```
 
 ## Exercises
@@ -645,7 +655,13 @@ offenders <- offenders %>%
 # Dates
 ## Manipulating dates
 
-As you might have noticed, `BIRTH_DATE` in the `offenders` dataset currently has class character. To be able to manipulate dates in date format, we first need to convert the data to have class date.
+As you might have noticed, `BIRTH_DATE` in the `offenders` dataset currently has class character. This can be checked by running
+
+```r
+class(offenders$BIRTH_DATE)
+```
+
+To be able to manipulate dates in date format, we first need to convert the data to have class date.
 
 In this section, we are going to use a package from `tidyverse` called `lubridate` to enable R to recognize and manipulate dates.
 
@@ -655,37 +671,44 @@ Class date involves dates being represented in R as the number of days since 197
 lubridate::today()
 ```
 
-If you have a read of the help file, you'll see `lubridate` has a number of functions such as `dmy()`, `myd()` etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the character string to be parsed.
+If you have a read of the help file (using `?lubridate`), you'll see `lubridate` has a number of functions such as `dmy()`, `myd()` etc whose name models the order in which the year ('y'), month ('m') and day ('d') elements appear in the character string to be parsed.
 
 We can therefore make a new date variable (called `DoB_formatted`) with class date as follows, and then check the class of the new column:
 
 
 ```r
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(DoB_formatted = lubridate::mdy(BIRTH_DATE))
 
 class(offenders$DoB_formatted)
 ```
 
-The function `mdy()` specifies the format that the date in column `BIRTH_DATE` is currently in so R knows where to find the day, month and year needed to create a date. 
+The function `mdy()` specifies the format that the date in column `BIRTH_DATE` is currently in so R knows where to find the day, month and year needed to create a date.
+
+If you had provided an incorrect format for the date column, e.g. using `dmy()` instead of `mdy()`, R would output a warning and incorrectly re-format the date and/or not re-format it at all:
+
+```r
+offenders_wrong_date <- offenders |> 
+  dplyr::mutate(wrong_DoB_format = lubridate::dmy(BIRTH_DATE))
+```
 
 Now we have a variable with class date we can create new variables containing just part of the date e.g.
 
 
 ```r
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(day = lubridate::day(DoB_formatted))
 
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(quarter = lubridate::quarter(DoB_formatted))
 
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(year = lubridate::year(DoB_formatted))
 
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(month = lubridate::month(DoB_formatted))
 
-offenders <- offenders %>%
+offenders <- offenders |>
   dplyr::mutate(weekday = lubridate::wday(
     x = DoB_formatted,
     label = TRUE,
@@ -696,7 +719,7 @@ You can also calculate the number of days since a date. For instance, let's say 
 
 
 ```r
-offenders <- offenders %>% 
+offenders <- offenders |> 
   dplyr::mutate(days_before_2000 = lubridate::ymd("2000-01-01") - DoB_formatted)
 ```
 
@@ -742,7 +765,7 @@ We merge the datasets with offenders using the combination of fields that togeth
 
 
 ```r
-offenders_trial <- offenders_trial %>% dplyr::rename(BIRTH_DATE = DoB) 
+offenders_trial <- offenders_trial |> dplyr::rename(BIRTH_DATE = DoB) 
 ```
 
 Now the variables that together form a unique identifier have the same names, we can do the merge:
@@ -765,7 +788,7 @@ offenders_merge <- dplyr::inner_join(
   by = c("LAST", "BIRTH_DATE" = "DoB")) 
 ```
 
-For more information about the different sorts of joins and other data transformation functions see the 'Data Transformation Cheat Sheet' at: https://www.rstudio.com/resources/cheatsheets/  
+For more information about the different sorts of joins and other data transformation functions see the 'Data Transformation Cheat Sheet' at: https://posit.co/resources/cheatsheets/  
 
 We can also join two datasets vertically or horizontally, using the `bind_rows()` or `bind_cols()` functions respectively. 
 
@@ -774,9 +797,9 @@ If we have two datasets with the same variables, we can use `bind_rows()` to joi
 For instance:
 
 ```r
-men <- offenders %>% 
+men <- offenders |> 
   dplyr::filter(GENDER == "MALE")
-women <- offenders %>% 
+women <- offenders |> 
   dplyr::filter(GENDER == "FEMALE")
 
 rejoined <- dplyr::bind_rows(men, women)
@@ -801,8 +824,8 @@ We can look at the `HEIGHT` variable as previously:
 
 
 ```r
-height_table <- offenders %>% 
-  dplyr::group_by(HEIGHT) %>% 
+height_table <- offenders |> 
+  dplyr::group_by(HEIGHT) |> 
   dplyr::summarise(Count= dplyr::n())
 ```
 
@@ -831,7 +854,7 @@ Using `filter()` we can create a new data frame just with those that are complet
 
 
 ```r
-complete_offenders <- offenders %>% 
+complete_offenders <- offenders |> 
   dplyr::filter(complete.cases(offenders))
 ```
 
